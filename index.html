@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Builder Pro - AI-Powered SaaS Platform</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">W</div>
+            Website Builder Pro
+        </div>
+        <div class="header-actions">
+            <button class="btn btn-icon" id="themeToggle" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+                <span class="theme-icon">🌙</span>
+            </button>
+            <button class="btn btn-icon" onclick="undoAction()" title="Undo">↶</button>
+            <button class="btn btn-icon" onclick="redoAction()" title="Redo">↷</button>
+            <button class="btn btn-secondary" onclick="previewWebsite()">
+                👁 Preview
+            </button>
+            <button class="btn btn-success" onclick="exportCode()">
+                📥 Export Code
+            </button>
+            <button class="btn btn-primary" onclick="saveProject()">
+                💾 Save Project
+            </button>
+            <button class="btn btn-icon" id="userProfileBtn" onclick="openUserProfile()" title="User Profile">
+                <span id="userAvatar">👤</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <!-- AI Section -->
+            <div class="sidebar-section">
+                <div class="ai-panel">
+                    <div class="ai-header">
+                        <div class="ai-icon">🤖</div>
+                        <div class="ai-title">AI Assistant</div>
+                    </div>
+                    <div class="ai-input-group">
+                        <input type="text" class="form-control ai-input" id="aiPrompt" placeholder="Describe what you want to build...">
+                        <button class="btn btn-primary" onclick="generateWithAI()">✨</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Templates -->
+            <div class="sidebar-section">
+                <div class="sidebar-title">Templates</div>
+                <div class="template-grid">
+                    <div class="template-card" onclick="loadTemplate('portfolio')">
+                        <div class="template-preview" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">🎨</div>
+                        <div class="template-name">Portfolio</div>
+                    </div>
+                    <div class="template-card" onclick="loadTemplate('resume')">
+                        <div class="template-preview" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">📄</div>
+                        <div class="template-name">Resume Builder</div>
+                    </div>
+                    <div class="template-card" onclick="loadTemplate('landing')">
+                        <div class="template-preview" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">🚀</div>
+                        <div class="template-name">Landing Page</div>
+                    </div>
+                    <div class="template-card" onclick="loadTemplate('business')">
+                        <div class="template-preview" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">💼</div>
+                        <div class="template-name">Business</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Components -->
+            <div class="sidebar-section">
+                <div class="sidebar-title">Components</div>
+                <div class="component-grid">
+                    <div class="component-item" draggable="true" ondragstart="drag(event)" data-type="heading">
+                        <div class="component-icon">H</div>
+                        <span>Heading</span>
+                    </div>
+                    <div class="component-item" draggable="true" ondragstart="drag(event)" data-type="paragraph">
+                        <div class="component-icon">P</div>
+                        <span>Paragraph</span>
+                    </div>
+                    <div class="component-item" draggable="true" ondragstart="drag(event)" data-type="button">
+                        <div class="component-icon">🔘</div>
+                        <span>Button</span>
+                    </div>
+                    <div class="component-item" draggable="true" ondragstart="drag(event)" data-type="image">
+                        <div class="component-icon">🖼</div>
+                        <span>Image</span>
+                    </div>
+                    <div class="component-item" draggable="true" ondragstart="drag(event)" data-type="container">
+                        <div class="component-icon">📦</div>
+                        <span>Container</span>
+                    </div>
+                    <div class="component-item" draggable="true" ondragstart="drag(event)" data-type="form">
+                        <div class="component-icon">📝</div>
+                        <span>Form</span>
+                    </div>
+                    <div class="component-item" draggable="true" ondragstart="drag(event)" data-type="card">
+                        <div class="component-icon">🃏</div>
+                        <span>Card</span>
+                    </div>
+                    <div class="component-item" draggable="true" ondragstart="drag(event)" data-type="navbar">
+                        <div class="component-icon">📋</div>
+                        <span>Navbar</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Canvas -->
+        <main class="canvas-container">
+            <div class="canvas-toolbar">
+                <div class="device-selector">
+                    <button class="device-btn active" onclick="setDevice('desktop')" title="Desktop">🖥</button>
+                    <button class="device-btn" onclick="setDevice('tablet')" title="Tablet">📱</button>
+                    <button class="device-btn" onclick="setDevice('mobile')" title="Mobile">📱</button>
+                </div>
+                
+                <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                    <button class="btn btn-icon" onclick="toggleGridLines()" title="Toggle Grid (Ctrl+G)">📐</button>
+                    <button class="btn btn-icon" onclick="toggleFullscreen()" title="Fullscreen (Ctrl+F)">⛶</button>
+                    <button class="btn btn-icon" onclick="showElementFinder()" title="Find Elements">🔍</button>
+                    <button class="btn btn-icon" onclick="openAnimationBuilder()" title="Animation Builder">🎬</button>
+                    <button class="btn btn-icon" onclick="openGradientGenerator()" title="Gradient Generator">🎨</button>
+                    <button class="btn btn-icon" onclick="bulkEditElements()" title="Bulk Operations">⚡</button>
+                    <button class="btn btn-icon" onclick="showHistoryTimeline()" title="Edit History">📜</button>
+                    <button class="btn btn-icon" onclick="showPerformanceStats()" title="Performance Report">⚡</button>
+                    <button class="btn btn-icon" onclick="testResponsiveBreakpoints()" title="Breakpoint Tester">📱</button>
+                    <button class="btn btn-icon" onclick="showStatistics()" title="Project Statistics">📊</button>
+                    <button class="btn btn-icon" onclick="showKeyboardShortcuts()" title="Keyboard Shortcuts (Ctrl+/)">⌨️</button>
+                    <button class="btn btn-icon" onclick="exportAsHTML()" title="Export as HTML">📄</button>
+                    <button class="btn btn-icon" onclick="clearCanvas()" title="Clear Canvas">🗑️</button>
+                </div>
+                
+                <div style="display: flex; gap: 12px; align-items: center;">
+                    <span style="font-size: 14px; color: var(--color-text-secondary);">Zoom:</span>
+                    <input type="range" min="50" max="150" value="100" id="zoomSlider" onchange="setZoom(this.value)" style="width: 120px;">
+                    <span id="zoomValue" style="font-size: 14px; color: var(--color-text);">100%</span>
+                </div>
+            </div>
+            <div class="canvas-wrapper">
+                <div class="canvas" id="canvas" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    <div class="canvas-element animate-in" style="text-align: center; padding: 48px 24px;">
+                        <h1 style="font-size: 48px; margin-bottom: 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">Welcome to Website Builder Pro</h1>
+                        <p style="font-size: 20px; color: #64748b; margin-bottom: 24px;">Drag components from the sidebar or use AI to build your website</p>
+                        <button style="padding: 12px 32px; background: #6366f1; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 500; cursor: pointer;">Get Started</button>
+                    </div>
+                    <div class="element-controls">
+                        <button class="control-btn" onclick="editElement(this)" title="Edit">✏️</button>
+                        <button class="control-btn delete" onclick="deleteElement(this)" title="Delete">🗑</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Properties Panel -->
+        <aside class="properties-panel">
+            <div class="properties-section">
+                <div class="properties-title">Element Properties</div>
+                <p style="color: var(--color-text-secondary); font-size: 14px; margin-bottom: 16px;">
+                    Select an element to edit its properties
+                </p>
+                
+                <div class="form-group">
+                    <label class="form-label">Element Type</label>
+                    <select class="form-control" id="elementType">
+                        <option>Heading</option>
+                        <option>Paragraph</option>
+                        <option>Button</option>
+                        <option>Image</option>
+                        <option>Container</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Text Content</label>
+                    <textarea class="form-control" id="elementText" rows="3" placeholder="Enter text..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Font Size</label>
+                    <input type="number" class="form-control" id="fontSize" value="16" min="8" max="72">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Text Color</label>
+                    <div class="color-picker-wrapper">
+                        <input type="color" class="color-picker" id="textColor" value="#1e293b">
+                        <input type="text" class="form-control" id="textColorHex" value="#1e293b">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Background Color</label>
+                    <div class="color-picker-wrapper">
+                        <input type="color" class="color-picker" id="bgColor" value="#ffffff">
+                        <input type="text" class="form-control" id="bgColorHex" value="#ffffff">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Padding (px)</label>
+                    <input type="number" class="form-control" id="padding" value="16" min="0" max="100">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Margin (px)</label>
+                    <input type="number" class="form-control" id="margin" value="16" min="0" max="100">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Border Radius (px)</label>
+                    <input type="number" class="form-control" id="borderRadius" value="8" min="0" max="50">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Text Align</label>
+                    <select class="form-control" id="textAlign">
+                        <option value="left">Left</option>
+                        <option value="center">Center</option>
+                        <option value="right">Right</option>
+                        <option value="justify">Justify</option>
+                    </select>
+                </div>
+
+                <button class="btn btn-primary" style="width: 100%; margin-top: 16px;" onclick="applyProperties()">
+                    Apply Changes
+                </button>
+            </div>
+
+            <div class="properties-section">
+                <div class="properties-title">Animation</div>
+                <div class="form-group">
+                    <label class="form-label">Animation Type</label>
+                    <select class="form-control" id="animationType">
+                        <option value="none">None</option>
+                        <option value="fadeIn">Fade In</option>
+                        <option value="slideInLeft">Slide In Left</option>
+                        <option value="slideUp">Slide Up</option>
+                        <option value="pulse">Pulse</option>
+                    </select>
+                </div>
+                <button class="btn btn-secondary" style="width: 100%;" onclick="applyAnimation()">
+                    Add Animation
+                </button>
+            </div>
+            
+            <div class="properties-section">
+                <div class="properties-title">Quick Tools</div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                    <button class="btn btn-secondary" onclick="enableDragReorder()" style="font-size: 12px; padding: 8px;">
+                        🔄 Reorder
+                    </button>
+                    <button class="btn btn-secondary" onclick="openAnimationBuilder()" style="font-size: 12px; padding: 8px;">
+                        🎬 Animate
+                    </button>
+                    <button class="btn btn-secondary" onclick="openGradientGenerator()" style="font-size: 12px; padding: 8px;">
+                        🎨 Gradient
+                    </button>
+                    <button class="btn btn-secondary" onclick="bulkEditElements()" style="font-size: 12px; padding: 8px;">
+                        ⚡ Bulk Edit
+                    </button>
+                    <button class="btn btn-secondary" onclick="showElementFinder()" style="font-size: 12px; padding: 8px;">
+                        🔍 Find
+                    </button>
+                    <button class="btn btn-secondary" onclick="makeResponsive()" style="font-size: 12px; padding: 8px;">
+                        📱 Responsive
+                    </button>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Export Modal -->
+    <div class="modal" id="exportModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Export Code</h2>
+                <button class="modal-close" onclick="closeModal('exportModal')">&times;</button>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Export Format</label>
+                <select class="form-control" id="exportFormat">
+                    <option value="html">HTML (Single File)</option>
+                    <option value="separate">HTML, CSS, JS (Separate Files)</option>
+                    <option value="react">React Component</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Generated Code</label>
+                <textarea class="form-control" id="exportCode" rows="15" readonly style="font-family: monospace; font-size: 12px;"></textarea>
+            </div>
+            <div style="display: flex; gap: 12px;">
+                <button class="btn btn-primary" style="flex: 1;" onclick="copyCode()">📋 Copy to Clipboard</button>
+                <button class="btn btn-success" style="flex: 1;" onclick="downloadCode()">📥 Download Files</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Profile Modal -->
+    <div class="modal" id="userProfileModal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <h2 class="modal-title">👤 User Profile</h2>
+                <button class="modal-close" onclick="closeModal('userProfileModal')">&times;</button>
+            </div>
+            
+            <!-- Login/Register Section (shown when not logged in) -->
+            <div id="authSection" style="display: none;">
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" id="authEmail" placeholder="your@email.com">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-control" id="authPassword" placeholder="Enter password">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" class="form-control" id="authName" placeholder="John Doe">
+                </div>
+                <div style="display: flex; gap: 12px; margin-top: 24px;">
+                    <button class="btn btn-primary" style="flex: 1;" onclick="registerUser()">Register</button>
+                    <button class="btn btn-secondary" style="flex: 1;" onclick="loginUser()">Login</button>
+                </div>
+            </div>
+            
+            <!-- Profile Section (shown when logged in) -->
+            <div id="profileSection" style="display: none;">
+                <div style="text-align: center; margin-bottom: 24px;">
+                    <div id="profileAvatar" style="width: 80px; height: 80px; margin: 0 auto 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; color: white;">👤</div>
+                    <h3 id="profileName" style="margin: 0; color: var(--color-text);">User Name</h3>
+                    <p id="profileEmail" style="margin: 8px 0 0; color: var(--color-text-secondary); font-size: 14px;">user@email.com</p>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Display Name</label>
+                    <input type="text" class="form-control" id="profileDisplayName" placeholder="Your display name">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Bio</label>
+                    <textarea class="form-control" id="profileBio" rows="3" placeholder="Tell us about yourself..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Website</label>
+                    <input type="url" class="form-control" id="profileWebsite" placeholder="https://yourwebsite.com">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Avatar Emoji</label>
+                    <select class="form-control" id="profileAvatarEmoji" onchange="updateAvatarPreview()">
+                        <option value="👤">👤 Default</option>
+                        <option value="😊">😊 Happy</option>
+                        <option value="🚀">🚀 Rocket</option>
+                        <option value="💼">💼 Professional</option>
+                        <option value="🎨">🎨 Creative</option>
+                        <option value="💻">💻 Developer</option>
+                        <option value="📱">📱 Mobile</option>
+                        <option value="⚡">⚡ Lightning</option>
+                        <option value="🌟">🌟 Star</option>
+                        <option value="🎯">🎯 Target</option>
+                    </select>
+                </div>
+                
+                <!-- Statistics -->
+                <div style="background: var(--color-surface-elevated); padding: 16px; border-radius: 8px; margin: 20px 0;">
+                    <h4 style="margin: 0 0 12px; color: var(--color-text); font-size: 14px; font-weight: 600;">📊 Your Statistics</h4>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; text-align: center;">
+                        <div>
+                            <div id="statProjects" style="font-size: 24px; font-weight: 700; color: var(--color-primary);">0</div>
+                            <div style="font-size: 12px; color: var(--color-text-secondary);">Projects</div>
+                        </div>
+                        <div>
+                            <div id="statSaves" style="font-size: 24px; font-weight: 700; color: var(--color-success);">0</div>
+                            <div style="font-size: 12px; color: var(--color-text-secondary);">Saves</div>
+                        </div>
+                        <div>
+                            <div id="statDays" style="font-size: 24px; font-weight: 700; color: var(--color-secondary);">0</div>
+                            <div style="font-size: 12px; color: var(--color-text-secondary);">Days Active</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Preferences -->
+                <div style="background: var(--color-surface-elevated); padding: 16px; border-radius: 8px; margin: 20px 0;">
+                    <h4 style="margin: 0 0 12px; color: var(--color-text); font-size: 14px; font-weight: 600;">⚙️ Preferences</h4>
+                    <div class="form-group" style="margin-bottom: 12px;">
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="checkbox" id="prefAutoSave" checked onchange="toggleAutoSave()">
+                            <span style="color: var(--color-text); font-size: 14px;">Enable Auto-Save</span>
+                        </label>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 12px;">
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="checkbox" id="prefNotifications" checked>
+                            <span style="color: var(--color-text); font-size: 14px;">Show Notifications</span>
+                        </label>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="checkbox" id="prefGrid">
+                            <span style="color: var(--color-text); font-size: 14px;">Show Grid by Default</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 12px; margin-top: 24px;">
+                    <button class="btn btn-primary" style="flex: 1;" onclick="saveProfile()">💾 Save Profile</button>
+                    <button class="btn btn-secondary" style="flex: 1;" onclick="logoutUser()">🚪 Logout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <span>✓</span>
+        <span id="toastMessage">Action completed successfully!</span>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
