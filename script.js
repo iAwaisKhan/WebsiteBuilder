@@ -1,4 +1,4 @@
-// Global State
+git // Global State
 let selectedElement = null;
 let undoStack = [];
 let redoStack = [];
@@ -350,6 +350,341 @@ function loadTemplate(type) {
                     <div class="resume-section">
                         <h2 class="resume-section-title" style="color: ${colors.text};">Skills</h2>
                         <p style="color: ${colors.textSecondary};">JavaScript, React, Node.js, Python, SQL, AWS, Docker, Git, Agile/Scrum</p>
+                    </div>
+                </div>
+            `;
+            break;
+
+        case 'resume-modern':
+            canvas.innerHTML = `
+                <div class="resume-template modern-resume" style="color: ${colors.text}; display: grid; grid-template-columns: 1fr 2fr; gap: 0;">
+                    <!-- Left Sidebar -->
+                    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px 24px;">
+                        <div style="text-align: center; margin-bottom: 32px;">
+                            <div style="width: 120px; height: 120px; border-radius: 50%; background: white; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; font-size: 48px;">👤</div>
+                            <h1 style="font-size: 28px; margin-bottom: 8px;">Alex Johnson</h1>
+                            <p style="opacity: 0.9; font-size: 16px;">UX/UI Designer</p>
+                        </div>
+                        
+                        <div style="margin-bottom: 32px;">
+                            <h3 style="font-size: 18px; margin-bottom: 16px; border-bottom: 2px solid rgba(255,255,255,0.3); padding-bottom: 8px;">Contact</h3>
+                            <div style="font-size: 14px; line-height: 2;">
+                                <p>📧 alex.j@email.com</p>
+                                <p>📱 (555) 234-5678</p>
+                                <p>🌐 alexjohnson.design</p>
+                                <p>📍 San Francisco, CA</p>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-bottom: 32px;">
+                            <h3 style="font-size: 18px; margin-bottom: 16px; border-bottom: 2px solid rgba(255,255,255,0.3); padding-bottom: 8px;">Skills</h3>
+                            <div style="font-size: 14px;">
+                                <div style="margin-bottom: 12px;">
+                                    <p style="margin-bottom: 4px;">Figma • Adobe XD</p>
+                                    <div style="background: rgba(255,255,255,0.3); height: 6px; border-radius: 3px;"><div style="background: white; width: 95%; height: 100%; border-radius: 3px;"></div></div>
+                                </div>
+                                <div style="margin-bottom: 12px;">
+                                    <p style="margin-bottom: 4px;">UI Design</p>
+                                    <div style="background: rgba(255,255,255,0.3); height: 6px; border-radius: 3px;"><div style="background: white; width: 90%; height: 100%; border-radius: 3px;"></div></div>
+                                </div>
+                                <div style="margin-bottom: 12px;">
+                                    <p style="margin-bottom: 4px;">Prototyping</p>
+                                    <div style="background: rgba(255,255,255,0.3); height: 6px; border-radius: 3px;"><div style="background: white; width: 85%; height: 100%; border-radius: 3px;"></div></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3 style="font-size: 18px; margin-bottom: 16px; border-bottom: 2px solid rgba(255,255,255,0.3); padding-bottom: 8px;">Languages</h3>
+                            <div style="font-size: 14px; line-height: 2;">
+                                <p>English - Native</p>
+                                <p>Spanish - Fluent</p>
+                                <p>French - Basic</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Content -->
+                    <div style="padding: 40px;">
+                        <div style="margin-bottom: 32px;">
+                            <h2 style="color: #667eea; font-size: 20px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">Profile</h2>
+                            <p style="color: ${colors.textSecondary}; line-height: 1.6;">Creative and detail-oriented UX/UI Designer with 6+ years of experience crafting intuitive digital experiences. Passionate about user-centered design and creating products that delight users.</p>
+                        </div>
+                        
+                        <div style="margin-bottom: 32px;">
+                            <h2 style="color: #667eea; font-size: 20px; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px;">Experience</h2>
+                            <div style="margin-bottom: 24px;">
+                                <h3 style="color: ${colors.text}; font-size: 18px; margin-bottom: 4px;">Senior UX Designer</h3>
+                                <p style="color: #667eea; font-size: 14px; margin-bottom: 4px;">Tech Innovations Inc. | 2021 - Present</p>
+                                <ul style="color: ${colors.textSecondary}; font-size: 14px; line-height: 1.8; margin-left: 20px;">
+                                    <li>Led redesign of mobile app increasing user engagement by 45%</li>
+                                    <li>Managed team of 5 designers on multiple concurrent projects</li>
+                                    <li>Established design system used across 12 products</li>
+                                </ul>
+                            </div>
+                            <div style="margin-bottom: 24px;">
+                                <h3 style="color: ${colors.text}; font-size: 18px; margin-bottom: 4px;">UX Designer</h3>
+                                <p style="color: #667eea; font-size: 14px; margin-bottom: 4px;">Creative Studios | 2018 - 2021</p>
+                                <ul style="color: ${colors.textSecondary}; font-size: 14px; line-height: 1.8; margin-left: 20px;">
+                                    <li>Designed user interfaces for 20+ client projects</li>
+                                    <li>Conducted user research and usability testing</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h2 style="color: #667eea; font-size: 20px; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px;">Education</h2>
+                            <div>
+                                <h3 style="color: ${colors.text}; font-size: 18px; margin-bottom: 4px;">Bachelor of Fine Arts in Design</h3>
+                                <p style="color: ${colors.textSecondary}; font-size: 14px;">California College of the Arts | 2014 - 2018</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            break;
+
+        case 'resume-creative':
+            canvas.innerHTML = `
+                <div class="resume-template creative-resume" style="color: ${colors.text}; padding: 48px; background: ${colors.surface};">
+                    <!-- Header with creative design -->
+                    <div style="text-align: center; margin-bottom: 48px; position: relative;">
+                        <div style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); padding: 48px; border-radius: 24px; box-shadow: 0 20px 60px rgba(255,154,158,0.3);">
+                            <h1 style="font-size: 48px; color: white; margin-bottom: 8px; font-weight: 800;">Maya Chen</h1>
+                            <p style="font-size: 24px; color: white; opacity: 0.95; font-weight: 300;">Graphic Designer & Illustrator</p>
+                            <div style="margin-top: 24px; display: flex; justify-content: center; gap: 24px; flex-wrap: wrap;">
+                                <span style="color: white; font-size: 14px;">✉️ maya.chen@creative.io</span>
+                                <span style="color: white; font-size: 14px;">🔗 behance.net/mayachen</span>
+                                <span style="color: white; font-size: 14px;">📍 Brooklyn, NY</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Creative About Section -->
+                    <div style="margin-bottom: 40px; text-align: center;">
+                        <h2 style="color: #ff9a9e; font-size: 28px; margin-bottom: 16px; font-weight: 700;">✨ About Me</h2>
+                        <p style="color: ${colors.textSecondary}; font-size: 16px; line-height: 1.8; max-width: 800px; margin: 0 auto;">Award-winning designer with a passion for creating visually stunning and impactful designs. Specialized in branding, illustration, and digital art with 7+ years of experience working with global brands.</p>
+                    </div>
+                    
+                    <!-- Experience with visual flair -->
+                    <div style="margin-bottom: 40px;">
+                        <h2 style="color: #ff9a9e; font-size: 28px; margin-bottom: 24px; font-weight: 700; text-align: center;">🎨 Creative Journey</h2>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
+                            <div style="background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); padding: 24px; border-radius: 16px; color: white;">
+                                <h3 style="font-size: 20px; margin-bottom: 8px;">Lead Designer</h3>
+                                <p style="opacity: 0.9; font-size: 14px; margin-bottom: 12px;">Creative Agency Co. | 2020 - Present</p>
+                                <ul style="font-size: 14px; line-height: 1.8; opacity: 0.95;">
+                                    <li>Art directed 50+ brand campaigns</li>
+                                    <li>Won 3 international design awards</li>
+                                    <li>Mentored 8 junior designers</li>
+                                </ul>
+                            </div>
+                            <div style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); padding: 24px; border-radius: 16px; color: white;">
+                                <h3 style="font-size: 20px; margin-bottom: 8px;">Senior Designer</h3>
+                                <p style="opacity: 0.9; font-size: 14px; margin-bottom: 12px;">Digital Studio | 2017 - 2020</p>
+                                <ul style="font-size: 14px; line-height: 1.8; opacity: 0.95;">
+                                    <li>Created brand identities for 30+ clients</li>
+                                    <li>Illustration work featured in major publications</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Skills with icons -->
+                    <div style="margin-bottom: 40px;">
+                        <h2 style="color: #ff9a9e; font-size: 28px; margin-bottom: 24px; font-weight: 700; text-align: center;">💡 Skills & Tools</h2>
+                        <div style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: center;">
+                            <span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 10px 20px; border-radius: 20px; font-size: 14px;">Adobe Illustrator</span>
+                            <span style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 10px 20px; border-radius: 20px; font-size: 14px;">Photoshop</span>
+                            <span style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 10px 20px; border-radius: 20px; font-size: 14px;">Procreate</span>
+                            <span style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; padding: 10px 20px; border-radius: 20px; font-size: 14px;">Brand Identity</span>
+                            <span style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white; padding: 10px 20px; border-radius: 20px; font-size: 14px;">Typography</span>
+                            <span style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); color: white; padding: 10px 20px; border-radius: 20px; font-size: 14px;">Digital Illustration</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Education -->
+                    <div style="text-align: center;">
+                        <h2 style="color: #ff9a9e; font-size: 28px; margin-bottom: 16px; font-weight: 700;">🎓 Education</h2>
+                        <div style="background: ${colors.background}; padding: 24px; border-radius: 16px; border: 2px solid #ff9a9e; display: inline-block;">
+                            <h3 style="color: ${colors.text}; font-size: 20px; margin-bottom: 8px;">BFA in Graphic Design</h3>
+                            <p style="color: ${colors.textSecondary}; font-size: 14px;">Rhode Island School of Design | 2013 - 2017</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            break;
+
+        case 'resume-executive':
+            canvas.innerHTML = `
+                <div class="resume-template executive-resume" style="color: ${colors.text}; max-width: 900px; margin: 0 auto;">
+                    <!-- Executive Header -->
+                    <div style="border-bottom: 4px solid #d97706; padding-bottom: 24px; margin-bottom: 32px;">
+                        <h1 style="font-size: 42px; color: ${colors.text}; margin-bottom: 8px; font-weight: 700;">ROBERT ANDERSON</h1>
+                        <p style="font-size: 22px; color: #d97706; margin-bottom: 16px; font-weight: 500;">Chief Technology Officer</p>
+                        <div style="display: flex; gap: 32px; flex-wrap: wrap; color: ${colors.textSecondary}; font-size: 14px;">
+                            <span>📧 r.anderson@executive.com</span>
+                            <span>📱 (555) 876-5432</span>
+                            <span>🔗 linkedin.com/in/robertanderson</span>
+                            <span>📍 Boston, MA</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Executive Summary -->
+                    <div style="margin-bottom: 32px;">
+                        <h2 style="font-size: 20px; color: ${colors.text}; margin-bottom: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;">Executive Summary</h2>
+                        <p style="color: ${colors.textSecondary}; line-height: 1.8; font-size: 15px;">Distinguished technology executive with 15+ years of progressive leadership experience. Proven track record of driving digital transformation, scaling engineering teams from 20 to 200+, and delivering $50M+ in revenue growth through innovative product strategies.</p>
+                    </div>
+                    
+                    <!-- Core Competencies -->
+                    <div style="margin-bottom: 32px;">
+                        <h2 style="font-size: 20px; color: ${colors.text}; margin-bottom: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;">Core Competencies</h2>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+                            <div style="background: ${colors.surface}; padding: 12px; border-left: 4px solid #d97706; font-size: 14px; color: ${colors.textSecondary};">Strategic Planning</div>
+                            <div style="background: ${colors.surface}; padding: 12px; border-left: 4px solid #d97706; font-size: 14px; color: ${colors.textSecondary};">Team Leadership</div>
+                            <div style="background: ${colors.surface}; padding: 12px; border-left: 4px solid #d97706; font-size: 14px; color: ${colors.textSecondary};">Digital Transformation</div>
+                            <div style="background: ${colors.surface}; padding: 12px; border-left: 4px solid #d97706; font-size: 14px; color: ${colors.textSecondary};">Product Strategy</div>
+                            <div style="background: ${colors.surface}; padding: 12px; border-left: 4px solid #d97706; font-size: 14px; color: ${colors.textSecondary};">Cloud Architecture</div>
+                            <div style="background: ${colors.surface}; padding: 12px; border-left: 4px solid #d97706; font-size: 14px; color: ${colors.textSecondary};">Budget Management</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Professional Experience -->
+                    <div style="margin-bottom: 32px;">
+                        <h2 style="font-size: 20px; color: ${colors.text}; margin-bottom: 20px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;">Professional Experience</h2>
+                        
+                        <div style="margin-bottom: 28px; border-left: 3px solid #d97706; padding-left: 20px;">
+                            <h3 style="color: ${colors.text}; font-size: 18px; font-weight: 700; margin-bottom: 4px;">Chief Technology Officer</h3>
+                            <p style="color: #d97706; font-size: 15px; font-weight: 600; margin-bottom: 8px;">Enterprise Tech Solutions | 2019 - Present</p>
+                            <ul style="color: ${colors.textSecondary}; line-height: 1.8; font-size: 14px; margin-left: 20px;">
+                                <li>Spearheaded company-wide digital transformation initiative, resulting in 40% operational efficiency improvement</li>
+                                <li>Grew engineering team from 45 to 180 members while maintaining high performance standards</li>
+                                <li>Led development of cloud-native platform serving 5M+ users with 99.99% uptime</li>
+                                <li>Managed $20M technology budget with strategic vendor partnerships</li>
+                            </ul>
+                        </div>
+                        
+                        <div style="margin-bottom: 28px; border-left: 3px solid #d97706; padding-left: 20px;">
+                            <h3 style="color: ${colors.text}; font-size: 18px; font-weight: 700; margin-bottom: 4px;">Vice President of Engineering</h3>
+                            <p style="color: #d97706; font-size: 15px; font-weight: 600; margin-bottom: 8px;">Global Tech Corp | 2015 - 2019</p>
+                            <ul style="color: ${colors.textSecondary}; line-height: 1.8; font-size: 14px; margin-left: 20px;">
+                                <li>Directed engineering strategy for 3 product lines generating $100M+ annual revenue</li>
+                                <li>Implemented DevOps culture reducing time-to-market by 60%</li>
+                                <li>Established offshore development centers in 2 countries</li>
+                            </ul>
+                        </div>
+                        
+                        <div style="border-left: 3px solid #d97706; padding-left: 20px;">
+                            <h3 style="color: ${colors.text}; font-size: 18px; font-weight: 700; margin-bottom: 4px;">Director of Software Development</h3>
+                            <p style="color: #d97706; font-size: 15px; font-weight: 600; margin-bottom: 8px;">Innovation Labs Inc. | 2010 - 2015</p>
+                            <ul style="color: ${colors.textSecondary}; line-height: 1.8; font-size: 14px; margin-left: 20px;">
+                                <li>Built and led cross-functional teams of 50+ engineers and product managers</li>
+                                <li>Launched 5 successful enterprise products with 95% customer satisfaction</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Education & Certifications -->
+                    <div>
+                        <h2 style="font-size: 20px; color: ${colors.text}; margin-bottom: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;">Education & Certifications</h2>
+                        <div style="margin-bottom: 12px;">
+                            <h3 style="color: ${colors.text}; font-size: 16px; font-weight: 600;">Master of Business Administration (MBA)</h3>
+                            <p style="color: ${colors.textSecondary}; font-size: 14px;">Harvard Business School | 2009</p>
+                        </div>
+                        <div style="margin-bottom: 12px;">
+                            <h3 style="color: ${colors.text}; font-size: 16px; font-weight: 600;">Bachelor of Science in Computer Science</h3>
+                            <p style="color: ${colors.textSecondary}; font-size: 14px;">MIT | 2003</p>
+                        </div>
+                        <div>
+                            <p style="color: ${colors.textSecondary}; font-size: 14px;"><strong>Certifications:</strong> AWS Solutions Architect Professional, PMP, Certified Scrum Master</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            break;
+
+        case 'resume-minimalist':
+            canvas.innerHTML = `
+                <div class="resume-template minimalist-resume" style="color: ${colors.text}; max-width: 800px; margin: 0 auto; padding: 48px 32px; font-family: 'Helvetica Neue', Arial, sans-serif;">
+                    <!-- Minimalist Header -->
+                    <div style="margin-bottom: 48px;">
+                        <h1 style="font-size: 36px; color: ${colors.text}; margin-bottom: 4px; font-weight: 300; letter-spacing: -1px;">Emily Parker</h1>
+                        <p style="font-size: 16px; color: ${colors.textSecondary}; margin-bottom: 16px;">Software Engineer</p>
+                        <div style="font-size: 13px; color: ${colors.textSecondary}; display: flex; gap: 16px; flex-wrap: wrap;">
+                            <span>emily.parker@email.com</span>
+                            <span>•</span>
+                            <span>+1 (555) 321-9876</span>
+                            <span>•</span>
+                            <span>github.com/emilyparker</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Summary -->
+                    <div style="margin-bottom: 40px;">
+                        <p style="color: ${colors.textSecondary}; line-height: 1.7; font-size: 14px;">Full-stack software engineer with 5 years of experience building scalable web applications. Focused on clean code, performance optimization, and user experience. Passionate about open-source contribution and continuous learning.</p>
+                    </div>
+                    
+                    <!-- Experience -->
+                    <div style="margin-bottom: 40px;">
+                        <h2 style="font-size: 14px; color: ${colors.text}; margin-bottom: 20px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid ${colors.border}; padding-bottom: 8px;">Experience</h2>
+                        
+                        <div style="margin-bottom: 24px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                                <h3 style="color: ${colors.text}; font-size: 15px; font-weight: 600;">Senior Software Engineer</h3>
+                                <span style="color: ${colors.textSecondary}; font-size: 13px;">2021 - Present</span>
+                            </div>
+                            <p style="color: ${colors.textSecondary}; font-size: 14px; margin-bottom: 8px; font-style: italic;">Tech Company Inc., Remote</p>
+                            <ul style="color: ${colors.textSecondary}; font-size: 13px; line-height: 1.8; margin-left: 20px;">
+                                <li>Architected and implemented microservices infrastructure serving 2M+ users</li>
+                                <li>Reduced API response time by 70% through optimization and caching strategies</li>
+                                <li>Mentored 4 junior engineers and conducted technical interviews</li>
+                            </ul>
+                        </div>
+                        
+                        <div style="margin-bottom: 24px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                                <h3 style="color: ${colors.text}; font-size: 15px; font-weight: 600;">Software Engineer</h3>
+                                <span style="color: ${colors.textSecondary}; font-size: 13px;">2019 - 2021</span>
+                            </div>
+                            <p style="color: ${colors.textSecondary}; font-size: 14px; margin-bottom: 8px; font-style: italic;">Startup Labs, San Francisco, CA</p>
+                            <ul style="color: ${colors.textSecondary}; font-size: 13px; line-height: 1.8; margin-left: 20px;">
+                                <li>Built RESTful APIs using Node.js and Express serving 100K+ daily requests</li>
+                                <li>Implemented CI/CD pipelines with Jenkins and Docker</li>
+                                <li>Collaborated with design team to create responsive React interfaces</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Skills -->
+                    <div style="margin-bottom: 40px;">
+                        <h2 style="font-size: 14px; color: ${colors.text}; margin-bottom: 16px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid ${colors.border}; padding-bottom: 8px;">Skills</h2>
+                        <div style="font-size: 13px; color: ${colors.textSecondary}; line-height: 2;">
+                            <p><strong style="color: ${colors.text};">Languages:</strong> JavaScript, TypeScript, Python, Go, SQL</p>
+                            <p><strong style="color: ${colors.text};">Frameworks:</strong> React, Node.js, Express, Next.js, Django</p>
+                            <p><strong style="color: ${colors.text};">Tools:</strong> Git, Docker, Kubernetes, AWS, PostgreSQL, MongoDB</p>
+                            <p><strong style="color: ${colors.text};">Practices:</strong> Agile, TDD, CI/CD, Code Review, System Design</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Education -->
+                    <div style="margin-bottom: 40px;">
+                        <h2 style="font-size: 14px; color: ${colors.text}; margin-bottom: 16px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid ${colors.border}; padding-bottom: 8px;">Education</h2>
+                        <div style="display: flex; justify-content: space-between;">
+                            <div>
+                                <h3 style="color: ${colors.text}; font-size: 15px; font-weight: 600; margin-bottom: 4px;">B.S. Computer Science</h3>
+                                <p style="color: ${colors.textSecondary}; font-size: 13px;">Stanford University</p>
+                            </div>
+                            <span style="color: ${colors.textSecondary}; font-size: 13px;">2015 - 2019</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Projects -->
+                    <div>
+                        <h2 style="font-size: 14px; color: ${colors.text}; margin-bottom: 16px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid ${colors.border}; padding-bottom: 8px;">Notable Projects</h2>
+                        <div style="font-size: 13px; color: ${colors.textSecondary}; line-height: 1.8;">
+                            <p><strong style="color: ${colors.text};">Open Source Contributor</strong> - Contributed to React, Node.js, and various open-source projects with 500+ GitHub stars</p>
+                            <p><strong style="color: ${colors.text};">DevTools Chrome Extension</strong> - Built developer tools extension with 10K+ active users</p>
+                        </div>
                     </div>
                 </div>
             `;
