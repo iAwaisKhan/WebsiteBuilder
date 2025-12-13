@@ -1,4 +1,4 @@
-git // Global State
+// Global State
 let selectedElement = null;
 let undoStack = [];
 let redoStack = [];
@@ -13,6 +13,24 @@ let userStats = {
     daysActive: 0,
     joinDate: null
 };
+
+// Template filtering
+function filterTemplates(category) {
+    // Update active tab
+    document.querySelectorAll('.template-tab').forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.category === category);
+    });
+    
+    // Filter template items
+    document.querySelectorAll('.template-item').forEach(item => {
+        if (category === 'all' || item.dataset.category === category) {
+            item.classList.remove('hidden');
+            item.style.animation = 'fadeSlideIn 0.3s ease forwards';
+        } else {
+            item.classList.add('hidden');
+        }
+    });
+}
 
 // Theme Management
 function initTheme() {
@@ -34,19 +52,12 @@ function toggleTheme() {
     
     // Update icon
     updateThemeIcon();
-    
-    // Add animation feedback
-    const themeBtn = document.getElementById('themeToggle');
-    themeBtn.style.transform = 'scale(0.9)';
-    setTimeout(() => {
-        themeBtn.style.transform = 'scale(1)';
-    }, 150);
 }
 
 function updateThemeIcon() {
     const icon = document.querySelector('#themeToggle .theme-icon');
     if (icon) {
-        icon.textContent = isDarkMode ? '🌙' : '☀️';
+        icon.textContent = isDarkMode ? '◐' : '◑';
     }
 }
 
@@ -101,8 +112,8 @@ function createComponent(type) {
     const controls = document.createElement('div');
     controls.className = 'element-controls';
     controls.innerHTML = `
-        <button class="control-btn" onclick="editElement(this)" title="Edit">✏️</button>
-        <button class="control-btn delete" onclick="deleteElement(this)" title="Delete">🗑</button>
+        <button class="control-btn" onclick="editElement(this)" title="Edit">E</button>
+        <button class="control-btn delete" onclick="deleteElement(this)" title="Delete">×</button>
     `;
     element.appendChild(controls);
 
@@ -168,21 +179,32 @@ function createComponent(type) {
 
 // Element Selection
 function selectElement(element) {
+    // Remove selection from previous element
     if (selectedElement) {
-        selectedElement.style.outline = '';
+        selectedElement.classList.remove('selected');
     }
     selectedElement = element;
-    element.style.outline = '2px solid #6366f1';
+    element.classList.add('selected');
+    
+    // Subtle pulse animation on selection
+    element.style.animation = 'none';
+    element.offsetHeight; // Trigger reflow
+    element.style.animation = 'pulse 0.3s ease';
+    
+    // Load element properties into the panel
+    loadElementProperties(element);
 }
 
 function deleteElement(button) {
     const element = button.closest('.canvas-element');
-    element.style.animation = 'fadeOut 0.3s ease';
+    element.style.transform = 'scale(0.95)';
+    element.style.opacity = '0';
+    element.style.transition = 'all 0.25s ease';
     setTimeout(() => {
         element.remove();
         saveState();
         showToast('Element deleted');
-    }, 300);
+    }, 250);
 }
 
 function editElement(button) {
@@ -200,28 +222,325 @@ function applyProperties() {
 
     const text = document.getElementById('elementText').value;
     const fontSize = document.getElementById('fontSize').value;
+    const fontWeight = document.getElementById('fontWeight')?.value || '400';
     const textColor = document.getElementById('textColor').value;
     const bgColor = document.getElementById('bgColor').value;
-    const padding = document.getElementById('padding').value;
-    const margin = document.getElementById('margin').value;
     const borderRadius = document.getElementById('borderRadius').value;
-    const textAlign = document.getElementById('textAlign').value;
+    const opacity = document.getElementById('opacity')?.value || 100;
+    
+    // Get individual padding values
+    const paddingTop = document.getElementById('paddingTop')?.value || 16;
+    const paddingRight = document.getElementById('paddingRight')?.value || 16;
+    const paddingBottom = document.getElementById('paddingBottom')?.value || 16;
+    const paddingLeft = document.getElementById('paddingLeft')?.value || 16;
+    
+    // Get individual margin values
+    const marginTop = document.getElementById('marginTop')?.value || 0;
+    const marginBottom = document.getElementById('marginBottom')?.value || 0;
 
     if (text) {
-        const textElement = selectedElement.querySelector('h1, h2, h3, p, button, a');
+        const textElement = selectedElement.querySelector('h1, h2, h3, p, button, a, span');
         if (textElement) textElement.textContent = text;
     }
 
     selectedElement.style.fontSize = fontSize + 'px';
+    selectedElement.style.fontWeight = fontWeight;
     selectedElement.style.color = textColor;
     selectedElement.style.backgroundColor = bgColor;
-    selectedElement.style.padding = padding + 'px';
-    selectedElement.style.margin = margin + 'px';
+    selectedElement.style.padding = `${paddingTop}px ${paddingRight}px ${paddingBottom}px ${paddingLeft}px`;
+    selectedElement.style.marginTop = marginTop + 'px';
+    selectedElement.style.marginBottom = marginBottom + 'px';
     selectedElement.style.borderRadius = borderRadius + 'px';
-    selectedElement.style.textAlign = textAlign;
+    selectedElement.style.opacity = opacity / 100;
 
     saveState();
-    showToast('Properties applied successfully!');
+    showToast('Properties applied!');
+}
+
+// ===== OPTIMIZED PROPERTIES PANEL FUNCTIONS =====
+
+// Toggle collapsible section
+function toggleSection(header) {
+    const section = header.closest('.properties-section');
+    section.classList.toggle('collapsed');
+}
+
+// Live preview as user types/changes
+function livePreview() {
+    if (!selectedElement) return;
+    
+    // Debounce to avoid too many updates
+    clearTimeout(window.livePreviewTimeout);
+    window.livePreviewTimeout = setTimeout(() => {
+        applyProperties();
+    }, 150);
+}
+
+// Sync color picker with hex input
+function syncColorInput(id) {
+    const picker = document.getElementById(id);
+    const hex = document.getElementById(id + 'Hex');
+    if (picker && hex) {
+        hex.value = picker.value.toUpperCase();
+        livePreview();
+    }
+}
+
+// Sync hex input with color picker
+function syncColorPicker(id) {
+    const picker = document.getElementById(id);
+    const hex = document.getElementById(id + 'Hex');
+    if (picker && hex && /^#[0-9A-Fa-f]{6}$/.test(hex.value)) {
+        picker.value = hex.value;
+        livePreview();
+    }
+}
+
+// Set transparent background
+function setTransparentBg() {
+    if (selectedElement) {
+        selectedElement.style.backgroundColor = 'transparent';
+        document.getElementById('bgColor').value = '#ffffff';
+        document.getElementById('bgColorHex').value = 'transparent';
+        showToast('Background set to transparent');
+    }
+}
+
+// Sync slider with input value
+function syncSliderValue(id) {
+    const slider = document.getElementById(id + 'Slider');
+    const input = document.getElementById(id);
+    if (slider && input) {
+        input.value = slider.value;
+        livePreview();
+    }
+}
+
+// Sync input with slider
+function syncSliderFromInput(id) {
+    const slider = document.getElementById(id + 'Slider');
+    const input = document.getElementById(id);
+    if (slider && input) {
+        slider.value = input.value;
+        livePreview();
+    }
+}
+
+// Set text alignment
+function setTextAlign(align) {
+    // Update toggle buttons
+    document.querySelectorAll('.btn-toggle').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.value === align);
+    });
+    
+    if (selectedElement) {
+        selectedElement.style.textAlign = align;
+        saveState();
+    }
+}
+
+// Link spacing values (make all sides equal)
+function linkSpacing(type) {
+    if (type === 'padding') {
+        const value = document.getElementById('paddingTop').value;
+        document.getElementById('paddingRight').value = value;
+        document.getElementById('paddingBottom').value = value;
+        document.getElementById('paddingLeft').value = value;
+    } else {
+        const value = document.getElementById('marginTop').value;
+        document.getElementById('marginBottom').value = value;
+    }
+    livePreview();
+    showToast(`${type.charAt(0).toUpperCase() + type.slice(1)} values linked`);
+}
+
+// Element type change handler
+function onElementTypeChange() {
+    // Could be used to show/hide relevant options based on element type
+    const type = document.getElementById('elementType').value;
+    // Future: conditionally show image URL input for image type, etc.
+}
+
+// Duplicate selected element
+function duplicateElement() {
+    if (!selectedElement) {
+        showToast('Please select an element first');
+        return;
+    }
+    
+    const clone = selectedElement.cloneNode(true);
+    clone.classList.remove('selected');
+    clone.style.animation = 'fadeSlideIn 0.3s ease';
+    selectedElement.parentNode.insertBefore(clone, selectedElement.nextSibling);
+    
+    saveState();
+    showToast('Element duplicated');
+}
+
+// Move element up
+function moveElementUp() {
+    if (!selectedElement) {
+        showToast('Please select an element first');
+        return;
+    }
+    
+    const prev = selectedElement.previousElementSibling;
+    if (prev && !prev.classList.contains('element-controls')) {
+        selectedElement.parentNode.insertBefore(selectedElement, prev);
+        saveState();
+        showToast('Element moved up');
+    }
+}
+
+// Move element down
+function moveElementDown() {
+    if (!selectedElement) {
+        showToast('Please select an element first');
+        return;
+    }
+    
+    const next = selectedElement.nextElementSibling;
+    if (next && !next.classList.contains('element-controls')) {
+        selectedElement.parentNode.insertBefore(next, selectedElement);
+        saveState();
+        showToast('Element moved down');
+    }
+}
+
+// Delete selected element
+function deleteSelectedElement() {
+    if (!selectedElement) {
+        showToast('Please select an element first');
+        return;
+    }
+    
+    selectedElement.style.animation = 'fadeOut 0.2s ease forwards';
+    setTimeout(() => {
+        selectedElement.remove();
+        selectedElement = null;
+        updatePropertiesHint();
+        saveState();
+        showToast('Element deleted');
+    }, 200);
+}
+
+// Update properties panel hint
+function updatePropertiesHint() {
+    const hint = document.getElementById('propertiesHint');
+    if (hint) {
+        hint.textContent = selectedElement ? 'Editing: ' + getElementTypeName() : 'Select an element to edit';
+    }
+}
+
+// Get element type name
+function getElementTypeName() {
+    if (!selectedElement) return '';
+    const tag = selectedElement.querySelector('h1, h2, h3, p, button, img, div');
+    if (!tag) return 'Element';
+    
+    const tagName = tag.tagName.toLowerCase();
+    const names = {
+        'h1': 'Heading 1',
+        'h2': 'Heading 2', 
+        'h3': 'Heading 3',
+        'p': 'Paragraph',
+        'button': 'Button',
+        'img': 'Image',
+        'div': 'Container'
+    };
+    return names[tagName] || 'Element';
+}
+
+// Load element properties into panel
+function loadElementProperties(element) {
+    if (!element) return;
+    
+    const computed = window.getComputedStyle(element);
+    
+    // Text content
+    const textEl = element.querySelector('h1, h2, h3, p, button, a, span');
+    if (textEl) {
+        document.getElementById('elementText').value = textEl.textContent;
+    }
+    
+    // Font size
+    const fontSize = parseInt(computed.fontSize);
+    document.getElementById('fontSize').value = fontSize;
+    
+    // Font weight
+    const fontWeight = document.getElementById('fontWeight');
+    if (fontWeight) fontWeight.value = computed.fontWeight;
+    
+    // Colors
+    const textColor = rgbToHex(computed.color);
+    document.getElementById('textColor').value = textColor;
+    document.getElementById('textColorHex').value = textColor.toUpperCase();
+    
+    const bgColor = computed.backgroundColor === 'transparent' || computed.backgroundColor === 'rgba(0, 0, 0, 0)' 
+        ? '#ffffff' 
+        : rgbToHex(computed.backgroundColor);
+    document.getElementById('bgColor').value = bgColor;
+    document.getElementById('bgColorHex').value = bgColor.toUpperCase();
+    
+    // Border radius
+    const borderRadius = parseInt(computed.borderRadius) || 0;
+    document.getElementById('borderRadius').value = borderRadius;
+    if (document.getElementById('borderRadiusSlider')) {
+        document.getElementById('borderRadiusSlider').value = borderRadius;
+    }
+    
+    // Opacity
+    const opacity = Math.round(parseFloat(computed.opacity) * 100);
+    if (document.getElementById('opacity')) {
+        document.getElementById('opacity').value = opacity;
+    }
+    if (document.getElementById('opacitySlider')) {
+        document.getElementById('opacitySlider').value = opacity;
+    }
+    
+    // Padding
+    const paddingTop = parseInt(computed.paddingTop) || 0;
+    const paddingRight = parseInt(computed.paddingRight) || 0;
+    const paddingBottom = parseInt(computed.paddingBottom) || 0;
+    const paddingLeft = parseInt(computed.paddingLeft) || 0;
+    
+    if (document.getElementById('paddingTop')) {
+        document.getElementById('paddingTop').value = paddingTop;
+        document.getElementById('paddingRight').value = paddingRight;
+        document.getElementById('paddingBottom').value = paddingBottom;
+        document.getElementById('paddingLeft').value = paddingLeft;
+    }
+    
+    // Margin
+    const marginTop = parseInt(computed.marginTop) || 0;
+    const marginBottom = parseInt(computed.marginBottom) || 0;
+    
+    if (document.getElementById('marginTop')) {
+        document.getElementById('marginTop').value = marginTop;
+        document.getElementById('marginBottom').value = marginBottom;
+    }
+    
+    // Text align buttons
+    const textAlign = computed.textAlign;
+    document.querySelectorAll('.btn-toggle').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.value === textAlign);
+    });
+    
+    // Update hint
+    updatePropertiesHint();
+}
+
+// RGB to Hex converter
+function rgbToHex(rgb) {
+    if (rgb.startsWith('#')) return rgb;
+    
+    const result = rgb.match(/\d+/g);
+    if (!result || result.length < 3) return '#000000';
+    
+    return '#' + result.slice(0, 3).map(x => {
+        const hex = parseInt(x).toString(16);
+        return hex.length === 1 ? '0' + hex : hex;
+    }).join('');
 }
 
 // Apply Animation
@@ -764,8 +1083,8 @@ function addControlsToElements() {
             const controls = document.createElement('div');
             controls.className = 'element-controls';
             controls.innerHTML = `
-                <button class="control-btn" onclick="editElement(this)" title="Edit">✏️</button>
-                <button class="control-btn delete" onclick="deleteElement(this)" title="Delete">🗑</button>
+                <button class="control-btn" onclick="editElement(this)" title="Edit">E</button>
+                <button class="control-btn delete" onclick="deleteElement(this)" title="Delete">×</button>
             `;
             element.appendChild(controls);
             element.onclick = (e) => {
@@ -784,7 +1103,7 @@ function generateWithAI() {
         return;
     }
 
-    showToast('🤖 AI is generating your content...');
+    showToast('AI is generating your content...');
 
     // Simulate AI processing with more intelligent detection
     setTimeout(() => {
@@ -794,25 +1113,25 @@ function generateWithAI() {
         // Check for specific component requests
         if (promptLower.includes('button')) {
             createComponent('button');
-            showToast('✨ AI created a button!');
+            showToast('AI created a button!');
             return;
         }
         
         if (promptLower.includes('form') || promptLower.includes('contact')) {
             createComponent('form');
-            showToast('✨ AI created a contact form!');
+            showToast('AI created a contact form!');
             return;
         }
         
         if (promptLower.includes('card')) {
             createComponent('card');
-            showToast('✨ AI created a card!');
+            showToast('AI created a card!');
             return;
         }
         
         if (promptLower.includes('heading') || promptLower.includes('title')) {
             createComponent('heading');
-            showToast('✨ AI created a heading!');
+            showToast('AI created a heading!');
             return;
         }
         
@@ -834,7 +1153,7 @@ function generateWithAI() {
 
         if (templateToLoad) {
             loadTemplate(templateToLoad);
-            showToast('✨ AI generated your website!');
+            showToast('AI generated your website!');
         } else {
             // Generate custom content based on prompt
             generateCustomContent(prompt, colors);
@@ -861,8 +1180,8 @@ function generateCustomContent(prompt, colors) {
     const controls = document.createElement('div');
     controls.className = 'element-controls';
     controls.innerHTML = `
-        <button class="control-btn" onclick="editElement(this)" title="Edit">✏️</button>
-        <button class="control-btn delete" onclick="deleteElement(this)" title="Delete">🗑</button>
+        <button class="control-btn" onclick="editElement(this)" title="Edit">E</button>
+        <button class="control-btn delete" onclick="deleteElement(this)" title="Delete">×</button>
     `;
     element.appendChild(controls);
     
@@ -873,7 +1192,7 @@ function generateCustomContent(prompt, colors) {
     
     canvas.appendChild(element);
     saveState();
-    showToast('✨ AI generated custom content!');
+    showToast('AI generated custom content!');
 }
 
 // Responsive Design Helper
@@ -904,7 +1223,7 @@ function makeResponsive() {
     });
     
     saveState();
-    showToast('✅ Made elements responsive!');
+    showToast('Made elements responsive!');
 }
 
 // Export Functions
@@ -1042,9 +1361,18 @@ function showToast(message) {
     const toast = document.getElementById('toast');
     const toastMessage = document.getElementById('toastMessage');
     toastMessage.textContent = message;
+    
+    // Clear any existing hide class
+    toast.classList.remove('hide');
     toast.classList.add('show');
-    setTimeout(() => {
-        toast.classList.remove('show');
+    
+    // Auto-hide after 3 seconds
+    clearTimeout(toast.hideTimeout);
+    toast.hideTimeout = setTimeout(() => {
+        toast.classList.add('hide');
+        setTimeout(() => {
+            toast.classList.remove('show', 'hide');
+        }, 300);
     }, 3000);
 }
 
@@ -1140,8 +1468,8 @@ function pasteElement() {
             const controls = document.createElement('div');
             controls.className = 'element-controls';
             controls.innerHTML = `
-                <button class="control-btn" onclick="editElement(this)" title="Edit">✏️</button>
-                <button class="control-btn delete" onclick="deleteElement(this)" title="Delete">🗑</button>
+                <button class="control-btn" onclick="editElement(this)" title="Edit">E</button>
+                <button class="control-btn delete" onclick="deleteElement(this)" title="Delete">×</button>
             `;
             newElement.appendChild(controls);
         }
@@ -2639,4 +2967,288 @@ function resetCanvasWidth() {
     const canvas = document.getElementById('canvas');
     canvas.style.maxWidth = '1200px';
     showToast('Canvas reset to full width');
+}
+
+// ===== UNIQUE ANIMATION EFFECTS =====
+
+// Magnetic button hover effect
+function initMagneticButtons() {
+    document.querySelectorAll('.btn-primary, .logo-icon').forEach(btn => {
+        btn.addEventListener('mousemove', (e) => {
+            const rect = btn.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            
+            btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+        });
+        
+        btn.addEventListener('mouseleave', () => {
+            btn.style.transform = '';
+            btn.style.transition = 'transform 0.3s ease';
+        });
+        
+        btn.addEventListener('mouseenter', () => {
+            btn.style.transition = 'transform 0.1s ease';
+        });
+    });
+}
+
+// Parallax tilt effect for cards
+function initTiltEffect() {
+    document.querySelectorAll('.template-card, .component-item').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = (e.clientX - rect.left) / rect.width;
+            const y = (e.clientY - rect.top) / rect.height;
+            
+            const tiltX = (y - 0.5) * 10;
+            const tiltY = (x - 0.5) * -10;
+            
+            card.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.02)`;
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = '';
+            card.style.transition = 'transform 0.5s ease';
+        });
+        
+        card.addEventListener('mouseenter', () => {
+            card.style.transition = 'transform 0.1s ease';
+        });
+    });
+}
+
+// Cursor glow trail effect
+function initCursorGlow() {
+    const glow = document.createElement('div');
+    glow.className = 'cursor-glow';
+    glow.style.cssText = `
+        position: fixed;
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    `;
+    document.body.appendChild(glow);
+    
+    let timeout;
+    document.addEventListener('mousemove', (e) => {
+        glow.style.left = e.clientX + 'px';
+        glow.style.top = e.clientY + 'px';
+        glow.style.opacity = '1';
+        
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+            glow.style.opacity = '0';
+        }, 1000);
+    });
+}
+
+// Typing animation for text elements
+function typeWriter(element, text, speed = 30) {
+    let i = 0;
+    element.innerHTML = '';
+    element.style.borderRight = '2px solid var(--color-primary)';
+    
+    function type() {
+        if (i < text.length) {
+            element.innerHTML += text.charAt(i);
+            i++;
+            setTimeout(type, speed);
+        } else {
+            element.style.borderRight = 'none';
+        }
+    }
+    type();
+}
+
+// Staggered entrance animation
+function animateStaggered(selector, delay = 100) {
+    document.querySelectorAll(selector).forEach((el, index) => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px)';
+        
+        setTimeout(() => {
+            el.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+            el.style.opacity = '1';
+            el.style.transform = 'translateY(0)';
+        }, index * delay);
+    });
+}
+
+// Number counter animation
+function animateCounter(element, target, duration = 1000) {
+    let start = 0;
+    const increment = target / (duration / 16);
+    
+    function update() {
+        start += increment;
+        if (start < target) {
+            element.textContent = Math.floor(start);
+            requestAnimationFrame(update);
+        } else {
+            element.textContent = target;
+        }
+    }
+    update();
+}
+
+// Smooth scroll reveal
+function initScrollReveal() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('revealed');
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, { threshold: 0.1 });
+    
+    document.querySelectorAll('.canvas-element').forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px)';
+        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(el);
+    });
+}
+
+// Particle burst effect on click
+function createParticleBurst(x, y) {
+    const colors = ['#6366f1', '#8b5cf6', '#06b6d4', '#f472b6'];
+    
+    for (let i = 0; i < 8; i++) {
+        const particle = document.createElement('div');
+        const angle = (i / 8) * Math.PI * 2;
+        const velocity = 50 + Math.random() * 50;
+        
+        particle.style.cssText = `
+            position: fixed;
+            left: ${x}px;
+            top: ${y}px;
+            width: 6px;
+            height: 6px;
+            background: ${colors[Math.floor(Math.random() * colors.length)]};
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+        `;
+        document.body.appendChild(particle);
+        
+        const destX = Math.cos(angle) * velocity;
+        const destY = Math.sin(angle) * velocity;
+        
+        particle.animate([
+            { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+            { transform: `translate(${destX}px, ${destY}px) scale(0)`, opacity: 0 }
+        ], {
+            duration: 600,
+            easing: 'cubic-bezier(0, 0.5, 0.5, 1)'
+        }).onfinish = () => particle.remove();
+    }
+}
+
+// Add particle burst to primary button clicks
+document.addEventListener('click', (e) => {
+    if (e.target.closest('.btn-primary')) {
+        createParticleBurst(e.clientX, e.clientY);
+    }
+});
+
+// Initialize all animation effects
+document.addEventListener('DOMContentLoaded', () => {
+    initMagneticButtons();
+    initTiltEffect();
+    initCursorGlow();
+    initPanelResizers();
+    
+    // Stagger sidebar items entrance
+    setTimeout(() => {
+        animateStaggered('.component-item', 50);
+        animateStaggered('.template-card', 80);
+    }, 300);
+});
+
+// Panel Resizer Functionality
+function initPanelResizers() {
+    const sidebar = document.querySelector('.sidebar');
+    const propertiesPanel = document.getElementById('propertiesPanel');
+    const sidebarResizer = document.getElementById('sidebarResizer');
+    const propertiesResizer = document.getElementById('propertiesResizer');
+    
+    if (sidebarResizer && sidebar) {
+        initResizer(sidebarResizer, sidebar, 'right');
+    }
+    
+    if (propertiesResizer && propertiesPanel) {
+        initResizer(propertiesResizer, propertiesPanel, 'left');
+    }
+}
+
+function initResizer(resizer, panel, direction) {
+    let isResizing = false;
+    let startX = 0;
+    let startWidth = 0;
+    
+    resizer.addEventListener('mousedown', (e) => {
+        isResizing = true;
+        startX = e.clientX;
+        startWidth = panel.offsetWidth;
+        
+        document.body.style.cursor = 'col-resize';
+        document.body.style.userSelect = 'none';
+        resizer.classList.add('active');
+        
+        e.preventDefault();
+    });
+    
+    document.addEventListener('mousemove', (e) => {
+        if (!isResizing) return;
+        
+        const deltaX = e.clientX - startX;
+        let newWidth;
+        
+        if (direction === 'right') {
+            // Sidebar: dragging right increases width
+            newWidth = startWidth + deltaX;
+        } else {
+            // Properties panel: dragging left increases width
+            newWidth = startWidth - deltaX;
+        }
+        
+        // Get min/max from CSS computed styles
+        const computedStyle = getComputedStyle(panel);
+        const minWidth = parseInt(computedStyle.minWidth) || 200;
+        const maxWidth = parseInt(computedStyle.maxWidth) || 450;
+        
+        // Clamp to min/max
+        newWidth = Math.max(minWidth, Math.min(maxWidth, newWidth));
+        
+        panel.style.width = newWidth + 'px';
+    });
+    
+    document.addEventListener('mouseup', () => {
+        if (isResizing) {
+            isResizing = false;
+            document.body.style.cursor = '';
+            document.body.style.userSelect = '';
+            resizer.classList.remove('active');
+            
+            // Save panel width to localStorage
+            const panelId = panel.classList.contains('sidebar') ? 'sidebarWidth' : 'propertiesWidth';
+            localStorage.setItem(panelId, panel.style.width);
+        }
+    });
+    
+    // Restore saved width
+    const panelId = panel.classList.contains('sidebar') ? 'sidebarWidth' : 'propertiesWidth';
+    const savedWidth = localStorage.getItem(panelId);
+    if (savedWidth) {
+        panel.style.width = savedWidth;
+    }
 }

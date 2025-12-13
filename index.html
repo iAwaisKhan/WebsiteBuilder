@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website Builder Pro - AI-Powered SaaS Platform</title>
+    <title>WebBuilder - Create Websites</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -11,25 +14,25 @@
     <header class="header">
         <div class="logo">
             <div class="logo-icon">W</div>
-            Website Builder Pro
+            WebBuilder
         </div>
         <div class="header-actions">
             <button class="btn btn-icon" id="themeToggle" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
-                <span class="theme-icon">🌙</span>
+                <span class="theme-icon">◐</span>
             </button>
-            <button class="btn btn-icon" onclick="undoAction()" title="Undo">↶</button>
-            <button class="btn btn-icon" onclick="redoAction()" title="Redo">↷</button>
+            <button class="btn btn-icon" onclick="undoAction()" title="Undo">↩</button>
+            <button class="btn btn-icon" onclick="redoAction()" title="Redo">↪</button>
             <button class="btn btn-secondary" onclick="previewWebsite()">
-                👁 Preview
+                Preview
             </button>
             <button class="btn btn-success" onclick="exportCode()">
-                📥 Export Code
+                Export
             </button>
             <button class="btn btn-primary" onclick="saveProject()">
-                💾 Save Project
+                Save
             </button>
-            <button class="btn btn-icon" id="userProfileBtn" onclick="openUserProfile()" title="User Profile">
-                <span id="userAvatar">👤</span>
+            <button class="btn btn-icon" id="userProfileBtn" onclick="openUserProfile()" title="Account">
+                <span id="userAvatar">●</span>
             </button>
         </div>
     </header>
@@ -38,55 +41,122 @@
     <div class="main-container">
         <!-- Sidebar -->
         <aside class="sidebar">
-            <!-- AI Section -->
-            <div class="sidebar-section">
-                <div class="ai-panel">
-                    <div class="ai-header">
-                        <div class="ai-icon">🤖</div>
-                        <div class="ai-title">AI Assistant</div>
-                    </div>
-                    <div class="ai-input-group">
-                        <input type="text" class="form-control ai-input" id="aiPrompt" placeholder="Describe what you want to build...">
-                        <button class="btn btn-primary" onclick="generateWithAI()">✨</button>
-                    </div>
-                </div>
-            </div>
-
             <!-- Templates -->
-            <div class="sidebar-section">
+            <div class="sidebar-section templates-section">
                 <div class="sidebar-title">Templates</div>
-                <div class="template-grid">
-                    <div class="template-card" onclick="loadTemplate('portfolio')">
-                        <div class="template-preview" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">🎨</div>
-                        <div class="template-name">Portfolio</div>
+                
+                <!-- Template Category Tabs -->
+                <div class="template-tabs">
+                    <button class="template-tab active" data-category="all" onclick="filterTemplates('all')">All</button>
+                    <button class="template-tab" data-category="resume" onclick="filterTemplates('resume')">Resume</button>
+                    <button class="template-tab" data-category="website" onclick="filterTemplates('website')">Website</button>
+                </div>
+                
+                <!-- Template List -->
+                <div class="template-list">
+                    <div class="template-item" data-category="website" onclick="loadTemplate('portfolio')">
+                        <div class="template-thumb">
+                            <div class="thumb-mockup portfolio-mock">
+                                <div class="mock-header"></div>
+                                <div class="mock-hero"></div>
+                                <div class="mock-grid"></div>
+                            </div>
+                        </div>
+                        <div class="template-info">
+                            <span class="template-label">Portfolio</span>
+                            <span class="template-badge">Popular</span>
+                        </div>
                     </div>
-                    <div class="template-card" onclick="loadTemplate('resume')">
-                        <div class="template-preview" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">📄</div>
-                        <div class="template-name">Classic Resume</div>
+                    
+                    <div class="template-item" data-category="resume" onclick="loadTemplate('resume')">
+                        <div class="template-thumb">
+                            <div class="thumb-mockup resume-mock">
+                                <div class="mock-title"></div>
+                                <div class="mock-lines"></div>
+                                <div class="mock-section"></div>
+                            </div>
+                        </div>
+                        <div class="template-info">
+                            <span class="template-label">Classic Resume</span>
+                        </div>
                     </div>
-                    <div class="template-card" onclick="loadTemplate('resume-modern')">
-                        <div class="template-preview" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">📋</div>
-                        <div class="template-name">Modern Resume</div>
+                    
+                    <div class="template-item" data-category="resume" onclick="loadTemplate('resume-modern')">
+                        <div class="template-thumb">
+                            <div class="thumb-mockup modern-mock">
+                                <div class="mock-sidebar"></div>
+                                <div class="mock-content"></div>
+                            </div>
+                        </div>
+                        <div class="template-info">
+                            <span class="template-label">Modern CV</span>
+                            <span class="template-badge new">New</span>
+                        </div>
                     </div>
-                    <div class="template-card" onclick="loadTemplate('resume-creative')">
-                        <div class="template-preview" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);">🎨</div>
-                        <div class="template-name">Creative Resume</div>
+                    
+                    <div class="template-item" data-category="resume" onclick="loadTemplate('resume-creative')">
+                        <div class="template-thumb">
+                            <div class="thumb-mockup creative-mock">
+                                <div class="mock-accent"></div>
+                                <div class="mock-photo"></div>
+                                <div class="mock-details"></div>
+                            </div>
+                        </div>
+                        <div class="template-info">
+                            <span class="template-label">Creative</span>
+                        </div>
                     </div>
-                    <div class="template-card" onclick="loadTemplate('resume-executive')">
-                        <div class="template-preview" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);">👔</div>
-                        <div class="template-name">Executive Resume</div>
+                    
+                    <div class="template-item" data-category="resume" onclick="loadTemplate('resume-executive')">
+                        <div class="template-thumb">
+                            <div class="thumb-mockup executive-mock">
+                                <div class="mock-border"></div>
+                                <div class="mock-name"></div>
+                                <div class="mock-body"></div>
+                            </div>
+                        </div>
+                        <div class="template-info">
+                            <span class="template-label">Executive</span>
+                        </div>
                     </div>
-                    <div class="template-card" onclick="loadTemplate('resume-minimalist')">
-                        <div class="template-preview" style="background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);">✨</div>
-                        <div class="template-name">Minimalist Resume</div>
+                    
+                    <div class="template-item" data-category="resume" onclick="loadTemplate('resume-minimalist')">
+                        <div class="template-thumb">
+                            <div class="thumb-mockup minimal-mock">
+                                <div class="mock-minimal-line"></div>
+                                <div class="mock-minimal-line short"></div>
+                                <div class="mock-minimal-line"></div>
+                            </div>
+                        </div>
+                        <div class="template-info">
+                            <span class="template-label">Minimalist</span>
+                        </div>
                     </div>
-                    <div class="template-card" onclick="loadTemplate('landing')">
-                        <div class="template-preview" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">🚀</div>
-                        <div class="template-name">Landing Page</div>
+                    
+                    <div class="template-item" data-category="website" onclick="loadTemplate('landing')">
+                        <div class="template-thumb">
+                            <div class="thumb-mockup landing-mock">
+                                <div class="mock-nav"></div>
+                                <div class="mock-cta"></div>
+                                <div class="mock-features"></div>
+                            </div>
+                        </div>
+                        <div class="template-info">
+                            <span class="template-label">Landing Page</span>
+                        </div>
                     </div>
-                    <div class="template-card" onclick="loadTemplate('business')">
-                        <div class="template-preview" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">💼</div>
-                        <div class="template-name">Business</div>
+                    
+                    <div class="template-item" data-category="website" onclick="loadTemplate('business')">
+                        <div class="template-thumb">
+                            <div class="thumb-mockup business-mock">
+                                <div class="mock-logo"></div>
+                                <div class="mock-banner"></div>
+                                <div class="mock-cards"></div>
+                            </div>
+                        </div>
+                        <div class="template-info">
+                            <span class="template-label">Business</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -96,64 +166,65 @@
                 <div class="sidebar-title">Components</div>
                 <div class="component-grid">
                     <div class="component-item" draggable="true" ondragstart="drag(event)" data-type="heading">
-                        <div class="component-icon">H</div>
+                        <div class="component-icon">H1</div>
                         <span>Heading</span>
                     </div>
                     <div class="component-item" draggable="true" ondragstart="drag(event)" data-type="paragraph">
-                        <div class="component-icon">P</div>
+                        <div class="component-icon">T</div>
                         <span>Paragraph</span>
                     </div>
                     <div class="component-item" draggable="true" ondragstart="drag(event)" data-type="button">
-                        <div class="component-icon">🔘</div>
+                        <div class="component-icon">btn</div>
                         <span>Button</span>
                     </div>
                     <div class="component-item" draggable="true" ondragstart="drag(event)" data-type="image">
-                        <div class="component-icon">🖼</div>
+                        <div class="component-icon">img</div>
                         <span>Image</span>
                     </div>
                     <div class="component-item" draggable="true" ondragstart="drag(event)" data-type="container">
-                        <div class="component-icon">📦</div>
+                        <div class="component-icon">[ ]</div>
                         <span>Container</span>
                     </div>
                     <div class="component-item" draggable="true" ondragstart="drag(event)" data-type="form">
-                        <div class="component-icon">📝</div>
+                        <div class="component-icon">fm</div>
                         <span>Form</span>
                     </div>
                     <div class="component-item" draggable="true" ondragstart="drag(event)" data-type="card">
-                        <div class="component-icon">🃏</div>
+                        <div class="component-icon">◫</div>
                         <span>Card</span>
                     </div>
                     <div class="component-item" draggable="true" ondragstart="drag(event)" data-type="navbar">
-                        <div class="component-icon">📋</div>
+                        <div class="component-icon">nav</div>
                         <span>Navbar</span>
                     </div>
                 </div>
             </div>
         </aside>
+        <div class="resize-handle resize-handle-left" id="sidebarResizer"></div>
 
         <!-- Canvas -->
         <main class="canvas-container">
             <div class="canvas-toolbar">
                 <div class="device-selector">
-                    <button class="device-btn active" onclick="setDevice('desktop')" title="Desktop">🖥</button>
-                    <button class="device-btn" onclick="setDevice('tablet')" title="Tablet">📱</button>
-                    <button class="device-btn" onclick="setDevice('mobile')" title="Mobile">📱</button>
+                    <button class="device-btn active" onclick="setDevice('desktop')" title="Desktop">▢</button>
+                    <button class="device-btn" onclick="setDevice('tablet')" title="Tablet">▭</button>
+                    <button class="device-btn" onclick="setDevice('mobile')" title="Mobile">▯</button>
                 </div>
                 
                 <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-                    <button class="btn btn-icon" onclick="toggleGridLines()" title="Toggle Grid (Ctrl+G)">📐</button>
-                    <button class="btn btn-icon" onclick="toggleFullscreen()" title="Fullscreen (Ctrl+F)">⛶</button>
-                    <button class="btn btn-icon" onclick="showElementFinder()" title="Find Elements">🔍</button>
-                    <button class="btn btn-icon" onclick="openAnimationBuilder()" title="Animation Builder">🎬</button>
-                    <button class="btn btn-icon" onclick="openGradientGenerator()" title="Gradient Generator">🎨</button>
-                    <button class="btn btn-icon" onclick="bulkEditElements()" title="Bulk Operations">⚡</button>
-                    <button class="btn btn-icon" onclick="showHistoryTimeline()" title="Edit History">📜</button>
-                    <button class="btn btn-icon" onclick="showPerformanceStats()" title="Performance Report">⚡</button>
-                    <button class="btn btn-icon" onclick="testResponsiveBreakpoints()" title="Breakpoint Tester">📱</button>
-                    <button class="btn btn-icon" onclick="showStatistics()" title="Project Statistics">📊</button>
-                    <button class="btn btn-icon" onclick="showKeyboardShortcuts()" title="Keyboard Shortcuts (Ctrl+/)">⌨️</button>
-                    <button class="btn btn-icon" onclick="exportAsHTML()" title="Export as HTML">📄</button>
-                    <button class="btn btn-icon" onclick="clearCanvas()" title="Clear Canvas">🗑️</button>
+                    <button class="btn btn-icon" onclick="toggleGridLines()" title="Toggle Grid">Grid</button>
+                    <button class="btn btn-icon" onclick="toggleFullscreen()" title="Fullscreen">Full</button>
+                    <button class="btn btn-icon" onclick="showElementFinder()" title="Find Elements">Find</button>
+                    <button class="btn btn-icon" onclick="openAnimationBuilder()" title="Animation Builder">Anim</button>
+                    <button class="btn btn-icon" onclick="openGradientGenerator()" title="Gradient Generator">Grad</button>
+                    <button class="btn btn-icon" onclick="bulkEditElements()" title="Bulk Operations">Bulk</button>
+                    <button class="btn btn-icon" onclick="showHistoryTimeline()" title="Edit History">Hist</button>
+                    <button class="btn btn-icon" onclick="showPerformanceStats()" title="Performance Report">Perf</button>
+                    <button class="btn btn-icon" onclick="testResponsiveBreakpoints()" title="Breakpoint Tester">Test</button>
+                    <button class="btn btn-icon" onclick="showStatistics()" title="Project Statistics">Stats</button>
+                    <button class="btn btn-icon" onclick="showKeyboardShortcuts()" title="Keyboard Shortcuts">Keys</button>
+                    <button class="btn btn-icon" onclick="exportAsHTML()" title="Export as HTML">HTML</button>
+                    <button class="btn btn-icon" onclick="clearCanvas()" title="Clear Canvas">Clear</button>
                 </div>
                 
                 <div style="display: flex; gap: 12px; align-items: center;">
@@ -165,130 +236,214 @@
             <div class="canvas-wrapper">
                 <div class="canvas" id="canvas" ondrop="drop(event)" ondragover="allowDrop(event)">
                     <div class="canvas-element animate-in" style="text-align: center; padding: 48px 24px;">
-                        <h1 style="font-size: 48px; margin-bottom: 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">Welcome to Website Builder Pro</h1>
-                        <p style="font-size: 20px; color: #64748b; margin-bottom: 24px;">Drag components from the sidebar or use AI to build your website</p>
-                        <button style="padding: 12px 32px; background: #6366f1; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 500; cursor: pointer;">Get Started</button>
+                        <h1 style="font-size: 36px; margin-bottom: 16px; background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #06b6d4 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 700;">WebBuilder</h1>
+                        <p style="font-size: 16px; color: var(--color-text-secondary); margin-bottom: 24px;">Drag components from the sidebar or use AI to build your website</p>
+                        <button style="padding: 12px 28px; background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4); transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(99,102,241,0.5)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 15px rgba(99,102,241,0.4)'">Get Started</button>
                     </div>
                     <div class="element-controls">
-                        <button class="control-btn" onclick="editElement(this)" title="Edit">✏️</button>
-                        <button class="control-btn delete" onclick="deleteElement(this)" title="Delete">🗑</button>
+                        <button class="control-btn" onclick="editElement(this)" title="Edit">E</button>
+                        <button class="control-btn delete" onclick="deleteElement(this)" title="Delete">×</button>
                     </div>
                 </div>
             </div>
         </main>
 
+        <div class="resize-handle resize-handle-right" id="propertiesResizer"></div>
+
         <!-- Properties Panel -->
-        <aside class="properties-panel">
-            <div class="properties-section">
+        <aside class="properties-panel" id="propertiesPanel">
+            <!-- Element Info Header -->
+            <div class="properties-header" id="propertiesHeader">
                 <div class="properties-title">Element Properties</div>
-                <p style="color: var(--color-text-secondary); font-size: 14px; margin-bottom: 16px;">
-                    Select an element to edit its properties
-                </p>
-                
-                <div class="form-group">
-                    <label class="form-label">Element Type</label>
-                    <select class="form-control" id="elementType">
-                        <option>Heading</option>
-                        <option>Paragraph</option>
-                        <option>Button</option>
-                        <option>Image</option>
-                        <option>Container</option>
-                    </select>
-                </div>
+                <p class="properties-hint" id="propertiesHint">Select an element to edit</p>
+            </div>
 
-                <div class="form-group">
-                    <label class="form-label">Text Content</label>
-                    <textarea class="form-control" id="elementText" rows="3" placeholder="Enter text..."></textarea>
+            <!-- Type & Content Section -->
+            <div class="properties-section collapsible" data-section="content">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <span class="section-icon">◼</span>
+                    <span>Content</span>
+                    <span class="section-toggle">▼</span>
                 </div>
-
-                <div class="form-group">
-                    <label class="form-label">Font Size</label>
-                    <input type="number" class="form-control" id="fontSize" value="16" min="8" max="72">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Text Color</label>
-                    <div class="color-picker-wrapper">
-                        <input type="color" class="color-picker" id="textColor" value="#1e293b">
-                        <input type="text" class="form-control" id="textColorHex" value="#1e293b">
+                <div class="section-content">
+                    <div class="form-group">
+                        <label class="form-label">Element Type</label>
+                        <select class="form-control" id="elementType" onchange="onElementTypeChange()">
+                            <option value="heading">Heading</option>
+                            <option value="paragraph">Paragraph</option>
+                            <option value="button">Button</option>
+                            <option value="image">Image</option>
+                            <option value="container">Container</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Text Content</label>
+                        <textarea class="form-control" id="elementText" rows="2" placeholder="Enter text..." oninput="livePreview()"></textarea>
                     </div>
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <label class="form-label">Background Color</label>
-                    <div class="color-picker-wrapper">
-                        <input type="color" class="color-picker" id="bgColor" value="#ffffff">
-                        <input type="text" class="form-control" id="bgColorHex" value="#ffffff">
+            <!-- Typography Section -->
+            <div class="properties-section collapsible" data-section="typography">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <span class="section-icon">A</span>
+                    <span>Typography</span>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                    <div class="form-row">
+                        <div class="form-group form-group-half">
+                            <label class="form-label">Size</label>
+                            <div class="input-with-unit">
+                                <input type="number" class="form-control" id="fontSize" value="16" min="8" max="120" oninput="livePreview()">
+                                <span class="input-unit">px</span>
+                            </div>
+                        </div>
+                        <div class="form-group form-group-half">
+                            <label class="form-label">Weight</label>
+                            <select class="form-control" id="fontWeight" onchange="livePreview()">
+                                <option value="300">Light</option>
+                                <option value="400" selected>Regular</option>
+                                <option value="500">Medium</option>
+                                <option value="600">Semibold</option>
+                                <option value="700">Bold</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Text Align</label>
+                        <div class="btn-group-toggle">
+                            <button type="button" class="btn-toggle active" data-value="left" onclick="setTextAlign('left')">◀</button>
+                            <button type="button" class="btn-toggle" data-value="center" onclick="setTextAlign('center')">◆</button>
+                            <button type="button" class="btn-toggle" data-value="right" onclick="setTextAlign('right')">▶</button>
+                            <button type="button" class="btn-toggle" data-value="justify" onclick="setTextAlign('justify')">☰</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Text Color</label>
+                        <div class="color-picker-wrapper">
+                            <input type="color" class="color-picker" id="textColor" value="#1e293b" oninput="syncColorInput('textColor')">
+                            <input type="text" class="form-control color-hex" id="textColorHex" value="#1e293b" oninput="syncColorPicker('textColor')">
+                        </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <label class="form-label">Padding (px)</label>
-                    <input type="number" class="form-control" id="padding" value="16" min="0" max="100">
+            <!-- Spacing Section -->
+            <div class="properties-section collapsible" data-section="spacing">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <span class="section-icon">⬚</span>
+                    <span>Spacing</span>
+                    <span class="section-toggle">▼</span>
                 </div>
-
-                <div class="form-group">
-                    <label class="form-label">Margin (px)</label>
-                    <input type="number" class="form-control" id="margin" value="16" min="0" max="100">
+                <div class="section-content">
+                    <div class="spacing-visual">
+                        <div class="spacing-box">
+                            <input type="number" class="spacing-input margin-top" id="marginTop" value="0" placeholder="0" oninput="livePreview()">
+                            <div class="spacing-inner">
+                                <input type="number" class="spacing-input padding-top" id="paddingTop" value="16" placeholder="16" oninput="livePreview()">
+                                <div class="spacing-center">
+                                    <input type="number" class="spacing-input padding-left" id="paddingLeft" value="16" placeholder="16" oninput="livePreview()">
+                                    <div class="spacing-element"></div>
+                                    <input type="number" class="spacing-input padding-right" id="paddingRight" value="16" placeholder="16" oninput="livePreview()">
+                                </div>
+                                <input type="number" class="spacing-input padding-bottom" id="paddingBottom" value="16" placeholder="16" oninput="livePreview()">
+                            </div>
+                            <input type="number" class="spacing-input margin-bottom" id="marginBottom" value="0" placeholder="0" oninput="livePreview()">
+                        </div>
+                        <div class="spacing-labels">
+                            <span class="spacing-label margin-label">Margin</span>
+                            <span class="spacing-label padding-label">Padding</span>
+                        </div>
+                    </div>
+                    <div class="form-row" style="margin-top: 12px;">
+                        <button class="btn btn-secondary btn-sm" onclick="linkSpacing('padding')">Link Padding</button>
+                        <button class="btn btn-secondary btn-sm" onclick="linkSpacing('margin')">Link Margin</button>
+                    </div>
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <label class="form-label">Border Radius (px)</label>
-                    <input type="number" class="form-control" id="borderRadius" value="8" min="0" max="50">
+            <!-- Appearance Section -->
+            <div class="properties-section collapsible" data-section="appearance">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <span class="section-icon">◐</span>
+                    <span>Appearance</span>
+                    <span class="section-toggle">▼</span>
                 </div>
-
-                <div class="form-group">
-                    <label class="form-label">Text Align</label>
-                    <select class="form-control" id="textAlign">
-                        <option value="left">Left</option>
-                        <option value="center">Center</option>
-                        <option value="right">Right</option>
-                        <option value="justify">Justify</option>
-                    </select>
+                <div class="section-content">
+                    <div class="form-group">
+                        <label class="form-label">Background</label>
+                        <div class="color-picker-wrapper">
+                            <input type="color" class="color-picker" id="bgColor" value="#ffffff" oninput="syncColorInput('bgColor')">
+                            <input type="text" class="form-control color-hex" id="bgColorHex" value="#ffffff" oninput="syncColorPicker('bgColor')">
+                            <button class="btn btn-icon-sm" onclick="setTransparentBg()" title="Transparent">∅</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Border Radius</label>
+                        <div class="slider-with-value">
+                            <input type="range" class="form-slider" id="borderRadiusSlider" value="8" min="0" max="50" oninput="syncSliderValue('borderRadius')">
+                            <div class="input-with-unit">
+                                <input type="number" class="form-control input-sm" id="borderRadius" value="8" min="0" max="50" oninput="syncSliderFromInput('borderRadius')">
+                                <span class="input-unit">px</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Opacity</label>
+                        <div class="slider-with-value">
+                            <input type="range" class="form-slider" id="opacitySlider" value="100" min="0" max="100" oninput="syncSliderValue('opacity')">
+                            <div class="input-with-unit">
+                                <input type="number" class="form-control input-sm" id="opacity" value="100" min="0" max="100" oninput="syncSliderFromInput('opacity')">
+                                <span class="input-unit">%</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+            </div>
 
-                <button class="btn btn-primary" style="width: 100%; margin-top: 16px;" onclick="applyProperties()">
+            <!-- Animation Section -->
+            <div class="properties-section collapsible" data-section="animation">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <span class="section-icon">✦</span>
+                    <span>Animation</span>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                    <div class="form-group">
+                        <label class="form-label">Effect</label>
+                        <select class="form-control" id="animationType">
+                            <option value="none">None</option>
+                            <option value="fadeIn">Fade In</option>
+                            <option value="slideInLeft">Slide Left</option>
+                            <option value="slideUp">Slide Up</option>
+                            <option value="pulse">Pulse</option>
+                            <option value="bounce">Bounce</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-secondary" style="width: 100%;" onclick="applyAnimation()">
+                        Preview Animation
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="properties-section properties-actions">
+                <button class="btn btn-primary" style="width: 100%;" onclick="applyProperties()">
                     Apply Changes
                 </button>
-            </div>
-
-            <div class="properties-section">
-                <div class="properties-title">Animation</div>
-                <div class="form-group">
-                    <label class="form-label">Animation Type</label>
-                    <select class="form-control" id="animationType">
-                        <option value="none">None</option>
-                        <option value="fadeIn">Fade In</option>
-                        <option value="slideInLeft">Slide In Left</option>
-                        <option value="slideUp">Slide Up</option>
-                        <option value="pulse">Pulse</option>
-                    </select>
-                </div>
-                <button class="btn btn-secondary" style="width: 100%;" onclick="applyAnimation()">
-                    Add Animation
-                </button>
-            </div>
-            
-            <div class="properties-section">
-                <div class="properties-title">Quick Tools</div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                    <button class="btn btn-secondary" onclick="enableDragReorder()" style="font-size: 12px; padding: 8px;">
-                        🔄 Reorder
+                <div class="quick-tools">
+                    <button class="btn btn-tool" onclick="duplicateElement()" title="Duplicate">
+                        <span>⧉</span>
                     </button>
-                    <button class="btn btn-secondary" onclick="openAnimationBuilder()" style="font-size: 12px; padding: 8px;">
-                        🎬 Animate
+                    <button class="btn btn-tool" onclick="moveElementUp()" title="Move Up">
+                        <span>↑</span>
                     </button>
-                    <button class="btn btn-secondary" onclick="openGradientGenerator()" style="font-size: 12px; padding: 8px;">
-                        🎨 Gradient
+                    <button class="btn btn-tool" onclick="moveElementDown()" title="Move Down">
+                        <span>↓</span>
                     </button>
-                    <button class="btn btn-secondary" onclick="bulkEditElements()" style="font-size: 12px; padding: 8px;">
-                        ⚡ Bulk Edit
-                    </button>
-                    <button class="btn btn-secondary" onclick="showElementFinder()" style="font-size: 12px; padding: 8px;">
-                        🔍 Find
-                    </button>
-                    <button class="btn btn-secondary" onclick="makeResponsive()" style="font-size: 12px; padding: 8px;">
-                        📱 Responsive
+                    <button class="btn btn-tool btn-danger-tool" onclick="deleteSelectedElement()" title="Delete">
+                        <span>×</span>
                     </button>
                 </div>
             </div>
@@ -315,8 +470,8 @@
                 <textarea class="form-control" id="exportCode" rows="15" readonly style="font-family: monospace; font-size: 12px;"></textarea>
             </div>
             <div style="display: flex; gap: 12px;">
-                <button class="btn btn-primary" style="flex: 1;" onclick="copyCode()">📋 Copy to Clipboard</button>
-                <button class="btn btn-success" style="flex: 1;" onclick="downloadCode()">📥 Download Files</button>
+                <button class="btn btn-primary" style="flex: 1;" onclick="copyCode()">Copy to Clipboard</button>
+                <button class="btn btn-success" style="flex: 1;" onclick="downloadCode()">Download Files</button>
             </div>
         </div>
     </div>
@@ -325,7 +480,7 @@
     <div class="modal" id="userProfileModal">
         <div class="modal-content" style="max-width: 600px;">
             <div class="modal-header">
-                <h2 class="modal-title">👤 User Profile</h2>
+                <h2 class="modal-title">Account</h2>
                 <button class="modal-close" onclick="closeModal('userProfileModal')">&times;</button>
             </div>
             
@@ -352,7 +507,7 @@
             <!-- Profile Section (shown when logged in) -->
             <div id="profileSection" style="display: none;">
                 <div style="text-align: center; margin-bottom: 24px;">
-                    <div id="profileAvatar" style="width: 80px; height: 80px; margin: 0 auto 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; color: white;">👤</div>
+                    <div id="profileAvatar" style="width: 64px; height: 64px; margin: 0 auto 16px; background: #2563eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; color: white; font-weight: 600;">U</div>
                     <h3 id="profileName" style="margin: 0; color: var(--color-text);">User Name</h3>
                     <p id="profileEmail" style="margin: 8px 0 0; color: var(--color-text-secondary); font-size: 14px;">user@email.com</p>
                 </div>
@@ -373,24 +528,22 @@
                 </div>
                 
                 <div class="form-group">
-                    <label class="form-label">Avatar Emoji</label>
+                    <label class="form-label">Avatar Style</label>
                     <select class="form-control" id="profileAvatarEmoji" onchange="updateAvatarPreview()">
-                        <option value="👤">👤 Default</option>
-                        <option value="😊">😊 Happy</option>
-                        <option value="🚀">🚀 Rocket</option>
-                        <option value="💼">💼 Professional</option>
-                        <option value="🎨">🎨 Creative</option>
-                        <option value="💻">💻 Developer</option>
-                        <option value="📱">📱 Mobile</option>
-                        <option value="⚡">⚡ Lightning</option>
-                        <option value="🌟">🌟 Star</option>
-                        <option value="🎯">🎯 Target</option>
+                        <option value="U">Default</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                        <option value="E">E</option>
+                        <option value="*">Star</option>
+                        <option value="+">Plus</option>
                     </select>
                 </div>
                 
                 <!-- Statistics -->
                 <div style="background: var(--color-surface-elevated); padding: 16px; border-radius: 8px; margin: 20px 0;">
-                    <h4 style="margin: 0 0 12px; color: var(--color-text); font-size: 14px; font-weight: 600;">📊 Your Statistics</h4>
+                    <h4 style="margin: 0 0 12px; color: var(--color-text); font-size: 14px; font-weight: 600;">Statistics</h4>
                     <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; text-align: center;">
                         <div>
                             <div id="statProjects" style="font-size: 24px; font-weight: 700; color: var(--color-primary);">0</div>
@@ -409,7 +562,7 @@
                 
                 <!-- Preferences -->
                 <div style="background: var(--color-surface-elevated); padding: 16px; border-radius: 8px; margin: 20px 0;">
-                    <h4 style="margin: 0 0 12px; color: var(--color-text); font-size: 14px; font-weight: 600;">⚙️ Preferences</h4>
+                    <h4 style="margin: 0 0 12px; color: var(--color-text); font-size: 14px; font-weight: 600;">Preferences</h4>
                     <div class="form-group" style="margin-bottom: 12px;">
                         <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
                             <input type="checkbox" id="prefAutoSave" checked onchange="toggleAutoSave()">
@@ -431,8 +584,8 @@
                 </div>
                 
                 <div style="display: flex; gap: 12px; margin-top: 24px;">
-                    <button class="btn btn-primary" style="flex: 1;" onclick="saveProfile()">💾 Save Profile</button>
-                    <button class="btn btn-secondary" style="flex: 1;" onclick="logoutUser()">🚪 Logout</button>
+                    <button class="btn btn-primary" style="flex: 1;" onclick="saveProfile()">Save Profile</button>
+                    <button class="btn btn-secondary" style="flex: 1;" onclick="logoutUser()">Logout</button>
                 </div>
             </div>
         </div>
