@@ -206,43 +206,89 @@
         <main class="canvas-container">
             <div class="canvas-toolbar">
                 <div class="device-selector">
-                    <button class="device-btn active" onclick="setDevice('desktop')" title="Desktop">▢</button>
-                    <button class="device-btn" onclick="setDevice('tablet')" title="Tablet">▭</button>
-                    <button class="device-btn" onclick="setDevice('mobile')" title="Mobile">▯</button>
+                    <button class="device-btn active" onclick="setDevice('desktop')" title="Desktop (Ctrl+1)">▢</button>
+                    <button class="device-btn" onclick="setDevice('tablet')" title="Tablet (Ctrl+2)">▭</button>
+                    <button class="device-btn" onclick="setDevice('mobile')" title="Mobile (Ctrl+3)">▯</button>
                 </div>
                 
-                <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-                    <button class="btn btn-icon" onclick="toggleGridLines()" title="Toggle Grid">Grid</button>
-                    <button class="btn btn-icon" onclick="toggleFullscreen()" title="Fullscreen">Full</button>
-                    <button class="btn btn-icon" onclick="showElementFinder()" title="Find Elements">Find</button>
-                    <button class="btn btn-icon" onclick="openAnimationBuilder()" title="Animation Builder">Anim</button>
-                    <button class="btn btn-icon" onclick="openGradientGenerator()" title="Gradient Generator">Grad</button>
-                    <button class="btn btn-icon" onclick="bulkEditElements()" title="Bulk Operations">Bulk</button>
-                    <button class="btn btn-icon" onclick="showHistoryTimeline()" title="Edit History">Hist</button>
-                    <button class="btn btn-icon" onclick="showPerformanceStats()" title="Performance Report">Perf</button>
-                    <button class="btn btn-icon" onclick="testResponsiveBreakpoints()" title="Breakpoint Tester">Test</button>
-                    <button class="btn btn-icon" onclick="showStatistics()" title="Project Statistics">Stats</button>
-                    <button class="btn btn-icon" onclick="showKeyboardShortcuts()" title="Keyboard Shortcuts">Keys</button>
-                    <button class="btn btn-icon" onclick="exportAsHTML()" title="Export as HTML">HTML</button>
-                    <button class="btn btn-icon" onclick="clearCanvas()" title="Clear Canvas">Clear</button>
+                <div class="toolbar-groups">
+                    <!-- View Tools -->
+                    <div class="toolbar-group">
+                        <span class="toolbar-group-label">View</span>
+                        <div class="toolbar-group-buttons">
+                            <button class="btn btn-icon" onclick="toggleGridLines()" title="Toggle Grid (G)">⊞</button>
+                            <button class="btn btn-icon" onclick="toggleFullscreen()" title="Fullscreen (F)">⛶</button>
+                            <button class="btn btn-icon" onclick="showElementFinder()" title="Find Elements (Ctrl+F)">⌕</button>
+                        </div>
+                    </div>
+                    
+                    <div class="toolbar-divider"></div>
+                    
+                    <!-- Design Tools -->
+                    <div class="toolbar-group">
+                        <span class="toolbar-group-label">Design</span>
+                        <div class="toolbar-group-buttons">
+                            <button class="btn btn-icon" onclick="openAnimationBuilder()" title="Animation Builder">✦</button>
+                            <button class="btn btn-icon" onclick="openGradientGenerator()" title="Gradient Generator">◐</button>
+                            <button class="btn btn-icon" onclick="bulkEditElements()" title="Bulk Edit">▤</button>
+                        </div>
+                    </div>
+                    
+                    <div class="toolbar-divider"></div>
+                    
+                    <!-- Analysis Tools -->
+                    <div class="toolbar-group">
+                        <span class="toolbar-group-label">Analyze</span>
+                        <div class="toolbar-group-buttons">
+                            <button class="btn btn-icon" onclick="showHistoryTimeline()" title="Edit History (Ctrl+H)">↺</button>
+                            <button class="btn btn-icon" onclick="showPerformanceStats()" title="Performance">⚡</button>
+                            <button class="btn btn-icon" onclick="showStatistics()" title="Statistics">📊</button>
+                        </div>
+                    </div>
+                    
+                    <div class="toolbar-divider"></div>
+                    
+                    <!-- Actions -->
+                    <div class="toolbar-group">
+                        <span class="toolbar-group-label">Actions</span>
+                        <div class="toolbar-group-buttons">
+                            <button class="btn btn-icon" onclick="testResponsiveBreakpoints()" title="Test Breakpoints">📱</button>
+                            <button class="btn btn-icon" onclick="showKeyboardShortcuts()" title="Shortcuts (?)">⌨</button>
+                            <button class="btn btn-icon" onclick="exportAsHTML()" title="Export HTML">↗</button>
+                            <button class="btn btn-icon btn-danger-subtle" onclick="clearCanvas()" title="Clear Canvas">🗑</button>
+                        </div>
+                    </div>
                 </div>
                 
-                <div style="display: flex; gap: 12px; align-items: center;">
-                    <span style="font-size: 14px; color: var(--color-text-secondary);">Zoom:</span>
-                    <input type="range" min="50" max="150" value="100" id="zoomSlider" onchange="setZoom(this.value)" style="width: 120px;">
-                    <span id="zoomValue" style="font-size: 14px; color: var(--color-text);">100%</span>
+                <div class="zoom-control">
+                    <span class="zoom-label">Zoom</span>
+                    <input type="range" min="50" max="150" value="100" id="zoomSlider" onchange="setZoom(this.value)">
+                    <span id="zoomValue" class="zoom-value">100%</span>
                 </div>
             </div>
             <div class="canvas-wrapper">
                 <div class="canvas" id="canvas" ondrop="drop(event)" ondragover="allowDrop(event)">
-                    <div class="canvas-element animate-in" style="text-align: center; padding: 48px 24px;">
-                        <h1 style="font-size: 36px; margin-bottom: 16px; background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #06b6d4 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 700;">WebBuilder</h1>
-                        <p style="font-size: 16px; color: var(--color-text-secondary); margin-bottom: 24px;">Drag components from the sidebar or use AI to build your website</p>
-                        <button style="padding: 12px 28px; background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4); transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(99,102,241,0.5)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 15px rgba(99,102,241,0.4)'">Get Started</button>
-                    </div>
-                    <div class="element-controls">
-                        <button class="control-btn" onclick="editElement(this)" title="Edit">E</button>
-                        <button class="control-btn delete" onclick="deleteElement(this)" title="Delete">×</button>
+                    <div class="canvas-empty-state animate-in">
+                        <div class="empty-state-icon">✦</div>
+                        <h1 class="empty-state-title">Start Building</h1>
+                        <p class="empty-state-subtitle">Create beautiful websites with drag & drop simplicity</p>
+                        
+                        <div class="empty-state-actions">
+                            <div class="quick-start-option" onclick="filterTemplates('all')">
+                                <span class="option-icon">📄</span>
+                                <span class="option-text">Choose a Template</span>
+                            </div>
+                            <div class="quick-start-option" onclick="document.querySelector('.component-item').focus()">
+                                <span class="option-icon">🧩</span>
+                                <span class="option-text">Drag Components</span>
+                            </div>
+                        </div>
+                        
+                        <div class="keyboard-hints">
+                            <span class="hint"><kbd>Ctrl</kbd>+<kbd>S</kbd> Save</span>
+                            <span class="hint"><kbd>Ctrl</kbd>+<kbd>Z</kbd> Undo</span>
+                            <span class="hint"><kbd>?</kbd> Shortcuts</span>
+                        </div>
                     </div>
                 </div>
             </div>

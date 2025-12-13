@@ -1794,15 +1794,10 @@ function clearCanvas() {
 window.addEventListener('load', () => {
     enableAutoSave(5); // Auto-save every 5 minutes
     
-    // Check if there's an auto-save available
+    // Silently restore auto-saved work if available
     const hasAutoSave = localStorage.getItem('website-builder-autosave');
     if (hasAutoSave) {
-        const projectData = JSON.parse(hasAutoSave);
-        const date = new Date(projectData.timestamp).toLocaleString();
-        
-        if (confirm(`Found auto-saved work from ${date}. Would you like to restore it?`)) {
-            loadAutoSave();
-        }
+        loadAutoSave();
     }
 });
 
