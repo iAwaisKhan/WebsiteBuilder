@@ -3,199 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebBuilder - Create Websites</title>
+    <title>WebBuilder — Craft Beautiful Websites ✨</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Header -->
+    <!-- Header - Clean & Simple -->
     <header class="header">
-        <div class="logo">
-            <div class="logo-icon">W</div>
-            WebBuilder
+        <div class="header-left">
+            <div class="logo" title="Made with love ♥">
+                <span class="logo-mark">⚡</span>
+                <span class="logo-text">WebBuilder</span>
+            </div>
         </div>
-        <div class="header-actions">
-            <button class="btn btn-icon" id="themeToggle" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
-                <span class="theme-icon">◐</span>
-            </button>
-            <button class="btn btn-icon" onclick="undoAction()" title="Undo">↩</button>
-            <button class="btn btn-icon" onclick="redoAction()" title="Redo">↪</button>
-            <button class="btn btn-secondary" onclick="previewWebsite()">
-                Preview
-            </button>
-            <button class="btn btn-success" onclick="exportCode()">
+        
+        <div class="header-center">
+            <div class="quick-actions">
+                <button class="action-btn" onclick="undoAction()" title="Undo">
+                    <span>↩</span>
+                </button>
+                <button class="action-btn" onclick="redoAction()" title="Redo">
+                    <span>↪</span>
+                </button>
+                <div class="action-divider"></div>
+                <button class="action-btn" onclick="previewWebsite()" title="Preview">
+                    <span>👁</span>
+                </button>
+            </div>
+        </div>
+        
+        <div class="header-right">
+            <button class="btn-soft" onclick="exportCode()">
                 Export
             </button>
-            <button class="btn btn-primary" onclick="saveProject()">
+            <button class="btn-warm" onclick="saveProject()">
                 Save
             </button>
-            <button class="btn btn-icon" id="userProfileBtn" onclick="openUserProfile()" title="Account">
-                <span id="userAvatar">●</span>
+            <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle theme">
+                <span class="theme-icon">◐</span>
             </button>
         </div>
     </header>
 
     <!-- Main Container -->
     <div class="main-container">
-        <!-- Sidebar -->
+        <!-- Sidebar - Clean & Simple -->
         <aside class="sidebar">
-            <!-- Templates -->
-            <div class="sidebar-section templates-section">
-                <div class="sidebar-title">Templates</div>
-                
-                <!-- Template Category Tabs -->
-                <div class="template-tabs">
-                    <button class="template-tab active" data-category="all" onclick="filterTemplates('all')">All</button>
-                    <button class="template-tab" data-category="resume" onclick="filterTemplates('resume')">Resume</button>
-                    <button class="template-tab" data-category="website" onclick="filterTemplates('website')">Website</button>
+            <!-- Templates Section -->
+            <div class="panel">
+                <div class="panel-header">
+                    <span class="panel-title">Templates</span>
+                    <div class="filter-pills">
+                        <button class="pill active" data-category="all" onclick="filterTemplates('all')">All</button>
+                        <button class="pill" data-category="resume" onclick="filterTemplates('resume')">Resume</button>
+                        <button class="pill" data-category="website" onclick="filterTemplates('website')">Web</button>
+                    </div>
                 </div>
-                
-                <!-- Template List -->
                 <div class="template-list">
-                    <div class="template-item" data-category="website" onclick="loadTemplate('portfolio')">
-                        <div class="template-thumb">
-                            <div class="thumb-mockup portfolio-mock">
-                                <div class="mock-header"></div>
-                                <div class="mock-hero"></div>
-                                <div class="mock-grid"></div>
-                            </div>
-                        </div>
-                        <div class="template-info">
-                            <span class="template-label">Portfolio</span>
-                            <span class="template-badge">Popular</span>
-                        </div>
+                    <div class="template-card" data-category="website" onclick="loadTemplate('portfolio')">
+                        <div class="card-preview portfolio-preview"></div>
+                        <span class="card-name">Portfolio</span>
                     </div>
-                    
-                    <div class="template-item" data-category="resume" onclick="loadTemplate('resume')">
-                        <div class="template-thumb">
-                            <div class="thumb-mockup resume-mock">
-                                <div class="mock-title"></div>
-                                <div class="mock-lines"></div>
-                                <div class="mock-section"></div>
-                            </div>
-                        </div>
-                        <div class="template-info">
-                            <span class="template-label">Classic Resume</span>
-                        </div>
+                    <div class="template-card" data-category="resume" onclick="loadTemplate('resume')">
+                        <div class="card-preview resume-preview"></div>
+                        <span class="card-name">Resume</span>
                     </div>
-                    
-                    <div class="template-item" data-category="resume" onclick="loadTemplate('resume-modern')">
-                        <div class="template-thumb">
-                            <div class="thumb-mockup modern-mock">
-                                <div class="mock-sidebar"></div>
-                                <div class="mock-content"></div>
-                            </div>
-                        </div>
-                        <div class="template-info">
-                            <span class="template-label">Modern CV</span>
-                            <span class="template-badge new">New</span>
-                        </div>
+                    <div class="template-card" data-category="resume" onclick="loadTemplate('resume-modern')">
+                        <div class="card-preview modern-preview"></div>
+                        <span class="card-name">Modern CV</span>
                     </div>
-                    
-                    <div class="template-item" data-category="resume" onclick="loadTemplate('resume-creative')">
-                        <div class="template-thumb">
-                            <div class="thumb-mockup creative-mock">
-                                <div class="mock-accent"></div>
-                                <div class="mock-photo"></div>
-                                <div class="mock-details"></div>
-                            </div>
-                        </div>
-                        <div class="template-info">
-                            <span class="template-label">Creative</span>
-                        </div>
+                    <div class="template-card" data-category="resume" onclick="loadTemplate('resume-creative')">
+                        <div class="card-preview creative-preview"></div>
+                        <span class="card-name">Creative</span>
                     </div>
-                    
-                    <div class="template-item" data-category="resume" onclick="loadTemplate('resume-executive')">
-                        <div class="template-thumb">
-                            <div class="thumb-mockup executive-mock">
-                                <div class="mock-border"></div>
-                                <div class="mock-name"></div>
-                                <div class="mock-body"></div>
-                            </div>
-                        </div>
-                        <div class="template-info">
-                            <span class="template-label">Executive</span>
-                        </div>
+                    <div class="template-card" data-category="resume" onclick="loadTemplate('resume-executive')">
+                        <div class="card-preview executive-preview"></div>
+                        <span class="card-name">Executive</span>
                     </div>
-                    
-                    <div class="template-item" data-category="resume" onclick="loadTemplate('resume-minimalist')">
-                        <div class="template-thumb">
-                            <div class="thumb-mockup minimal-mock">
-                                <div class="mock-minimal-line"></div>
-                                <div class="mock-minimal-line short"></div>
-                                <div class="mock-minimal-line"></div>
-                            </div>
-                        </div>
-                        <div class="template-info">
-                            <span class="template-label">Minimalist</span>
-                        </div>
+                    <div class="template-card" data-category="resume" onclick="loadTemplate('resume-minimalist')">
+                        <div class="card-preview minimal-preview"></div>
+                        <span class="card-name">Minimal</span>
                     </div>
-                    
-                    <div class="template-item" data-category="website" onclick="loadTemplate('landing')">
-                        <div class="template-thumb">
-                            <div class="thumb-mockup landing-mock">
-                                <div class="mock-nav"></div>
-                                <div class="mock-cta"></div>
-                                <div class="mock-features"></div>
-                            </div>
-                        </div>
-                        <div class="template-info">
-                            <span class="template-label">Landing Page</span>
-                        </div>
+                    <div class="template-card" data-category="website" onclick="loadTemplate('landing')">
+                        <div class="card-preview landing-preview"></div>
+                        <span class="card-name">Landing</span>
                     </div>
-                    
-                    <div class="template-item" data-category="website" onclick="loadTemplate('business')">
-                        <div class="template-thumb">
-                            <div class="thumb-mockup business-mock">
-                                <div class="mock-logo"></div>
-                                <div class="mock-banner"></div>
-                                <div class="mock-cards"></div>
-                            </div>
-                        </div>
-                        <div class="template-info">
-                            <span class="template-label">Business</span>
-                        </div>
+                    <div class="template-card" data-category="website" onclick="loadTemplate('business')">
+                        <div class="card-preview business-preview"></div>
+                        <span class="card-name">Business</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Components -->
-            <div class="sidebar-section">
-                <div class="sidebar-title">Components</div>
-                <div class="component-grid">
-                    <div class="component-item" draggable="true" ondragstart="drag(event)" data-type="heading">
-                        <div class="component-icon">H1</div>
-                        <span>Heading</span>
+            <!-- Components Section -->
+            <div class="panel">
+                <div class="panel-header">
+                    <span class="panel-title">Elements</span>
+                </div>
+                <div class="element-grid">
+                    <div class="element-item" draggable="true" ondragstart="drag(event)" data-type="heading">
+                        <span class="element-icon">H</span>
+                        <span class="element-name">Heading</span>
                     </div>
-                    <div class="component-item" draggable="true" ondragstart="drag(event)" data-type="paragraph">
-                        <div class="component-icon">T</div>
-                        <span>Paragraph</span>
+                    <div class="element-item" draggable="true" ondragstart="drag(event)" data-type="paragraph">
+                        <span class="element-icon">T</span>
+                        <span class="element-name">Text</span>
                     </div>
-                    <div class="component-item" draggable="true" ondragstart="drag(event)" data-type="button">
-                        <div class="component-icon">btn</div>
-                        <span>Button</span>
+                    <div class="element-item" draggable="true" ondragstart="drag(event)" data-type="button">
+                        <span class="element-icon">▶</span>
+                        <span class="element-name">Button</span>
                     </div>
-                    <div class="component-item" draggable="true" ondragstart="drag(event)" data-type="image">
-                        <div class="component-icon">img</div>
-                        <span>Image</span>
+                    <div class="element-item" draggable="true" ondragstart="drag(event)" data-type="image">
+                        <span class="element-icon">▣</span>
+                        <span class="element-name">Image</span>
                     </div>
-                    <div class="component-item" draggable="true" ondragstart="drag(event)" data-type="container">
-                        <div class="component-icon">[ ]</div>
-                        <span>Container</span>
+                    <div class="element-item" draggable="true" ondragstart="drag(event)" data-type="container">
+                        <span class="element-icon">□</span>
+                        <span class="element-name">Box</span>
                     </div>
-                    <div class="component-item" draggable="true" ondragstart="drag(event)" data-type="form">
-                        <div class="component-icon">fm</div>
-                        <span>Form</span>
+                    <div class="element-item" draggable="true" ondragstart="drag(event)" data-type="form">
+                        <span class="element-icon">☰</span>
+                        <span class="element-name">Form</span>
                     </div>
-                    <div class="component-item" draggable="true" ondragstart="drag(event)" data-type="card">
-                        <div class="component-icon">◫</div>
-                        <span>Card</span>
+                    <div class="element-item" draggable="true" ondragstart="drag(event)" data-type="card">
+                        <span class="element-icon">▭</span>
+                        <span class="element-name">Card</span>
                     </div>
-                    <div class="component-item" draggable="true" ondragstart="drag(event)" data-type="navbar">
-                        <div class="component-icon">nav</div>
-                        <span>Navbar</span>
+                    <div class="element-item" draggable="true" ondragstart="drag(event)" data-type="navbar">
+                        <span class="element-icon">≡</span>
+                        <span class="element-name">Nav</span>
                     </div>
                 </div>
             </div>
@@ -269,25 +207,25 @@
             <div class="canvas-wrapper">
                 <div class="canvas" id="canvas" ondrop="drop(event)" ondragover="allowDrop(event)">
                     <div class="canvas-empty-state animate-in">
-                        <div class="empty-state-icon">✦</div>
-                        <h1 class="empty-state-title">Start Building</h1>
-                        <p class="empty-state-subtitle">Create beautiful websites with drag & drop simplicity</p>
+                        <div class="empty-state-icon">🎨</div>
+                        <h1 class="empty-state-title">Your canvas awaits</h1>
+                        <p class="empty-state-subtitle">Let's create something beautiful together.<br>Pick a template or drag some building blocks to begin!</p>
                         
                         <div class="empty-state-actions">
                             <div class="quick-start-option" onclick="filterTemplates('all')">
-                                <span class="option-icon">📄</span>
-                                <span class="option-text">Choose a Template</span>
+                                <span class="option-icon">✨</span>
+                                <span class="option-text">Start with a Template</span>
                             </div>
                             <div class="quick-start-option" onclick="document.querySelector('.component-item').focus()">
-                                <span class="option-icon">🧩</span>
-                                <span class="option-text">Drag Components</span>
+                                <span class="option-icon">🧱</span>
+                                <span class="option-text">Build from Scratch</span>
                             </div>
                         </div>
                         
                         <div class="keyboard-hints">
-                            <span class="hint"><kbd>Ctrl</kbd>+<kbd>S</kbd> Save</span>
-                            <span class="hint"><kbd>Ctrl</kbd>+<kbd>Z</kbd> Undo</span>
-                            <span class="hint"><kbd>?</kbd> Shortcuts</span>
+                            <span class="hint"><kbd>Ctrl</kbd>+<kbd>S</kbd> Save your work</span>
+                            <span class="hint"><kbd>Ctrl</kbd>+<kbd>Z</kbd> Undo mistakes</span>
+                            <span class="hint"><kbd>?</kbd> See all shortcuts</span>
                         </div>
                     </div>
                 </div>
@@ -296,25 +234,24 @@
 
         <div class="resize-handle resize-handle-right" id="propertiesResizer"></div>
 
-        <!-- Properties Panel -->
+        <!-- Properties Panel - Clean & Simple -->
         <aside class="properties-panel" id="propertiesPanel">
-            <!-- Element Info Header -->
-            <div class="properties-header" id="propertiesHeader">
-                <div class="properties-title">Element Properties</div>
-                <p class="properties-hint" id="propertiesHint">Select an element to edit</p>
+            <!-- Header -->
+            <div class="props-header" id="propertiesHeader">
+                <span class="props-title">Properties</span>
+                <span class="props-hint" id="propertiesHint">Select an element</span>
             </div>
 
-            <!-- Type & Content Section -->
-            <div class="properties-section collapsible" data-section="content">
-                <div class="section-header" onclick="toggleSection(this)">
-                    <span class="section-icon">◼</span>
+            <!-- Content Section -->
+            <div class="props-section" data-section="content">
+                <div class="props-section-title" onclick="toggleSection(this)">
                     <span>Content</span>
-                    <span class="section-toggle">▼</span>
+                    <span class="section-toggle">▾</span>
                 </div>
                 <div class="section-content">
-                    <div class="form-group">
-                        <label class="form-label">Element Type</label>
-                        <select class="form-control" id="elementType" onchange="onElementTypeChange()">
+                    <div class="field">
+                        <label>Type</label>
+                        <select class="input" id="elementType" onchange="onElementTypeChange()">
                             <option value="heading">Heading</option>
                             <option value="paragraph">Paragraph</option>
                             <option value="button">Button</option>
@@ -322,51 +259,50 @@
                             <option value="container">Container</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">Text Content</label>
-                        <textarea class="form-control" id="elementText" rows="2" placeholder="Enter text..." oninput="livePreview()"></textarea>
+                    <div class="field">
+                        <label>Text</label>
+                        <textarea class="input" id="elementText" rows="2" placeholder="Enter text..." oninput="livePreview()"></textarea>
                     </div>
                 </div>
             </div>
 
             <!-- Typography Section -->
-            <div class="properties-section collapsible" data-section="typography">
-                <div class="section-header" onclick="toggleSection(this)">
-                    <span class="section-icon">A</span>
+            <div class="props-section" data-section="typography">
+                <div class="props-section-title" onclick="toggleSection(this)">
                     <span>Typography</span>
-                    <span class="section-toggle">▼</span>
+                    <span class="section-toggle">▾</span>
                 </div>
                 <div class="section-content">
                     <div class="form-row">
                         <div class="form-group form-group-half">
-                            <label class="form-label">Size</label>
+                            <label class="form-label">How big?</label>
                             <div class="input-with-unit">
                                 <input type="number" class="form-control" id="fontSize" value="16" min="8" max="120" oninput="livePreview()">
                                 <span class="input-unit">px</span>
                             </div>
                         </div>
                         <div class="form-group form-group-half">
-                            <label class="form-label">Weight</label>
+                            <label class="form-label">Thickness</label>
                             <select class="form-control" id="fontWeight" onchange="livePreview()">
-                                <option value="300">Light</option>
-                                <option value="400" selected>Regular</option>
+                                <option value="300">Thin</option>
+                                <option value="400" selected>Normal</option>
                                 <option value="500">Medium</option>
-                                <option value="600">Semibold</option>
+                                <option value="600">Chunky</option>
                                 <option value="700">Bold</option>
                             </select>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Text Align</label>
+                        <label class="form-label">Alignment</label>
                         <div class="btn-group-toggle">
-                            <button type="button" class="btn-toggle active" data-value="left" onclick="setTextAlign('left')">◀</button>
-                            <button type="button" class="btn-toggle" data-value="center" onclick="setTextAlign('center')">◆</button>
-                            <button type="button" class="btn-toggle" data-value="right" onclick="setTextAlign('right')">▶</button>
-                            <button type="button" class="btn-toggle" data-value="justify" onclick="setTextAlign('justify')">☰</button>
+                            <button type="button" class="btn-toggle active" data-value="left" onclick="setTextAlign('left')" title="Left">⬅</button>
+                            <button type="button" class="btn-toggle" data-value="center" onclick="setTextAlign('center')" title="Center">⬌</button>
+                            <button type="button" class="btn-toggle" data-value="right" onclick="setTextAlign('right')" title="Right">➡</button>
+                            <button type="button" class="btn-toggle" data-value="justify" onclick="setTextAlign('justify')" title="Justify">☰</button>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Text Color</label>
+                        <label class="form-label">Text color</label>
                         <div class="color-picker-wrapper">
                             <input type="color" class="color-picker" id="textColor" value="#1e293b" oninput="syncColorInput('textColor')">
                             <input type="text" class="form-control color-hex" id="textColorHex" value="#1e293b" oninput="syncColorPicker('textColor')">
@@ -378,87 +314,75 @@
             <!-- Spacing Section -->
             <div class="properties-section collapsible" data-section="spacing">
                 <div class="section-header" onclick="toggleSection(this)">
-                    <span class="section-icon">⬚</span>
-                    <span>Spacing</span>
-                    <span class="section-toggle">▼</span>
+                    <span class="section-icon">📐</span>
+                    <span>Breathing room</span>
+                    <span class="section-toggle">▾</span>
                 </div>
                 <div class="section-content">
-                    <div class="spacing-visual">
-                        <div class="spacing-box">
-                            <input type="number" class="spacing-input margin-top" id="marginTop" value="0" placeholder="0" oninput="livePreview()">
-                            <div class="spacing-inner">
-                                <input type="number" class="spacing-input padding-top" id="paddingTop" value="16" placeholder="16" oninput="livePreview()">
-                                <div class="spacing-center">
-                                    <input type="number" class="spacing-input padding-left" id="paddingLeft" value="16" placeholder="16" oninput="livePreview()">
-                                    <div class="spacing-element"></div>
-                                    <input type="number" class="spacing-input padding-right" id="paddingRight" value="16" placeholder="16" oninput="livePreview()">
-                                </div>
-                                <input type="number" class="spacing-input padding-bottom" id="paddingBottom" value="16" placeholder="16" oninput="livePreview()">
+                    <div class="spacing-grid">
+                        <div class="spacing-group">
+                            <span class="spacing-label">Margin</span>
+                            <div class="spacing-inputs">
+                                <input type="number" class="spacing-num" id="marginTop" value="0" placeholder="T" oninput="livePreview()">
+                                <input type="number" class="spacing-num" id="marginRight" value="0" placeholder="R" oninput="livePreview()">
+                                <input type="number" class="spacing-num" id="marginBottom" value="0" placeholder="B" oninput="livePreview()">
+                                <input type="number" class="spacing-num" id="marginLeft" value="0" placeholder="L" oninput="livePreview()">
                             </div>
-                            <input type="number" class="spacing-input margin-bottom" id="marginBottom" value="0" placeholder="0" oninput="livePreview()">
                         </div>
-                        <div class="spacing-labels">
-                            <span class="spacing-label margin-label">Margin</span>
-                            <span class="spacing-label padding-label">Padding</span>
+                        <div class="spacing-group">
+                            <span class="spacing-label">Padding</span>
+                            <div class="spacing-inputs">
+                                <input type="number" class="spacing-num" id="paddingTop" value="16" placeholder="T" oninput="livePreview()">
+                                <input type="number" class="spacing-num" id="paddingRight" value="16" placeholder="R" oninput="livePreview()">
+                                <input type="number" class="spacing-num" id="paddingBottom" value="16" placeholder="B" oninput="livePreview()">
+                                <input type="number" class="spacing-num" id="paddingLeft" value="16" placeholder="L" oninput="livePreview()">
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-row" style="margin-top: 12px;">
-                        <button class="btn btn-secondary btn-sm" onclick="linkSpacing('padding')">Link Padding</button>
-                        <button class="btn btn-secondary btn-sm" onclick="linkSpacing('margin')">Link Margin</button>
                     </div>
                 </div>
             </div>
 
             <!-- Appearance Section -->
-            <div class="properties-section collapsible" data-section="appearance">
-                <div class="section-header" onclick="toggleSection(this)">
-                    <span class="section-icon">◐</span>
+            <div class="props-section" data-section="appearance">
+                <div class="props-section-title" onclick="toggleSection(this)">
                     <span>Appearance</span>
-                    <span class="section-toggle">▼</span>
+                    <span class="section-toggle">▾</span>
                 </div>
                 <div class="section-content">
-                    <div class="form-group">
-                        <label class="form-label">Background</label>
-                        <div class="color-picker-wrapper">
-                            <input type="color" class="color-picker" id="bgColor" value="#ffffff" oninput="syncColorInput('bgColor')">
-                            <input type="text" class="form-control color-hex" id="bgColorHex" value="#ffffff" oninput="syncColorPicker('bgColor')">
-                            <button class="btn btn-icon-sm" onclick="setTransparentBg()" title="Transparent">∅</button>
+                    <div class="field">
+                        <label>Background</label>
+                        <div class="color-row">
+                            <input type="color" class="color-input" id="bgColor" value="#ffffff" oninput="syncColorInput('bgColor')">
+                            <input type="text" class="input color-text" id="bgColorHex" value="#ffffff" oninput="syncColorPicker('bgColor')">
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">Border Radius</label>
-                        <div class="slider-with-value">
-                            <input type="range" class="form-slider" id="borderRadiusSlider" value="8" min="0" max="50" oninput="syncSliderValue('borderRadius')">
-                            <div class="input-with-unit">
-                                <input type="number" class="form-control input-sm" id="borderRadius" value="8" min="0" max="50" oninput="syncSliderFromInput('borderRadius')">
-                                <span class="input-unit">px</span>
-                            </div>
+                    <div class="field">
+                        <label>Border Radius</label>
+                        <div class="slider-row">
+                            <input type="range" class="slider" id="borderRadiusSlider" value="8" min="0" max="50" oninput="syncSliderValue('borderRadius')">
+                            <input type="number" class="input input-tiny" id="borderRadius" value="8" min="0" max="50" oninput="syncSliderFromInput('borderRadius')">
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">Opacity</label>
-                        <div class="slider-with-value">
-                            <input type="range" class="form-slider" id="opacitySlider" value="100" min="0" max="100" oninput="syncSliderValue('opacity')">
-                            <div class="input-with-unit">
-                                <input type="number" class="form-control input-sm" id="opacity" value="100" min="0" max="100" oninput="syncSliderFromInput('opacity')">
-                                <span class="input-unit">%</span>
-                            </div>
+                    <div class="field">
+                        <label>Opacity</label>
+                        <div class="slider-row">
+                            <input type="range" class="slider" id="opacitySlider" value="100" min="0" max="100" oninput="syncSliderValue('opacity')">
+                            <input type="number" class="input input-tiny" id="opacity" value="100" min="0" max="100" oninput="syncSliderFromInput('opacity')">
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Animation Section -->
-            <div class="properties-section collapsible" data-section="animation">
-                <div class="section-header" onclick="toggleSection(this)">
-                    <span class="section-icon">✦</span>
+            <div class="props-section" data-section="animation">
+                <div class="props-section-title" onclick="toggleSection(this)">
                     <span>Animation</span>
-                    <span class="section-toggle">▼</span>
+                    <span class="section-toggle">▾</span>
                 </div>
                 <div class="section-content">
-                    <div class="form-group">
-                        <label class="form-label">Effect</label>
-                        <select class="form-control" id="animationType">
+                    <div class="field">
+                        <label>Effect</label>
+                        <select class="input" id="animationType">
                             <option value="none">None</option>
                             <option value="fadeIn">Fade In</option>
                             <option value="slideInLeft">Slide Left</option>
@@ -467,30 +391,18 @@
                             <option value="bounce">Bounce</option>
                         </select>
                     </div>
-                    <button class="btn btn-secondary" style="width: 100%;" onclick="applyAnimation()">
-                        Preview Animation
-                    </button>
+                    <button class="btn-preview" onclick="applyAnimation()">Preview</button>
                 </div>
             </div>
 
-            <!-- Quick Actions -->
-            <div class="properties-section properties-actions">
-                <button class="btn btn-primary" style="width: 100%;" onclick="applyProperties()">
-                    Apply Changes
-                </button>
-                <div class="quick-tools">
-                    <button class="btn btn-tool" onclick="duplicateElement()" title="Duplicate">
-                        <span>⧉</span>
-                    </button>
-                    <button class="btn btn-tool" onclick="moveElementUp()" title="Move Up">
-                        <span>↑</span>
-                    </button>
-                    <button class="btn btn-tool" onclick="moveElementDown()" title="Move Down">
-                        <span>↓</span>
-                    </button>
-                    <button class="btn btn-tool btn-danger-tool" onclick="deleteSelectedElement()" title="Delete">
-                        <span>×</span>
-                    </button>
+            <!-- Actions -->
+            <div class="props-actions">
+                <button class="btn-apply" onclick="applyProperties()">Apply</button>
+                <div class="action-row">
+                    <button class="action-btn" onclick="duplicateElement()" title="Duplicate">⊞</button>
+                    <button class="action-btn" onclick="moveElementUp()" title="Move Up">↑</button>
+                    <button class="action-btn" onclick="moveElementDown()" title="Move Down">↓</button>
+                    <button class="action-btn danger" onclick="deleteSelectedElement()" title="Delete">×</button>
                 </div>
             </div>
         </aside>
@@ -500,24 +412,24 @@
     <div class="modal" id="exportModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title">Export Code</h2>
+                <h2 class="modal-title">📦 Ready to ship!</h2>
                 <button class="modal-close" onclick="closeModal('exportModal')">&times;</button>
             </div>
             <div class="form-group">
-                <label class="form-label">Export Format</label>
+                <label class="form-label">Choose your format</label>
                 <select class="form-control" id="exportFormat">
-                    <option value="html">HTML (Single File)</option>
-                    <option value="separate">HTML, CSS, JS (Separate Files)</option>
-                    <option value="react">React Component</option>
+                    <option value="html">HTML (Everything in one file)</option>
+                    <option value="separate">HTML, CSS, JS (Organized & clean)</option>
+                    <option value="react">React Component (For devs)</option>
                 </select>
             </div>
             <div class="form-group">
-                <label class="form-label">Generated Code</label>
-                <textarea class="form-control" id="exportCode" rows="15" readonly style="font-family: monospace; font-size: 12px;"></textarea>
+                <label class="form-label">Your beautiful code 💜</label>
+                <textarea class="form-control" id="exportCode" rows="15" readonly style="font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12px;"></textarea>
             </div>
             <div style="display: flex; gap: 12px;">
-                <button class="btn btn-primary" style="flex: 1;" onclick="copyCode()">Copy to Clipboard</button>
-                <button class="btn btn-success" style="flex: 1;" onclick="downloadCode()">Download Files</button>
+                <button class="btn btn-primary" style="flex: 1;" onclick="copyCode()">📋 Copy to Clipboard</button>
+                <button class="btn btn-success" style="flex: 1;" onclick="downloadCode()">⬇️ Download Files</button>
             </div>
         </div>
     </div>
@@ -526,7 +438,7 @@
     <div class="modal" id="userProfileModal">
         <div class="modal-content" style="max-width: 600px;">
             <div class="modal-header">
-                <h2 class="modal-title">Account</h2>
+                <h2 class="modal-title">👋 Your Space</h2>
                 <button class="modal-close" onclick="closeModal('userProfileModal')">&times;</button>
             </div>
             

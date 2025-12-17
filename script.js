@@ -174,7 +174,7 @@ function createComponent(type) {
 
     canvas.appendChild(element);
     saveState();
-    showToast('Component added successfully!');
+    showToast('Added! Drag or click to customize ✨');
 }
 
 // Element Selection
@@ -203,20 +203,20 @@ function deleteElement(button) {
     setTimeout(() => {
         element.remove();
         saveState();
-        showToast('Element deleted');
+        showToast('Poof! Element removed 👋');
     }, 250);
 }
 
 function editElement(button) {
     const element = button.closest('.canvas-element');
     selectElement(element);
-    showToast('Element selected. Edit properties in the right panel.');
+    showToast('Selected! Customize it in the panel →');
 }
 
 // Apply Properties
 function applyProperties() {
     if (!selectedElement) {
-        showToast('Please select an element first');
+        showToast('Pick something first! 👆');
         return;
     }
 
@@ -254,7 +254,7 @@ function applyProperties() {
     selectedElement.style.opacity = opacity / 100;
 
     saveState();
-    showToast('Properties applied!');
+    showToast('Looking good! ✨');
 }
 
 // ===== OPTIMIZED PROPERTIES PANEL FUNCTIONS =====
@@ -302,7 +302,7 @@ function setTransparentBg() {
         selectedElement.style.backgroundColor = 'transparent';
         document.getElementById('bgColor').value = '#ffffff';
         document.getElementById('bgColorHex').value = 'transparent';
-        showToast('Background set to transparent');
+        showToast('See-through mode activated 👻');
     }
 }
 
@@ -351,7 +351,7 @@ function linkSpacing(type) {
         document.getElementById('marginBottom').value = value;
     }
     livePreview();
-    showToast(`${type.charAt(0).toUpperCase() + type.slice(1)} values linked`);
+    showToast(`${type.charAt(0).toUpperCase() + type.slice(1)} synced! 🔗`);
 }
 
 // Element type change handler
@@ -364,7 +364,7 @@ function onElementTypeChange() {
 // Duplicate selected element
 function duplicateElement() {
     if (!selectedElement) {
-        showToast('Please select an element first');
+        showToast('Select something to clone 👆');
         return;
     }
     
@@ -374,13 +374,13 @@ function duplicateElement() {
     selectedElement.parentNode.insertBefore(clone, selectedElement.nextSibling);
     
     saveState();
-    showToast('Element duplicated');
+    showToast('Duplicated! Like magic ✨');
 }
 
 // Move element up
 function moveElementUp() {
     if (!selectedElement) {
-        showToast('Please select an element first');
+        showToast('Select something first 👆');
         return;
     }
     
@@ -388,14 +388,14 @@ function moveElementUp() {
     if (prev && !prev.classList.contains('element-controls')) {
         selectedElement.parentNode.insertBefore(selectedElement, prev);
         saveState();
-        showToast('Element moved up');
+        showToast('Moved up ⬆️');
     }
 }
 
 // Move element down
 function moveElementDown() {
     if (!selectedElement) {
-        showToast('Please select an element first');
+        showToast('Select something first 👆');
         return;
     }
     
@@ -403,14 +403,14 @@ function moveElementDown() {
     if (next && !next.classList.contains('element-controls')) {
         selectedElement.parentNode.insertBefore(next, selectedElement);
         saveState();
-        showToast('Element moved down');
+        showToast('Moved down ⬇️');
     }
 }
 
 // Delete selected element
 function deleteSelectedElement() {
     if (!selectedElement) {
-        showToast('Please select an element first');
+        showToast('Select something first 👆');
         return;
     }
     
@@ -420,7 +420,7 @@ function deleteSelectedElement() {
         selectedElement = null;
         updatePropertiesHint();
         saveState();
-        showToast('Element deleted');
+        showToast('Gone! 👋');
     }, 200);
 }
 
@@ -428,7 +428,7 @@ function deleteSelectedElement() {
 function updatePropertiesHint() {
     const hint = document.getElementById('propertiesHint');
     if (hint) {
-        hint.textContent = selectedElement ? 'Editing: ' + getElementTypeName() : 'Select an element to edit';
+        hint.textContent = selectedElement ? 'Tweaking: ' + getElementTypeName() + ' ✨' : 'Click on something to tweak it ✨';
     }
 }
 
@@ -546,7 +546,7 @@ function rgbToHex(rgb) {
 // Apply Animation
 function applyAnimation() {
     if (!selectedElement) {
-        showToast('Please select an element first');
+        showToast('Select something first! 👆');
         return;
     }
 
@@ -554,10 +554,10 @@ function applyAnimation() {
     
     if (animationType !== 'none') {
         selectedElement.style.animation = `${animationType} 0.6s cubic-bezier(0.16, 1, 0.3, 1)`;
-        showToast(`Animation "${animationType}" applied!`);
+        showToast(`${animationType} animation — fancy! 💃`);
     } else {
         selectedElement.style.animation = '';
-        showToast('Animation removed');
+        showToast('Animation cleared ✨');
     }
 }
 
@@ -575,7 +575,8 @@ function setDevice(device) {
         canvas.classList.add(device);
     }
     
-    showToast(`Switched to ${device} view`);
+    const deviceEmoji = device === 'desktop' ? '🖥️' : device === 'tablet' ? '📱' : '📲';
+    showToast(`${deviceEmoji} Now viewing ${device}`);
 }
 
 // Zoom
@@ -1073,7 +1074,7 @@ function loadTemplate(type) {
 
     addControlsToElements();
     saveState();
-    showToast(`${type.charAt(0).toUpperCase() + type.slice(1)} template loaded!`);
+    showToast(`✨ ${type.charAt(0).toUpperCase() + type.slice(1)} template ready!`);
 }
 
 function addControlsToElements() {
@@ -1099,11 +1100,11 @@ function addControlsToElements() {
 function generateWithAI() {
     const prompt = document.getElementById('aiPrompt').value;
     if (!prompt) {
-        showToast('Please enter a description');
+        showToast('Tell me what you want to create! ✍️');
         return;
     }
 
-    showToast('AI is generating your content...');
+    showToast('🤖 Working on it...');
 
     // Simulate AI processing with more intelligent detection
     setTimeout(() => {
@@ -1113,25 +1114,25 @@ function generateWithAI() {
         // Check for specific component requests
         if (promptLower.includes('button')) {
             createComponent('button');
-            showToast('AI created a button!');
+            showToast('🎉 Button created! Looking sharp');
             return;
         }
         
         if (promptLower.includes('form') || promptLower.includes('contact')) {
             createComponent('form');
-            showToast('AI created a contact form!');
+            showToast('✉️ Contact form ready!');
             return;
         }
         
         if (promptLower.includes('card')) {
             createComponent('card');
-            showToast('AI created a card!');
+            showToast('🏷️ Nice card!');
             return;
         }
         
         if (promptLower.includes('heading') || promptLower.includes('title')) {
             createComponent('heading');
-            showToast('AI created a heading!');
+            showToast('📝 Heading added!');
             return;
         }
         
@@ -1153,7 +1154,7 @@ function generateWithAI() {
 
         if (templateToLoad) {
             loadTemplate(templateToLoad);
-            showToast('AI generated your website!');
+            showToast('✨ Boom! Your site is ready');
         } else {
             // Generate custom content based on prompt
             generateCustomContent(prompt, colors);
@@ -1192,7 +1193,7 @@ function generateCustomContent(prompt, colors) {
     
     canvas.appendChild(element);
     saveState();
-    showToast('AI generated custom content!');
+    showToast('🎨 Custom content created!');
 }
 
 // Responsive Design Helper
@@ -1223,7 +1224,7 @@ function makeResponsive() {
     });
     
     saveState();
-    showToast('Made elements responsive!');
+    showToast('📱 Now mobile-friendly!');
 }
 
 // Export Functions
@@ -1273,7 +1274,7 @@ function copyCode() {
     const code = document.getElementById('exportCode');
     code.select();
     document.execCommand('copy');
-    showToast('Code copied to clipboard!');
+    showToast('Copied! 📋 Paste anywhere');
 }
 
 function downloadCode() {
@@ -1285,7 +1286,7 @@ function downloadCode() {
     a.download = 'my-website.html';
     a.click();
     URL.revokeObjectURL(url);
-    showToast('File downloaded successfully!');
+    showToast('📥 Downloaded! Check your files');
 }
 
 // Preview
@@ -1306,7 +1307,7 @@ function previewWebsite() {
         </html>
     `);
     previewWindow.document.close();
-    showToast('Opening preview...');
+    showToast('👀 Preview opened in new tab');
 }
 
 // Save/Load Project
@@ -1324,7 +1325,7 @@ function saveProject() {
     a.download = 'website-project.json';
     a.click();
     URL.revokeObjectURL(url);
-    showToast('Project saved successfully!');
+    showToast('💾 Project saved! Nice work');
 }
 
 // Undo/Redo
@@ -1341,7 +1342,7 @@ function undoAction() {
         const canvas = document.getElementById('canvas');
         canvas.innerHTML = undoStack[undoStack.length - 1];
         addControlsToElements();
-        showToast('Undo successful');
+        showToast('↩️ Undone!');
     }
 }
 
@@ -1352,7 +1353,7 @@ function redoAction() {
         const canvas = document.getElementById('canvas');
         canvas.innerHTML = state;
         addControlsToElements();
-        showToast('Redo successful');
+        showToast('↪️ Redone!');
     }
 }
 
@@ -1454,7 +1455,7 @@ let copiedElement = null;
 function copyElement() {
     if (selectedElement) {
         copiedElement = selectedElement.cloneNode(true);
-        showToast('Element copied! Press Ctrl+V to paste');
+        showToast('📋 Copied! Ctrl+V to paste');
     }
 }
 
@@ -1482,7 +1483,7 @@ function pasteElement() {
         
         canvas.appendChild(newElement);
         saveState();
-        showToast('Element pasted successfully!');
+        showToast('📋 Pasted!');
         selectElement(newElement);
     }
 }
@@ -1491,7 +1492,7 @@ function duplicateElement() {
     if (selectedElement) {
         copiedElement = selectedElement;
         pasteElement();
-        showToast('Element duplicated!');
+        showToast('✨ Cloned!');
     }
 }
 
@@ -1546,12 +1547,12 @@ function toggleFullscreen() {
     
     if (!document.fullscreenElement) {
         canvasContainer.requestFullscreen().catch(err => {
-            showToast(`Error enabling fullscreen: ${err.message}`);
+            showToast(`Oops! ${err.message}`);
         });
-        showToast('Fullscreen mode enabled');
+        showToast('🖥️ Full screen — immersive mode!');
     } else {
         document.exitFullscreen();
-        showToast('Fullscreen mode disabled');
+        showToast('🔲 Back to normal');
     }
 }
 
@@ -1565,10 +1566,10 @@ function toggleGridLines() {
     if (gridLinesEnabled) {
         canvas.style.backgroundImage = 'linear-gradient(rgba(99, 102, 241, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(99, 102, 241, 0.1) 1px, transparent 1px)';
         canvas.style.backgroundSize = '20px 20px';
-        showToast('Grid lines enabled');
+        showToast('🗓️ Grid on — pixel perfect!');
     } else {
         canvas.style.backgroundImage = 'none';
-        showToast('Grid lines disabled');
+        showToast('🎨 Grid off — clean view');
     }
 }
 
@@ -1589,7 +1590,7 @@ function searchElements(query) {
         }
     });
     
-    showToast(found > 0 ? `Found ${found} element(s)` : 'No elements found');
+    showToast(found > 0 ? `🔍 Found ${found} match${found > 1 ? 'es' : ''}!` : '🤔 Nothing found');
 }
 
 // Auto-save functionality
@@ -1604,14 +1605,14 @@ function enableAutoSave(intervalMinutes = 5) {
         autoSaveToLocalStorage();
     }, intervalMinutes * 60 * 1000);
     
-    showToast(`Auto-save enabled (every ${intervalMinutes} min)`);
+    showToast(`🔄 Auto-save on (every ${intervalMinutes} min)`);
 }
 
 function disableAutoSave() {
     if (autoSaveInterval) {
         clearInterval(autoSaveInterval);
         autoSaveInterval = null;
-        showToast('Auto-save disabled');
+        showToast('⏸️ Auto-save paused');
     }
 }
 
@@ -1622,7 +1623,7 @@ function autoSaveToLocalStorage() {
         timestamp: new Date().toISOString()
     };
     localStorage.setItem('website-builder-autosave', JSON.stringify(projectData));
-    showToast('Auto-saved', 1000);
+    showToast('💾 Saved!', 1000);
 }
 
 function loadAutoSave() {
@@ -1634,7 +1635,7 @@ function loadAutoSave() {
         addControlsToElements();
         saveState();
         const date = new Date(projectData.timestamp).toLocaleString();
-        showToast(`Loaded auto-save from ${date}`);
+        showToast(`📥 Restored from ${date}`);
         return true;
     }
     return false;
