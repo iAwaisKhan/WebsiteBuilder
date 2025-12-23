@@ -3248,3 +3248,18 @@ function initResizer(resizer, panel, direction) {
         panel.style.width = savedWidth;
     }
 }
+
+// Preloader Logic
+window.addEventListener('load', () => {
+    const preloader = document.getElementById('preloader');
+    if (preloader) {
+        // Ensure the animation has time to be seen (at least 1.5s total)
+        setTimeout(() => {
+            preloader.classList.add('fade-out');
+            // Remove from DOM after transition
+            setTimeout(() => {
+                preloader.remove();
+            }, 500);
+        }, 1500);
+    }
+});
