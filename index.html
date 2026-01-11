@@ -41,6 +41,9 @@
                     <span>↪</span>
                 </button>
                 <div class="action-divider"></div>
+                <button class="action-btn" id="toggleGrid" title="Toggle Grid">
+                    <span>▦</span>
+                </button>
                 <button class="action-btn" onclick="previewWebsite()" title="Preview">
                     <span>👁</span>
                 </button>
@@ -577,6 +580,27 @@
                     <button class="btn btn-secondary" style="flex: 1;" onclick="logoutUser()">Logout</button>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Context Menu -->
+    <div id="contextMenu" class="context-menu">
+        <div class="context-menu-item" id="ctx-duplicate">
+            <span class="context-menu-icon">📋</span>
+            <span>Duplicate</span>
+        </div>
+        <div class="context-menu-item" id="ctx-bring-front">
+            <span class="context-menu-icon">🔼</span>
+            <span>Bring to Front</span>
+        </div>
+        <div class="context-menu-item" id="ctx-send-back">
+            <span class="context-menu-icon">🔽</span>
+            <span>Send to Back</span>
+        </div>
+        <div class="context-menu-divider"></div>
+        <div class="context-menu-item danger" id="ctx-delete">
+            <span class="context-menu-icon">🗑</span>
+            <span>Delete</span>
         </div>
     </div>
 

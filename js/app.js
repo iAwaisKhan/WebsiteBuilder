@@ -6,11 +6,24 @@ import { saveProject, exportProjectAsJSON, importProjectFromJSON } from './core/
 import { refreshLayers } from './ui/layers.js';
 import { addResizeHandles, removeResizeHandles } from './core/resize.js';
 import { loadTemplate as loadTemplateModule } from './core/templates.js';
+import { initContextMenu } from './ui/contextMenu.js';
 
 // Initialize the application
 function init() {
     console.log('WebBuilder Modular System Initialized ⚡');
     initKeyboardShortcuts();
+    initContextMenu();
+    
+    // Grid Toggle Logic
+    const toggleGridBtn = document.getElementById('toggleGrid');
+    const canvas = document.getElementById('canvas');
+    if (toggleGridBtn) {
+        toggleGridBtn.onclick = () => {
+            canvas.classList.toggle('no-grid');
+            toggleGridBtn.classList.toggle('active');
+            showToast(canvas.classList.contains('no-grid') ? 'Grid disabled' : 'Grid enabled');
+        };
+    }
     
     // Bind essential functions to window for HTML onclick compatibility
     window.saveProject = () => saveProject(document.getElementById('canvas'));
@@ -26,6 +39,9 @@ function init() {
         if (state.selectedElement) {
             removeResizeHandles(state.selectedElement);
         }
+
+        // Update state
+        state.selectedElement = element;
 
         // Call original if it exists
         if (typeof originalSelectElement === 'function') {
