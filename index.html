@@ -74,101 +74,140 @@
     <div class="main-container">
         <!-- Sidebar - Clean & Simple -->
         <aside class="sidebar">
-            <!-- Templates Section -->
-            <div class="panel">
-                <div class="panel-header">
-                    <span class="panel-title">Templates</span>
-                    <div class="filter-pills">
-                        <button class="pill active" data-category="all" onclick="filterTemplates('all')">All</button>
-                        <button class="pill" data-category="resume" onclick="filterTemplates('resume')">Resume</button>
-                        <button class="pill" data-category="website" onclick="filterTemplates('website')">Web</button>
+            <div class="sidebar-tabs">
+                <button class="tab-btn active" data-tab="build">Build</button>
+                <button class="tab-btn" data-tab="sections">Sections</button>
+                <button class="tab-btn" data-tab="assets">Assets</button>
+                <button class="tab-btn" data-tab="layers">Layers</button>
+            </div>
+
+            <!-- Build Tab -->
+            <div class="tab-content active" id="tab-build">
+                <!-- Templates Section -->
+                <div class="panel">
+                    <div class="panel-header">
+                        <span class="panel-title">Templates</span>
+                        <div class="filter-pills">
+                            <button class="pill active" data-category="all" onclick="filterTemplates('all')">All</button>
+                            <button class="pill" data-category="resume" onclick="filterTemplates('resume')">Resume</button>
+                            <button class="pill" data-category="website" onclick="filterTemplates('website')">Web</button>
+                        </div>
+                    </div>
+                    <div class="template-list">
+                        <div class="template-card" data-category="website" onclick="loadTemplate('portfolio')">
+                            <div class="card-preview portfolio-preview"></div>
+                            <span class="card-name">Portfolio</span>
+                        </div>
+                        <div class="template-card" data-category="resume" onclick="loadTemplate('resume')">
+                            <div class="card-preview resume-preview"></div>
+                            <span class="card-name">Resume</span>
+                        </div>
+                        <div class="template-card" data-category="resume" onclick="loadTemplate('resume-modern')">
+                            <div class="card-preview modern-preview"></div>
+                            <span class="card-name">Modern CV</span>
+                        </div>
+                        <div class="template-card" data-category="resume" onclick="loadTemplate('resume-creative')">
+                            <div class="card-preview creative-preview"></div>
+                            <span class="card-name">Creative</span>
+                        </div>
+                        <div class="template-card" data-category="resume" onclick="loadTemplate('resume-executive')">
+                            <div class="card-preview executive-preview"></div>
+                            <span class="card-name">Executive</span>
+                        </div>
+                        <div class="template-card" data-category="resume" onclick="loadTemplate('resume-minimalist')">
+                            <div class="card-preview minimal-preview"></div>
+                            <span class="card-name">Minimal</span>
+                        </div>
+                        <div class="template-card" data-category="website" onclick="loadTemplate('landing')">
+                            <div class="card-preview landing-preview"></div>
+                            <span class="card-name">Landing</span>
+                        </div>
+                        <div class="template-card" data-category="website" onclick="loadTemplate('business')">
+                            <div class="card-preview business-preview"></div>
+                            <span class="card-name">Business</span>
+                        </div>
                     </div>
                 </div>
-                <div class="template-list">
-                    <div class="template-card" data-category="website" onclick="loadTemplate('portfolio')">
-                        <div class="card-preview portfolio-preview"></div>
-                        <span class="card-name">Portfolio</span>
+
+                <!-- Components Section -->
+                <div class="panel">
+                    <div class="panel-header">
+                        <span class="panel-title">Elements</span>
                     </div>
-                    <div class="template-card" data-category="resume" onclick="loadTemplate('resume')">
-                        <div class="card-preview resume-preview"></div>
-                        <span class="card-name">Resume</span>
-                    </div>
-                    <div class="template-card" data-category="resume" onclick="loadTemplate('resume-modern')">
-                        <div class="card-preview modern-preview"></div>
-                        <span class="card-name">Modern CV</span>
-                    </div>
-                    <div class="template-card" data-category="resume" onclick="loadTemplate('resume-creative')">
-                        <div class="card-preview creative-preview"></div>
-                        <span class="card-name">Creative</span>
-                    </div>
-                    <div class="template-card" data-category="resume" onclick="loadTemplate('resume-executive')">
-                        <div class="card-preview executive-preview"></div>
-                        <span class="card-name">Executive</span>
-                    </div>
-                    <div class="template-card" data-category="resume" onclick="loadTemplate('resume-minimalist')">
-                        <div class="card-preview minimal-preview"></div>
-                        <span class="card-name">Minimal</span>
-                    </div>
-                    <div class="template-card" data-category="website" onclick="loadTemplate('landing')">
-                        <div class="card-preview landing-preview"></div>
-                        <span class="card-name">Landing</span>
-                    </div>
-                    <div class="template-card" data-category="website" onclick="loadTemplate('business')">
-                        <div class="card-preview business-preview"></div>
-                        <span class="card-name">Business</span>
+                    <div class="element-grid">
+                        <div class="element-item" draggable="true" ondragstart="drag(event)" data-type="heading">
+                            <span class="element-icon">H</span>
+                            <span class="element-name">Heading</span>
+                        </div>
+                        <div class="element-item" draggable="true" ondragstart="drag(event)" data-type="paragraph">
+                            <span class="element-icon">T</span>
+                            <span class="element-name">Text</span>
+                        </div>
+                        <div class="element-item" draggable="true" ondragstart="drag(event)" data-type="button">
+                            <span class="element-icon">▶</span>
+                            <span class="element-name">Button</span>
+                        </div>
+                        <div class="element-item" draggable="true" ondragstart="drag(event)" data-type="image">
+                            <span class="element-icon">▣</span>
+                            <span class="element-name">Image</span>
+                        </div>
+                        <div class="element-item" draggable="true" ondragstart="drag(event)" data-type="container">
+                            <span class="element-icon">□</span>
+                            <span class="element-name">Box</span>
+                        </div>
+                        <div class="element-item" draggable="true" ondragstart="drag(event)" data-type="form">
+                            <span class="element-icon">☰</span>
+                            <span class="element-name">Form</span>
+                        </div>
+                        <div class="element-item" draggable="true" ondragstart="drag(event)" data-type="card">
+                            <span class="element-icon">▭</span>
+                            <span class="element-name">Card</span>
+                        </div>
+                        <div class="element-item" draggable="true" ondragstart="drag(event)" data-type="navbar">
+                            <span class="element-icon">≡</span>
+                            <span class="element-name">Nav</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Components Section -->
-            <div class="panel">
-                <div class="panel-header">
-                    <span class="panel-title">Elements</span>
-                </div>
-                <div class="element-grid">
-                    <div class="element-item" draggable="true" ondragstart="drag(event)" data-type="heading">
-                        <span class="element-icon">H</span>
-                        <span class="element-name">Heading</span>
+            <!-- Sections Tab -->
+            <div class="tab-content" id="tab-sections">
+                <div class="panel">
+                    <div class="panel-header">
+                        <span class="panel-title">Section Library</span>
                     </div>
-                    <div class="element-item" draggable="true" ondragstart="drag(event)" data-type="paragraph">
-                        <span class="element-icon">T</span>
-                        <span class="element-name">Text</span>
-                    </div>
-                    <div class="element-item" draggable="true" ondragstart="drag(event)" data-type="button">
-                        <span class="element-icon">▶</span>
-                        <span class="element-name">Button</span>
-                    </div>
-                    <div class="element-item" draggable="true" ondragstart="drag(event)" data-type="image">
-                        <span class="element-icon">▣</span>
-                        <span class="element-name">Image</span>
-                    </div>
-                    <div class="element-item" draggable="true" ondragstart="drag(event)" data-type="container">
-                        <span class="element-icon">□</span>
-                        <span class="element-name">Box</span>
-                    </div>
-                    <div class="element-item" draggable="true" ondragstart="drag(event)" data-type="form">
-                        <span class="element-icon">☰</span>
-                        <span class="element-name">Form</span>
-                    </div>
-                    <div class="element-item" draggable="true" ondragstart="drag(event)" data-type="card">
-                        <span class="element-icon">▭</span>
-                        <span class="element-name">Card</span>
-                    </div>
-                    <div class="element-item" draggable="true" ondragstart="drag(event)" data-type="navbar">
-                        <span class="element-icon">≡</span>
-                        <span class="element-name">Nav</span>
+                    <div id="sectionList" style="padding: 15px;">
+                        <!-- JS will populate -->
                     </div>
                 </div>
             </div>
 
-            <!-- Layers Panel -->
-            <div class="panel">
-                <div class="panel-header">
-                    <span class="panel-title">Layers</span>
-                    <button class="btn-icon" onclick="refreshLayers()" title="Refresh Layers">↺</button>
+            <!-- Assets Tab -->
+            <div class="tab-content" id="tab-assets">
+                <div class="panel">
+                    <div class="panel-header">
+                        <span class="panel-title">Asset Explorer</span>
+                    </div>
+                    <div style="padding: 15px;">
+                        <input type="text" class="input" placeholder="Search assets..." id="assetSearch" style="margin-bottom: 15px;">
+                        <div class="asset-grid" id="assetGrid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+                            <!-- JS will populate -->
+                        </div>
+                    </div>
                 </div>
-                <div class="layers-list" id="layersList">
-                    <div class="empty-layers">No elements yet</div>
+            </div>
+
+            <!-- Layers Tab -->
+            <div class="tab-content" id="tab-layers">
+                <div class="panel">
+                    <div class="panel-header">
+                        <span class="panel-title">Layers</span>
+                        <button class="btn-icon" onclick="refreshLayers()" title="Refresh Layers">↺</button>
+                    </div>
+                    <div class="layers-list" id="layersList">
+                        <div class="empty-layers">No elements yet</div>
+                    </div>
                 </div>
             </div>
         </aside>
@@ -212,9 +251,10 @@
                     <div class="toolbar-group">
                         <span class="toolbar-group-label">Analyze</span>
                         <div class="toolbar-group-buttons">
+                            <button class="btn btn-icon" onclick="runSEOAudit()" title="SEO Audit">🔎</button>
+                            <button class="btn btn-icon" onclick="runA11yAudit()" title="A11y Audit">♿</button>
                             <button class="btn btn-icon" onclick="showHistoryTimeline()" title="Edit History (Ctrl+H)">↺</button>
                             <button class="btn btn-icon" onclick="showPerformanceStats()" title="Performance">⚡</button>
-                            <button class="btn btn-icon" onclick="showStatistics()" title="Statistics">📊</button>
                         </div>
                     </div>
                     
@@ -283,6 +323,14 @@
                     <span class="section-toggle">▾</span>
                 </div>
                 <div class="section-content">
+                    <div class="ai-tool-card">
+                        <div class="ai-pill"><span>✨</span> AI Content</div>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn btn-soft" style="font-size: 11px; padding: 6px;" onclick="applyAI('headline')">Headline</button>
+                            <button class="btn btn-soft" style="font-size: 11px; padding: 6px;" onclick="applyAI('bio')">Bio</button>
+                            <button class="btn btn-soft" style="font-size: 11px; padding: 6px;" onclick="applyAI('cta')">CTA</button>
+                        </div>
+                    </div>
                     <div class="field">
                         <label>Type</label>
                         <select class="input" id="elementType" onchange="onElementTypeChange()">
@@ -296,6 +344,41 @@
                     <div class="field">
                         <label>Text</label>
                         <textarea class="input" id="elementText" rows="2" placeholder="Enter text..." oninput="livePreview()"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Appearance Section -->
+            <div class="props-section" data-section="appearance">
+                <div class="props-section-title" onclick="toggleSection(this)">
+                    <span>Animations & Effects</span>
+                    <span class="section-toggle">▾</span>
+                </div>
+                <div class="section-content">
+                    <div class="field">
+                        <label>Entry Animation</label>
+                        <select class="input" id="elementAnimation" onchange="onAnimationChange(this.value)">
+                            <option value="">None</option>
+                            <option value="fadeIn">Fade In</option>
+                            <option value="slideUp">Slide Up</option>
+                            <option value="slideInRight">Slide In Right</option>
+                            <option value="zoomIn">Zoom In</option>
+                            <option value="bounce">Bounce (Loop)</option>
+                            <option value="pulse">Pulse (Loop)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Global Style Presets -->
+            <div class="props-section" data-section="presets">
+                <div class="props-section-title" onclick="toggleSection(this)">
+                    <span>Style Presets</span>
+                    <span class="section-toggle">▾</span>
+                </div>
+                <div class="section-content">
+                    <div class="preset-grid" id="presetGrid">
+                        <!-- JS will populate -->
                     </div>
                 </div>
             </div>
@@ -579,6 +662,25 @@
                     <button class="btn btn-primary" style="flex: 1;" onclick="saveProfile()">Save Profile</button>
                     <button class="btn btn-secondary" style="flex: 1;" onclick="logoutUser()">Logout</button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Analysis Modal -->
+    <div id="analysisModal" class="analysis-modal">
+        <div class="analysis-container">
+            <div class="analysis-header">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <h2 id="analysisTitle" style="margin: 0; color: var(--color-text);">Audit Report</h2>
+                    <div class="score-badge" id="analysisScore">100</div>
+                </div>
+                <button class="btn-icon" onclick="document.getElementById('analysisModal').style.display='none'">×</button>
+            </div>
+            <div class="analysis-body" id="analysisList">
+                <!-- Issues will be listed here -->
+            </div>
+            <div class="analysis-footer">
+                <button class="btn btn-primary" onclick="document.getElementById('analysisModal').style.display='none'">Close Report</button>
             </div>
         </div>
     </div>
