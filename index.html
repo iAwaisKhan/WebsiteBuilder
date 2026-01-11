@@ -8,6 +8,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+    <script type="module" src="js/app.js" defer></script>
 </head>
 <body>
     <!-- Preloader -->
@@ -46,8 +48,15 @@
         </div>
         
         <div class="header-right">
+            <button class="btn-soft" onclick="exportProjectJSON()">
+                JSON Export
+            </button>
+            <label class="btn-soft" style="cursor: pointer;">
+                JSON Import
+                <input type="file" id="importProject" style="display: none;" onchange="importProjectJSON(event)">
+            </label>
             <button class="btn-soft" onclick="exportCode()">
-                Export
+                Code Export
             </button>
             <button class="btn-warm" onclick="saveProject()">
                 Save
@@ -565,8 +574,6 @@
         <span>✓</span>
         <span id="toastMessage">Action completed successfully!</span>
     </div>
-
-    <script src="script.js"></script>
 </body>
 </html>
 

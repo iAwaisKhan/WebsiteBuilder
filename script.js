@@ -100,7 +100,7 @@ function drop(event) {
 }
 
 // Component Creation
-function createComponent(type) {
+window.createComponent = function(type) {
     const canvas = document.getElementById('canvas');
     const element = document.createElement('div');
     element.className = 'canvas-element animate-in';
