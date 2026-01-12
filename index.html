@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WebBuilder — Craft Beautiful Websites ✨</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%236366f1%22/><text y=%22.9em%22 x=%2250%%22 font-size=%2270%22 text-anchor=%22middle%22 fill=%22white%22 font-family=%22Inter, sans-serif%22 font-weight=%22bold%22>W</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -13,76 +14,55 @@
 </head>
 <body>
     <!-- Preloader -->
-    <div id="preloader">
-        <div class="loader-content">
-            <div class="loader-logo">⚡</div>
-            <div class="loader-text">WebBuilder</div>
-            <div class="loader-bar">
-                <div class="loader-progress"></div>
+    <div id="preloader" class="preloader">
+        <div class="preloader-content">
+            <div class="preloader-logo">
+                <svg viewBox="0 0 100 100" class="preloader-svg">
+                    <rect width="100" height="100" rx="20" fill="#6366f1"/>
+                    <text y=".9em" x="50%" font-size="70" text-anchor="middle" fill="white" font-family="Inter, sans-serif" font-weight="bold">W</text>
+                </svg>
             </div>
+            <div class="preloader-bar">
+                <div class="preloader-progress"></div>
+            </div>
+            <p class="preloader-text">Loading WebBuilder...</p>
         </div>
     </div>
 
     <!-- Header - Clean & Simple -->
-    <header class="header">
+    <header class="header" role="banner" aria-label="Primary toolbar">
         <div class="header-left">
-            <div class="logo" title="Made with love ♥">
-                <span class="logo-mark">⚡</span>
+            <div class="logo">
                 <span class="logo-text">WebBuilder</span>
             </div>
         </div>
         
         <div class="header-center">
-            <div class="quick-actions">
-                <button class="action-btn" onclick="undoAction()" title="Undo">
-                    <span>↩</span>
-                </button>
-                <button class="action-btn" onclick="redoAction()" title="Redo">
-                    <span>↪</span>
-                </button>
-                <div class="action-divider"></div>
-                <button class="action-btn" id="toggleGrid" title="Toggle Grid">
-                    <span>▦</span>
-                </button>
-                <button class="action-btn" onclick="previewWebsite()" title="Preview">
-                    <span>👁</span>
-                </button>
-            </div>
+            <button class="action-btn" onclick="undoAction()">↩</button>
+            <button class="action-btn" onclick="redoAction()">↪</button>
+            <button class="action-btn" id="toggleGrid">▦</button>
+            <button class="action-btn" onclick="previewWebsite()">👁</button>
         </div>
         
         <div class="header-right">
-            <button class="btn-soft" onclick="exportProjectJSON()">
-                JSON Export
-            </button>
-            <label class="btn-soft" style="cursor: pointer;">
-                JSON Import
-                <input type="file" id="importProject" style="display: none;" onchange="importProjectJSON(event)">
-            </label>
-            <button class="btn-soft" onclick="exportCode()">
-                Code Export
-            </button>
-            <button class="btn-warm" onclick="saveProject()">
-                Save
-            </button>
-            <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle theme">
-                <span class="theme-icon">◐</span>
-            </button>
+            <button class="btn-soft" onclick="saveProject()">Save</button>
+            <button class="btn-warm" onclick="exportProductionHTML()">Export</button>
         </div>
     </header>
 
     <!-- Main Container -->
     <div class="main-container">
-        <!-- Sidebar - Clean & Simple -->
-        <aside class="sidebar">
-            <div class="sidebar-tabs">
-                <button class="tab-btn active" data-tab="build">Build</button>
+        <!-- Sidebar -->
+        <aside class="sidebar" role="complementary">
+            <nav class="sidebar-tabs">
+                <button class="tab-btn active" data-tab="build">Elements</button>
                 <button class="tab-btn" data-tab="sections">Sections</button>
                 <button class="tab-btn" data-tab="assets">Assets</button>
                 <button class="tab-btn" data-tab="layers">Layers</button>
-            </div>
+            </nav>
 
             <!-- Build Tab -->
-            <div class="tab-content active" id="tab-build">
+            <div class="tab-content active" id="tab-build" role="tabpanel" aria-labelledby="tab-build-button">
                 <!-- Templates Section -->
                 <div class="panel">
                     <div class="panel-header">
@@ -172,25 +152,26 @@
             </div>
 
             <!-- Sections Tab -->
-            <div class="tab-content" id="tab-sections">
+            <div class="tab-content" id="tab-sections" role="tabpanel" aria-labelledby="tab-sections-button">
                 <div class="panel">
                     <div class="panel-header">
                         <span class="panel-title">Section Library</span>
                     </div>
-                    <div id="sectionList" style="padding: 15px;">
+                    <div id="sectionList">
                         <!-- JS will populate -->
                     </div>
                 </div>
             </div>
 
             <!-- Assets Tab -->
-            <div class="tab-content" id="tab-assets">
+            <div class="tab-content" id="tab-assets" role="tabpanel" aria-labelledby="tab-assets-button">
                 <div class="panel">
                     <div class="panel-header">
                         <span class="panel-title">Asset Explorer</span>
                     </div>
-                    <div style="padding: 15px;">
-                        <input type="text" class="input" placeholder="Search assets..." id="assetSearch" style="margin-bottom: 15px;">
+                    <div>
+                        <label class="sr-only" for="assetSearch">Search assets</label>
+                        <input type="text" class="input" placeholder="Search assets..." id="assetSearch">
                         <div class="asset-grid" id="assetGrid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
                             <!-- JS will populate -->
                         </div>
@@ -199,11 +180,11 @@
             </div>
 
             <!-- Layers Tab -->
-            <div class="tab-content" id="tab-layers">
+            <div class="tab-content" id="tab-layers" role="tabpanel" aria-labelledby="tab-layers-button">
                 <div class="panel">
                     <div class="panel-header">
                         <span class="panel-title">Layers</span>
-                        <button class="btn-icon" onclick="refreshLayers()" title="Refresh Layers">↺</button>
+                        <button class="btn-icon" onclick="refreshLayers()" title="Refresh Layers" aria-label="Refresh layer list">↺</button>
                     </div>
                     <div class="layers-list" id="layersList">
                         <div class="empty-layers">No elements yet</div>
@@ -214,12 +195,12 @@
         <div class="resize-handle resize-handle-left" id="sidebarResizer"></div>
 
         <!-- Canvas -->
-        <main class="canvas-container">
+        <main class="canvas-container" role="main" aria-label="Design canvas and toolbar">
             <div class="canvas-toolbar">
                 <div class="device-selector">
-                    <button class="device-btn active" onclick="setDevice('desktop')" title="Desktop (Ctrl+1)">▢</button>
-                    <button class="device-btn" onclick="setDevice('tablet')" title="Tablet (Ctrl+2)">▭</button>
-                    <button class="device-btn" onclick="setDevice('mobile')" title="Mobile (Ctrl+3)">▯</button>
+                    <button class="device-btn active" onclick="setDevice('desktop')" title="Desktop (Ctrl+1)" aria-label="Switch to desktop preview (Ctrl+1)">▢</button>
+                    <button class="device-btn" onclick="setDevice('tablet')" title="Tablet (Ctrl+2)" aria-label="Switch to tablet preview (Ctrl+2)">▭</button>
+                    <button class="device-btn" onclick="setDevice('mobile')" title="Mobile (Ctrl+3)" aria-label="Switch to mobile preview (Ctrl+3)">▯</button>
                 </div>
                 
                 <div class="toolbar-groups">
@@ -227,9 +208,9 @@
                     <div class="toolbar-group">
                         <span class="toolbar-group-label">View</span>
                         <div class="toolbar-group-buttons">
-                            <button class="btn btn-icon" onclick="toggleGridLines()" title="Toggle Grid (G)">⊞</button>
-                            <button class="btn btn-icon" onclick="toggleFullscreen()" title="Fullscreen (F)">⛶</button>
-                            <button class="btn btn-icon" onclick="showElementFinder()" title="Find Elements (Ctrl+F)">⌕</button>
+                            <button class="btn btn-icon" onclick="toggleGridLines()" title="Toggle Grid (G)" aria-label="Toggle grid lines (G)">⊞</button>
+                            <button class="btn btn-icon" onclick="toggleFullscreen()" title="Fullscreen (F)" aria-label="Toggle fullscreen (F)">⛶</button>
+                            <button class="btn btn-icon" onclick="showElementFinder()" title="Find Elements (Ctrl+F)" aria-label="Find elements (Ctrl+F)">⌕</button>
                         </div>
                     </div>
                     
@@ -239,9 +220,9 @@
                     <div class="toolbar-group">
                         <span class="toolbar-group-label">Design</span>
                         <div class="toolbar-group-buttons">
-                            <button class="btn btn-icon" onclick="openAnimationBuilder()" title="Animation Builder">✦</button>
-                            <button class="btn btn-icon" onclick="openGradientGenerator()" title="Gradient Generator">◐</button>
-                            <button class="btn btn-icon" onclick="bulkEditElements()" title="Bulk Edit">▤</button>
+                            <button class="btn btn-icon" onclick="openAnimationBuilder()" title="Animation Builder" aria-label="Open animation builder">✦</button>
+                            <button class="btn btn-icon" onclick="openGradientGenerator()" title="Gradient Generator" aria-label="Open gradient generator">◐</button>
+                            <button class="btn btn-icon" onclick="bulkEditElements()" title="Bulk Edit" aria-label="Start bulk edit">▤</button>
                         </div>
                     </div>
                     
@@ -251,10 +232,10 @@
                     <div class="toolbar-group">
                         <span class="toolbar-group-label">Analyze</span>
                         <div class="toolbar-group-buttons">
-                            <button class="btn btn-icon" onclick="runSEOAudit()" title="SEO Audit">🔎</button>
-                            <button class="btn btn-icon" onclick="runA11yAudit()" title="A11y Audit">♿</button>
-                            <button class="btn btn-icon" onclick="showHistoryTimeline()" title="Edit History (Ctrl+H)">↺</button>
-                            <button class="btn btn-icon" onclick="showPerformanceStats()" title="Performance">⚡</button>
+                            <button class="btn btn-icon" onclick="runSEOAudit()" title="SEO Audit" aria-label="Run SEO audit">🔎</button>
+                            <button class="btn btn-icon" onclick="runA11yAudit()" title="A11y Audit" aria-label="Run accessibility audit">♿</button>
+                            <button class="btn btn-icon" onclick="showHistoryTimeline()" title="Edit History (Ctrl+H)" aria-label="Show edit history (Ctrl+H)">↺</button>
+                            <button class="btn btn-icon" onclick="showPerformanceStats()" title="Performance" aria-label="Show performance stats">⚡</button>
                         </div>
                     </div>
                     
@@ -264,10 +245,10 @@
                     <div class="toolbar-group">
                         <span class="toolbar-group-label">Actions</span>
                         <div class="toolbar-group-buttons">
-                            <button class="btn btn-icon" onclick="testResponsiveBreakpoints()" title="Test Breakpoints">📱</button>
-                            <button class="btn btn-icon" onclick="showKeyboardShortcuts()" title="Shortcuts (?)">⌨</button>
-                            <button class="btn btn-icon" onclick="exportAsHTML()" title="Export HTML">↗</button>
-                            <button class="btn btn-icon btn-danger-subtle" onclick="clearCanvas()" title="Clear Canvas">🗑</button>
+                            <button class="btn btn-icon" onclick="testResponsiveBreakpoints()" title="Test Breakpoints" aria-label="Test responsive breakpoints">📱</button>
+                            <button class="btn btn-icon" onclick="showKeyboardShortcuts()" title="Shortcuts (?)" aria-label="Show keyboard shortcuts">⌨</button>
+                            <button class="btn btn-icon" onclick="exportAsHTML()" title="Export HTML" aria-label="Export project HTML">↗</button>
+                            <button class="btn btn-icon btn-danger-subtle" onclick="clearCanvas()" title="Clear Canvas" aria-label="Clear canvas">🗑</button>
                         </div>
                     </div>
                 </div>
@@ -279,28 +260,10 @@
                 </div>
             </div>
             <div class="canvas-wrapper">
-                <div class="canvas" id="canvas" ondrop="drop(event)" ondragover="allowDrop(event)">
-                    <div class="canvas-empty-state animate-in">
-                        <div class="empty-state-icon">🎨</div>
-                        <h1 class="empty-state-title">Your canvas awaits</h1>
-                        <p class="empty-state-subtitle">Let's create something beautiful together.<br>Pick a template or drag some building blocks to begin!</p>
-                        
-                        <div class="empty-state-actions">
-                            <div class="quick-start-option" onclick="filterTemplates('all')">
-                                <span class="option-icon">✨</span>
-                                <span class="option-text">Start with a Template</span>
-                            </div>
-                            <div class="quick-start-option" onclick="document.querySelector('.component-item').focus()">
-                                <span class="option-icon">🧱</span>
-                                <span class="option-text">Build from Scratch</span>
-                            </div>
-                        </div>
-                        
-                        <div class="keyboard-hints">
-                            <span class="hint"><kbd>Ctrl</kbd>+<kbd>S</kbd> Save your work</span>
-                            <span class="hint"><kbd>Ctrl</kbd>+<kbd>Z</kbd> Undo mistakes</span>
-                            <span class="hint"><kbd>?</kbd> See all shortcuts</span>
-                        </div>
+                <div class="canvas" id="canvas" ondrop="drop(event)" ondragover="allowDrop(event)" role="region" aria-label="Design canvas" tabindex="0">
+                    <div class="canvas-empty-state">
+                        <h1 class="empty-state-title">Your workspace</h1>
+                        <p class="empty-state-subtitle">Drag components or choose a template to begin</p>
                     </div>
                 </div>
             </div>
@@ -308,232 +271,219 @@
 
         <div class="resize-handle resize-handle-right" id="propertiesResizer"></div>
 
-        <!-- Properties Panel - Clean & Simple -->
-        <aside class="properties-panel" id="propertiesPanel">
-            <!-- Header -->
-            <div class="props-header" id="propertiesHeader">
-                <span class="props-title">Properties</span>
-                <span class="props-hint" id="propertiesHint">Select an element</span>
+        <!-- Properties Panel -->
+        <aside class="properties-panel" id="propertiesPanel" role="complementary">
+            <div class="properties-header">
+                <h2 class="properties-title">Properties</h2>
             </div>
 
-            <!-- Content Section -->
-            <div class="props-section" data-section="content">
-                <div class="props-section-title" onclick="toggleSection(this)">
-                    <span>Content</span>
-                    <span class="section-toggle">▾</span>
-                </div>
-                <div class="section-content">
-                    <div class="ai-tool-card">
-                        <div class="ai-pill"><span>✨</span> AI Content</div>
-                        <div style="display: flex; gap: 8px;">
-                            <button class="btn btn-soft" style="font-size: 11px; padding: 6px;" onclick="applyAI('headline')">Headline</button>
-                            <button class="btn btn-soft" style="font-size: 11px; padding: 6px;" onclick="applyAI('bio')">Bio</button>
-                            <button class="btn btn-soft" style="font-size: 11px; padding: 6px;" onclick="applyAI('cta')">CTA</button>
+            <div class="properties-scroll-area">
+                <!-- Section: Content -->
+                <div class="properties-section" data-section="content">
+                    <div class="section-label" onclick="toggleSection(this)">
+                        <div class="section-label-left">
+                            <span>Content</span>
                         </div>
+                        <span class="section-chevron">▾</span>
                     </div>
-                    <div class="field">
-                        <label>Type</label>
-                        <select class="input" id="elementType" onchange="onElementTypeChange()">
-                            <option value="heading">Heading</option>
-                            <option value="paragraph">Paragraph</option>
-                            <option value="button">Button</option>
-                            <option value="image">Image</option>
-                            <option value="container">Container</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>Text</label>
-                        <textarea class="input" id="elementText" rows="2" placeholder="Enter text..." oninput="livePreview()"></textarea>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Appearance Section -->
-            <div class="props-section" data-section="appearance">
-                <div class="props-section-title" onclick="toggleSection(this)">
-                    <span>Animations & Effects</span>
-                    <span class="section-toggle">▾</span>
-                </div>
-                <div class="section-content">
-                    <div class="field">
-                        <label>Entry Animation</label>
-                        <select class="input" id="elementAnimation" onchange="onAnimationChange(this.value)">
-                            <option value="">None</option>
-                            <option value="fadeIn">Fade In</option>
-                            <option value="slideUp">Slide Up</option>
-                            <option value="slideInRight">Slide In Right</option>
-                            <option value="zoomIn">Zoom In</option>
-                            <option value="bounce">Bounce (Loop)</option>
-                            <option value="pulse">Pulse (Loop)</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Global Style Presets -->
-            <div class="props-section" data-section="presets">
-                <div class="props-section-title" onclick="toggleSection(this)">
-                    <span>Style Presets</span>
-                    <span class="section-toggle">▾</span>
-                </div>
-                <div class="section-content">
-                    <div class="preset-grid" id="presetGrid">
-                        <!-- JS will populate -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- Typography Section -->
-            <div class="props-section" data-section="typography">
-                <div class="props-section-title" onclick="toggleSection(this)">
-                    <span>Typography</span>
-                    <span class="section-toggle">▾</span>
-                </div>
-                <div class="section-content">
-                    <div class="form-row">
-                        <div class="form-group form-group-half">
-                            <label class="form-label">How big?</label>
-                            <div class="input-with-unit">
-                                <input type="number" class="form-control" id="fontSize" value="16" min="8" max="120" oninput="livePreview()">
-                                <span class="input-unit">px</span>
+                    <div class="section-body">
+                        <div class="field-group">
+                            <label class="field-label">Type</label>
+                            <div class="select-wrapper">
+                                <select class="field-select" id="elementType" onchange="onElementTypeChange()">
+                                    <option value="heading">Heading</option>
+                                    <option value="paragraph">Paragraph</option>
+                                    <option value="button">Button</option>
+                                    <option value="image">Image</option>
+                                    <option value="container">Box</option>
+                                </select>
                             </div>
                         </div>
-                        <div class="form-group form-group-half">
-                            <label class="form-label">Thickness</label>
-                            <select class="form-control" id="fontWeight" onchange="livePreview()">
-                                <option value="300">Thin</option>
-                                <option value="400" selected>Normal</option>
-                                <option value="500">Medium</option>
-                                <option value="600">Chunky</option>
-                                <option value="700">Bold</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Alignment</label>
-                        <div class="btn-group-toggle">
-                            <button type="button" class="btn-toggle active" data-value="left" onclick="setTextAlign('left')" title="Left">⬅</button>
-                            <button type="button" class="btn-toggle" data-value="center" onclick="setTextAlign('center')" title="Center">⬌</button>
-                            <button type="button" class="btn-toggle" data-value="right" onclick="setTextAlign('right')" title="Right">➡</button>
-                            <button type="button" class="btn-toggle" data-value="justify" onclick="setTextAlign('justify')" title="Justify">☰</button>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Text color</label>
-                        <div class="color-picker-wrapper">
-                            <input type="color" class="color-picker" id="textColor" value="#1e293b" oninput="syncColorInput('textColor')">
-                            <input type="text" class="form-control color-hex" id="textColorHex" value="#1e293b" oninput="syncColorPicker('textColor')">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Spacing Section -->
-            <div class="properties-section collapsible" data-section="spacing">
-                <div class="section-header" onclick="toggleSection(this)">
-                    <span class="section-icon">📐</span>
-                    <span>Breathing room</span>
-                    <span class="section-toggle">▾</span>
-                </div>
-                <div class="section-content">
-                    <div class="spacing-grid">
-                        <div class="spacing-group">
-                            <span class="spacing-label">Margin</span>
-                            <div class="spacing-inputs">
-                                <input type="number" class="spacing-num" id="marginTop" value="0" placeholder="T" oninput="livePreview()">
-                                <input type="number" class="spacing-num" id="marginRight" value="0" placeholder="R" oninput="livePreview()">
-                                <input type="number" class="spacing-num" id="marginBottom" value="0" placeholder="B" oninput="livePreview()">
-                                <input type="number" class="spacing-num" id="marginLeft" value="0" placeholder="L" oninput="livePreview()">
-                            </div>
-                        </div>
-                        <div class="spacing-group">
-                            <span class="spacing-label">Padding</span>
-                            <div class="spacing-inputs">
-                                <input type="number" class="spacing-num" id="paddingTop" value="16" placeholder="T" oninput="livePreview()">
-                                <input type="number" class="spacing-num" id="paddingRight" value="16" placeholder="R" oninput="livePreview()">
-                                <input type="number" class="spacing-num" id="paddingBottom" value="16" placeholder="B" oninput="livePreview()">
-                                <input type="number" class="spacing-num" id="paddingLeft" value="16" placeholder="L" oninput="livePreview()">
+                        <div class="field-group">
+                            <label class="field-label">Content</label>
+                            <textarea class="field-textarea" id="elementText" rows="3" placeholder="Click to edit..." oninput="livePreview()"></textarea>
+                            <div class="ai-assist-row">
+                                <button class="ai-chip" onclick="applyAI('headline')">Headline</button>
+                                <button class="ai-chip" onclick="applyAI('bio')">Bio</button>
+                                <button class="ai-chip" onclick="applyAI('cta')">CTA</button>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Appearance Section -->
-            <div class="props-section" data-section="appearance">
-                <div class="props-section-title" onclick="toggleSection(this)">
-                    <span>Appearance</span>
-                    <span class="section-toggle">▾</span>
-                </div>
-                <div class="section-content">
-                    <div class="field">
-                        <label>Background</label>
-                        <div class="color-row">
-                            <input type="color" class="color-input" id="bgColor" value="#ffffff" oninput="syncColorInput('bgColor')">
-                            <input type="text" class="input color-text" id="bgColorHex" value="#ffffff" oninput="syncColorPicker('bgColor')">
+                <!-- Section: Typography -->
+                <div class="properties-section" data-section="typography">
+                    <div class="section-label" onclick="toggleSection(this)">
+                        <div class="section-label-left">
+                            <span>Typography</span>
+                        </div>
+                        <span class="section-chevron">▾</span>
+                    </div>
+                    <div class="section-body">
+                        <div class="field-row">
+                            <div class="field-group half">
+                                <label class="field-label">Size</label>
+                                <div class="unit-input">
+                                    <input type="number" id="fontSize" value="16" oninput="livePreview()">
+                                    <span class="unit-tag">px</span>
+                                </div>
+                            </div>
+                            <div class="field-group half">
+                                <label class="field-label">Weight</label>
+                                <select class="field-select" id="fontWeight" onchange="livePreview()">
+                                    <option value="300">Light</option>
+                                    <option value="400" selected>Regular</option>
+                                    <option value="600">Semi</option>
+                                    <option value="700">Bold</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="field-group">
+                            <label class="field-label">Align & Color</label>
+                            <div class="dual-control">
+                                <div class="segmented-control">
+                                    <button class="seg-btn active" onclick="setTextAlign('left')">⬅</button>
+                                    <button class="seg-btn" onclick="setTextAlign('center')">⬌</button>
+                                    <button class="seg-btn" onclick="setTextAlign('right')">➡</button>
+                                </div>
+                                <div class="mini-color-picker">
+                                    <input type="color" id="textColor" value="#1e293b" oninput="syncColorInput('textColor')">
+                                    <input type="text" id="textColorHex" value="#1E293B" oninput="syncColorPicker('textColor')">
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="field">
-                        <label>Border Radius</label>
-                        <div class="slider-row">
-                            <input type="range" class="slider" id="borderRadiusSlider" value="8" min="0" max="50" oninput="syncSliderValue('borderRadius')">
-                            <input type="number" class="input input-tiny" id="borderRadius" value="8" min="0" max="50" oninput="syncSliderFromInput('borderRadius')">
+                </div>
+
+                <!-- Section: Layout & Spacing -->
+                <div class="properties-section" data-section="layout">
+                    <div class="section-label" onclick="toggleSection(this)">
+                        <div class="section-label-left">
+                            <span>Layout</span>
+                        </div>
+                        <span class="section-chevron">▾</span>
+                    </div>
+                    <div class="section-body">
+                        <div class="spacing-visualizer">
+                            <div class="spacing-container margin-box">
+                                <span class="box-tag">MARGIN</span>
+                                <input type="number" class="box-input t" id="marginTop" value="0" placeholder="0" oninput="livePreview()">
+                                <input type="number" class="box-input r" id="marginRight" value="0" placeholder="0" oninput="livePreview()">
+                                <input type="number" class="box-input b" id="marginBottom" value="0" placeholder="0" oninput="livePreview()">
+                                <input type="number" class="box-input l" id="marginLeft" value="0" placeholder="0" oninput="livePreview()">
+                                <div class="spacing-container padding-box">
+                                    <span class="box-tag">PADDING</span>
+                                    <input type="number" class="box-input t" id="paddingTop" value="16" placeholder="0" oninput="livePreview()">
+                                    <input type="number" class="box-input r" id="paddingRight" value="16" placeholder="0" oninput="livePreview()">
+                                    <input type="number" class="box-input b" id="paddingBottom" value="16" placeholder="0" oninput="livePreview()">
+                                    <input type="number" class="box-input l" id="paddingLeft" value="16" placeholder="0" oninput="livePreview()">
+                                    <div class="inner-box-placeholder"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="field">
-                        <label>Opacity</label>
-                        <div class="slider-row">
-                            <input type="range" class="slider" id="opacitySlider" value="100" min="0" max="100" oninput="syncSliderValue('opacity')">
-                            <input type="number" class="input input-tiny" id="opacity" value="100" min="0" max="100" oninput="syncSliderFromInput('opacity')">
+                </div>
+
+                <!-- Section: Appearance -->
+                <div class="properties-section" data-section="appearance">
+                    <div class="section-label" onclick="toggleSection(this)">
+                        <div class="section-label-left">
+                            <span>Appearance</span>
+                        </div>
+                        <span class="section-chevron">▾</span>
+                    </div>
+                    <div class="section-body">
+                        <div class="field-group">
+                            <label class="field-label">Background Color</label>
+                            <div class="full-color-picker">
+                                <input type="color" id="bgColor" value="#ffffff" oninput="syncColorInput('bgColor')">
+                                <input type="text" class="field-input" id="bgColorHex" value="#FFFFFF" oninput="syncColorPicker('bgColor')">
+                                <button class="btn-icon-soft" title="Set Transparent" onclick="setTransparentBg()">⭕</button>
+                            </div>
+                        </div>
+                        <div class="field-row">
+                            <div class="field-group half">
+                                <label class="field-label">Radius</label>
+                                <div class="slider-group">
+                                    <input type="range" id="borderRadiusSlider" min="0" max="100" value="12" oninput="syncSliderValue('borderRadius')">
+                                    <input type="number" id="borderRadius" value="12" oninput="syncSliderFromInput('borderRadius')">
+                                </div>
+                            </div>
+                            <div class="field-group half">
+                                <label class="field-label">Opacity</label>
+                                <div class="slider-group">
+                                    <input type="range" id="opacitySlider" min="0" max="100" value="100" oninput="syncSliderValue('opacity')">
+                                    <input type="number" id="opacity" value="100" oninput="syncSliderFromInput('opacity')">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section: Animation -->
+                <div class="properties-section" data-section="animation">
+                    <div class="section-label" onclick="toggleSection(this)">
+                        <div class="section-label-left">
+                            <span>Animation</span>
+                        </div>
+                        <span class="section-chevron">▾</span>
+                    </div>
+                    <div class="section-body">
+                        <div class="field-group">
+                            <label class="field-label">Entry Animation</label>
+                            <div class="control-row">
+                                <select class="field-select" id="elementAnimation" onchange="onAnimationChange(this.value)">
+                                    <option value="">None</option>
+                                    <option value="fadeIn">Fade In</option>
+                                    <option value="slideUp">Slide Up</option>
+                                    <option value="zoomIn">Zoom In</option>
+                                    <option value="bounce">Bounce</option>
+                                </select>
+                                <button class="btn-action-sm" onclick="applyAnimation()">▶</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section: Presets -->
+                <div class="properties-section" data-section="presets">
+                    <div class="section-label" onclick="toggleSection(this)">
+                        <div class="section-label-left">
+                            <span>Style Presets</span>
+                        </div>
+                        <span class="section-chevron">▾</span>
+                    </div>
+                    <div class="section-body">
+                        <div class="preset-pill-grid" id="presetGrid">
+                            <!-- JS populated -->
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Animation Section -->
-            <div class="props-section" data-section="animation">
-                <div class="props-section-title" onclick="toggleSection(this)">
-                    <span>Animation</span>
-                    <span class="section-toggle">▾</span>
-                </div>
-                <div class="section-content">
-                    <div class="field">
-                        <label>Effect</label>
-                        <select class="input" id="animationType">
-                            <option value="none">None</option>
-                            <option value="fadeIn">Fade In</option>
-                            <option value="slideInLeft">Slide Left</option>
-                            <option value="slideUp">Slide Up</option>
-                            <option value="pulse">Pulse</option>
-                            <option value="bounce">Bounce</option>
-                        </select>
-                    </div>
-                    <button class="btn-preview" onclick="applyAnimation()">Preview</button>
-                </div>
-            </div>
-
-            <!-- Actions -->
-            <div class="props-actions">
-                <button class="btn-apply" onclick="applyProperties()">Apply</button>
-                <div class="action-row">
-                    <button class="action-btn" onclick="duplicateElement()" title="Duplicate">⊞</button>
-                    <button class="action-btn" onclick="moveElementUp()" title="Move Up">↑</button>
-                    <button class="action-btn" onclick="moveElementDown()" title="Move Down">↓</button>
-                    <button class="action-btn danger" onclick="deleteSelectedElement()" title="Delete">×</button>
+            <div class="properties-footer">
+                <button class="btn-apply-main" onclick="applyProperties()">Update</button>
+                <div class="danger-actions">
+                    <button class="btn-util" onclick="duplicateElement()" title="Duplicate">❐</button>
+                    <button class="btn-util" onclick="moveElementUp()" title="Move Up">↑</button>
+                    <button class="btn-util" onclick="moveElementDown()" title="Move Down">↓</button>
+                    <button class="btn-util danger" onclick="deleteSelectedElement()" title="Delete">🗑</button>
                 </div>
             </div>
         </aside>
+
     </div>
 
     <!-- Export Modal -->
-    <div class="modal" id="exportModal">
+    <div class="modal" id="exportModal" role="dialog" aria-modal="true" aria-labelledby="exportModalTitle" aria-describedby="exportModalDesc">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title">📦 Ready to ship!</h2>
-                <button class="modal-close" onclick="closeModal('exportModal')">&times;</button>
+                <h2 class="modal-title" id="exportModalTitle">📦 Ready to ship!</h2>
+                <button class="modal-close" onclick="closeModal('exportModal')" aria-label="Close export dialog">&times;</button>
             </div>
+            <p id="exportModalDesc" class="sr-only">Select your preferred export format and share your project.</p>
             <div class="form-group">
-                <label class="form-label">Choose your format</label>
+                <label class="form-label" for="exportFormat">Choose your format</label>
                 <select class="form-control" id="exportFormat">
                     <option value="html">HTML (Everything in one file)</option>
                     <option value="separate">HTML, CSS, JS (Organized & clean)</option>
@@ -541,7 +491,7 @@
                 </select>
             </div>
             <div class="form-group">
-                <label class="form-label">Your beautiful code 💜</label>
+                <label class="form-label" for="exportCode">Your beautiful code 💜</label>
                 <textarea class="form-control" id="exportCode" rows="15" readonly style="font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12px;"></textarea>
             </div>
             <div style="display: flex; gap: 12px;">
@@ -552,25 +502,26 @@
     </div>
 
     <!-- User Profile Modal -->
-    <div class="modal" id="userProfileModal">
+    <div class="modal" id="userProfileModal" role="dialog" aria-modal="true" aria-labelledby="profileModalTitle" aria-describedby="profileModalDesc">
         <div class="modal-content" style="max-width: 600px;">
             <div class="modal-header">
-                <h2 class="modal-title">👋 Your Space</h2>
-                <button class="modal-close" onclick="closeModal('userProfileModal')">&times;</button>
+                <h2 class="modal-title" id="profileModalTitle">👋 Your Space</h2>
+                <button class="modal-close" onclick="closeModal('userProfileModal')" aria-label="Close profile dialog">&times;</button>
             </div>
+            <p id="profileModalDesc" class="sr-only">View or update your account details and preferences.</p>
             
             <!-- Login/Register Section (shown when not logged in) -->
             <div id="authSection" style="display: none;">
                 <div class="form-group">
-                    <label class="form-label">Email</label>
+                    <label class="form-label" for="authEmail">Email</label>
                     <input type="email" class="form-control" id="authEmail" placeholder="your@email.com">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Password</label>
+                    <label class="form-label" for="authPassword">Password</label>
                     <input type="password" class="form-control" id="authPassword" placeholder="Enter password">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Full Name</label>
+                    <label class="form-label" for="authName">Full Name</label>
                     <input type="text" class="form-control" id="authName" placeholder="John Doe">
                 </div>
                 <div style="display: flex; gap: 12px; margin-top: 24px;">
@@ -588,22 +539,22 @@
                 </div>
                 
                 <div class="form-group">
-                    <label class="form-label">Display Name</label>
+                    <label class="form-label" for="profileDisplayName">Display Name</label>
                     <input type="text" class="form-control" id="profileDisplayName" placeholder="Your display name">
                 </div>
                 
                 <div class="form-group">
-                    <label class="form-label">Bio</label>
+                    <label class="form-label" for="profileBio">Bio</label>
                     <textarea class="form-control" id="profileBio" rows="3" placeholder="Tell us about yourself..."></textarea>
                 </div>
                 
                 <div class="form-group">
-                    <label class="form-label">Website</label>
+                    <label class="form-label" for="profileWebsite">Website</label>
                     <input type="url" class="form-control" id="profileWebsite" placeholder="https://yourwebsite.com">
                 </div>
                 
                 <div class="form-group">
-                    <label class="form-label">Avatar Style</label>
+                    <label class="form-label" for="profileAvatarEmoji">Avatar Style</label>
                     <select class="form-control" id="profileAvatarEmoji" onchange="updateAvatarPreview()">
                         <option value="U">Default</option>
                         <option value="A">A</option>
@@ -667,15 +618,16 @@
     </div>
 
     <!-- Analysis Modal -->
-    <div id="analysisModal" class="analysis-modal">
-        <div class="analysis-container">
+    <div id="analysisModal" class="analysis-modal" role="dialog" aria-modal="true" aria-labelledby="analysisTitle" aria-describedby="analysisDesc">
+        <div class="analysis-container" role="document">
             <div class="analysis-header">
                 <div style="display: flex; align-items: center; gap: 15px;">
                     <h2 id="analysisTitle" style="margin: 0; color: var(--color-text);">Audit Report</h2>
                     <div class="score-badge" id="analysisScore">100</div>
                 </div>
-                <button class="btn-icon" onclick="document.getElementById('analysisModal').style.display='none'">×</button>
+                <button class="btn-icon" onclick="document.getElementById('analysisModal').style.display='none'" aria-label="Close audit report">×</button>
             </div>
+            <p id="analysisDesc" class="sr-only">Accessibility and performance warnings from the latest audit.</p>
             <div class="analysis-body" id="analysisList">
                 <!-- Issues will be listed here -->
             </div>

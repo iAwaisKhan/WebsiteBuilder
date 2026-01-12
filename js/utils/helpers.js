@@ -7,6 +7,9 @@ export function showToast(message) {
     toast.classList.remove('hide');
     toast.classList.add('show');
     
+    // Accessibility: announce to screen readers
+    announceToScreenReader(message);
+    
     clearTimeout(toast.hideTimeout);
     toast.hideTimeout = setTimeout(() => {
         toast.classList.add('hide');
@@ -14,6 +17,27 @@ export function showToast(message) {
             toast.classList.remove('show', 'hide');
         }, 300);
     }, 3000);
+}
+
+export function announceToScreenReader(message) {
+    let announcer = document.getElementById('sr-announcer');
+    if (!announcer) {
+        announcer = document.createElement('div');
+        announcer.id = 'sr-announcer';
+        announcer.setAttribute('aria-live', 'polite');
+        announcer.style.position = 'absolute';
+        announcer.style.width = '1px';
+        announcer.style.height = '1px';
+        announcer.style.padding = '0';
+        announcer.style.margin = '-1px';
+        announcer.style.overflow = 'hidden';
+        announcer.style.clip = 'rect(0, 0, 0, 0)';
+        announcer.style.whiteSpace = 'nowrap';
+        announcer.style.border = '0';
+        document.body.appendChild(announcer);
+    }
+    announcer.textContent = '';
+    setTimeout(() => { announcer.textContent = message; }, 50);
 }
 
 export function rgbToHex(rgb) {

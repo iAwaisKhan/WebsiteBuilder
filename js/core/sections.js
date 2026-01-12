@@ -111,11 +111,11 @@ export function addSection(sectionId) {
     const colors = typeof window.getThemeColors === 'function' ? window.getThemeColors() : {
         primary: '#6366f1',
         secondary: '#4f46e5',
-        surface: '#f8fafc',
-        text: '#1e293b',
-        textSecondary: '#64748b',
-        border: '#e2e8f0',
-        background: '#ffffff'
+        surface: '#ffffff',
+        text: '#1a1b1e',
+        textSecondary: '#4a4d55',
+        border: '#e9ecef',
+        background: '#fdfdfd'
     };
 
     const sectionHTML = template.render(colors);

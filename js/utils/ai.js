@@ -19,6 +19,20 @@ const AI_RESPONSES = {
         "Experience the magic for yourself",
         "Get started in under 5 minutes",
         "Claim your spot on the waitlist"
+    ],
+    sales: [
+        "Get 50% off for the first 3 months!",
+        "Limited time offer: Free shipping on all orders",
+        "Boost your conversion rate by 300%",
+        "The secret weapon for modern marketers",
+        "Invest in quality that lasts a lifetime"
+    ],
+    smart: [
+        "Automated workflows for distributed teams",
+        "Data-driven insights at your fingertips",
+        "The intelligent way to scale your business",
+        "Seamlessly integrate with your existing stack",
+        "Privacy-first engineering for the modern web"
     ]
 };
 

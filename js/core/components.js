@@ -1,76 +1,181 @@
-import { getThemeColors } from '../state.js';
+import { getThemeColors, state } from '../state.js';
 
 export const ComponentRegistry = {
+    // Layout Elements
+    row: {
+        category: 'layout',
+        name: 'Row',
+        create: (colors) => ({
+            tag: 'div',
+            classes: ['flex-row'],
+            style: { 
+                display: 'flex', 
+                gap: '20px', 
+                padding: '24px', 
+                minHeight: '100px', 
+                backgroundColor: 'transparent',
+                width: '100%'
+            },
+            content: ''
+        })
+    },
+    column: {
+        category: 'layout',
+        name: 'Column',
+        create: (colors) => ({
+            tag: 'div',
+            classes: ['flex-col'],
+            style: { 
+                display: 'flex', 
+                flexDirection: 'column', 
+                gap: '12px', 
+                flex: '1',
+                padding: '12px',
+                border: `1px dashed ${colors.border}`,
+                minHeight: '80px',
+                borderRadius: '8px'
+            }
+        })
+    },
+    grid: {
+        category: 'layout',
+        name: 'Grid (3-Col)',
+        create: (colors) => ({
+            tag: 'div',
+            style: { 
+                display: 'grid', 
+                gridTemplateColumns: 'repeat(3, 1fr)', 
+                gap: '20px', 
+                padding: '24px',
+                width: '100%'
+            },
+            innerHTML: `
+                <div style="min-height: 100px; border: 1px dashed ${colors.border}; border-radius: 8px;"></div>
+                <div style="min-height: 100px; border: 1px dashed ${colors.border}; border-radius: 8px;"></div>
+                <div style="min-height: 100px; border: 1px dashed ${colors.border}; border-radius: 8px;"></div>
+            `
+        })
+    },
+    // Content Elements
     heading: {
+        category: 'content',
+        name: 'Heading',
         create: (colors) => ({
             tag: 'h2',
-            style: { color: colors.text, margin: '0' },
-            content: 'New Heading'
+            style: { color: colors.text, margin: '0', fontSize: '32px', fontWeight: '700' },
+            content: 'Elevate Your Vision'
         })
     },
     paragraph: {
+        category: 'content',
+        name: 'Paragraph',
         create: (colors) => ({
             tag: 'p',
-            style: { color: colors.textSecondary, margin: '0' },
-            content: 'This is a new paragraph. Click to edit the text and customize its appearance.'
+            style: { color: colors.textSecondary, margin: '0', lineHeight: '1.6', fontSize: '16px' },
+            content: 'Craft stunning websites with our intuitive builder. Start with a template or build from scratch.'
         })
     },
     button: {
+        category: 'content',
+        name: 'Button',
         create: () => ({
             tag: 'button',
-            style: { padding: '12px 24px', background: '#6366f1', color: 'white', border: 'none', borderRadius: '8px', fontSize: '14px', fontWeight: '500', cursor: 'pointer' },
-            content: 'Click Me'
+            style: { 
+                padding: '14px 28px', 
+                background: '#6366f1', 
+                color: 'white', 
+                border: 'none', 
+                borderRadius: '10px', 
+                fontSize: '16px', 
+                fontWeight: '600', 
+                cursor: 'pointer',
+                transition: 'all 0.2s ease'
+            },
+            content: 'Get Started'
         })
     },
     image: {
+        category: 'content',
+        name: 'Image',
         create: () => ({
             tag: 'img',
-            style: { width: '100%', borderRadius: '8px' },
-            attributes: { src: 'https://via.placeholder.com/400x200?text=Image+Placeholder', alt: 'Placeholder' }
+            style: { width: '100%', borderRadius: '12px', objectFit: 'cover' },
+            attributes: { src: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80', alt: 'Showcase' }
         })
     },
-    container: {
-        create: (colors) => ({
-            tag: 'div',
-            style: { padding: '48px 24px', background: colors.surface, border: `2px dashed ${colors.border}`, borderRadius: '12px', minHeight: '100px', display: 'flex', alignItems: 'center', justifyContent: 'center' },
-            content: 'Container - Drop elements here'
-        })
-    },
-    form: {
-        create: (colors) => {
-            const form = document.createElement('form');
-            form.style.padding = '20px';
-            form.innerHTML = `
-                <div style="margin-bottom: 16px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 500; color: ${colors.text};">Email Address</label>
-                    <input type="email" placeholder="hello@example.com" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid ${colors.border}; background: ${colors.background}; color: ${colors.text};">
-                </div>
-                <button type="button" style="width: 100%; padding: 10px; background: #6366f1; color: white; border: none; border-radius: 6px; cursor: pointer;">Subscribe</button>
-            `;
-            return { tag: 'div', element: form };
-        }
-    },
+    // Interactive Elements
     card: {
+        category: 'interactive',
+        name: 'Feature Card',
         create: (colors) => ({
             tag: 'div',
-            style: { padding: '24px', background: colors.surface, border: `1px solid ${colors.border}`, borderRadius: '16px', boxShadow: 'var(--shadow-md)' },
+            style: { 
+                padding: '32px', 
+                background: colors.surface, 
+                border: `1px solid ${colors.border}`, 
+                borderRadius: '24px', 
+                boxShadow: 'var(--shadow-md)',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '16px'
+            },
             innerHTML: `
-                <h3 style="margin: 0 0 12px 0; color: ${colors.text};">Card Title</h3>
-                <p style="margin: 0; color: ${colors.textSecondary}; font-size: 14px; line-height: 1.6;">This is a premium card component. You can add images, text, or buttons inside it.</p>
+                <div style="width: 48px; height: 48px; background: rgba(99, 102, 241, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #6366f1; font-size: 24px;">✨</div>
+                <h3 style="margin: 0; color: ${colors.text}; font-size: 20px;">Innovative Feature</h3>
+                <p style="margin: 0; color: ${colors.textSecondary}; font-size: 14px; line-height: 1.6;">Build faster and smarter with our powerful suite of design tools and AI-driven insights.</p>
             `
         })
     },
     navbar: {
+        category: 'sections',
+        name: 'Classic Navigation',
         create: (colors) => ({
             tag: 'nav',
-            style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 32px', background: colors.surface, borderBottom: `1px solid ${colors.border}`, borderRadius: '8px' },
+            style: { 
+                display: 'flex', 
+                justifyContent: 'space-between', 
+                alignItems: 'center', 
+                padding: '16px 40px', 
+                background: colors.surface, 
+                borderBottom: `1px solid ${colors.border}`, 
+                borderRadius: '8px',
+                width: '100%',
+                position: 'sticky',
+                top: '0',
+                zIndex: '50'
+            },
             innerHTML: `
-                <div style="font-weight: 700; color: ${colors.text}; font-size: 20px;">LOGO</div>
-                <div style="display: flex; gap: 24px; color: ${colors.textSecondary}; font-size: 14px; font-weight: 500;">
-                    <span style="cursor: pointer;">Home</span>
-                    <span style="cursor: pointer;">Features</span>
-                    <span style="cursor: pointer;">Pricing</span>
-                    <span style="cursor: pointer;">Contact</span>
+                <div style="font-weight: 800; color: #6366f1; font-size: 22px; letter-spacing: -1px;">DESIGNER.</div>
+                <div style="display: flex; gap: 32px; color: ${colors.textSecondary}; font-size: 15px; font-weight: 500;">
+                    <span style="cursor: pointer; &:hover { color: #6366f1; }">Home</span>
+                    <span style="cursor: pointer;">Solutions</span>
+                    <span style="cursor: pointer;">Enterprise</span>
+                    <span style="cursor: pointer;">Company</span>
+                </div>
+                <div>
+                   <button style="padding: 10px 20px; border-radius: 8px; border: 1px solid ${colors.border}; background: transparent; color: ${colors.text}; font-weight: 600; cursor: pointer;">Sign In</button>
+                </div>
+            `
+        })
+    },
+    hero: {
+        category: 'sections',
+        name: 'Impact Hero',
+        create: (colors) => ({
+            tag: 'section',
+            style: {
+                padding: '100px 40px',
+                textAlign: 'center',
+                backgroundColor: colors.surface,
+                borderRadius: '20px',
+                margin: '20px 0'
+            },
+            innerHTML: `
+                <h1 style="font-size: 64px; font-weight: 800; color: ${colors.text}; margin-bottom: 24px; line-height: 1.1;">Create Amazing <br><span style="color: #6366f1;">Digital Experiences</span></h1>
+                <p style="font-size: 20px; color: ${colors.textSecondary}; margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto;">The all-in-one platform to design, build, and launch incredible websites that convert.</p>
+                <div style="display: flex; gap: 16px; justify-content: center;">
+                    <button style="padding: 16px 32px; background: #6366f1; color: white; border: none; border-radius: 12px; font-weight: 600; cursor: pointer;">Start Free Trial</button>
+                    <button style="padding: 16px 32px; background: transparent; border: 1px solid ${colors.border}; color: ${colors.text}; border-radius: 12px; font-weight: 600; cursor: pointer;">View Demo</button>
                 </div>
             `
         })
@@ -83,21 +188,39 @@ export function createComponent(type) {
     if (!config) return null;
 
     const data = config.create(colors);
-    const wrapper = document.createElement('div');
-    wrapper.className = 'canvas-element animate-in';
+    const element = document.createElement(data.tag);
     
-    let inner;
-    if (data.element) {
-        inner = data.element;
-    } else {
-        inner = document.createElement(data.tag);
-        if (data.content) inner.textContent = data.content;
-        if (data.innerHTML) inner.innerHTML = data.innerHTML;
-        if (data.style) Object.assign(inner.style, data.style);
-        if (data.attributes) {
-            for (const [key, value] of Object.entries(data.attributes)) {
-                inner.setAttribute(key, value);
-            }
+    // Set type identifier
+    element.dataset.type = type;
+    element.className = 'canvas-element animate-in';
+    
+    if (data.classes) {
+        data.classes.forEach(cls => element.classList.add(cls));
+    }
+    
+    if (data.content) element.textContent = data.content;
+    if (data.innerHTML) element.innerHTML = data.innerHTML;
+    if (data.style) Object.assign(element.style, data.style);
+    
+    if (data.attributes) {
+        for (const [key, value] of Object.entries(data.attributes)) {
+            element.setAttribute(key, value);
+        }
+    }
+
+    // Accessibility Enhancements
+    element.setAttribute('role', data.tag === 'button' ? 'button' : 'region');
+    element.setAttribute('aria-label', data.name || type);
+    element.tabIndex = 0; // Make focusable for keyboard users
+
+    // Make content editable for text elements
+    if (['H1', 'H2', 'H3', 'P', 'SPAN', 'BUTTON'].includes(data.tag)) {
+        element.contentEditable = 'true';
+        element.setAttribute('aria-multiline', 'true');
+    }
+
+    return element;
+}
         }
     }
 

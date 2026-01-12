@@ -1,7 +1,10 @@
+import { checkAlignment, drawGuides, removeGuides } from '../utils/alignment.js';
+
 const GRID_SIZE = 20;
 
 export function snapToGrid(value) {
-    const useGrid = !document.getElementById('canvas').classList.contains('no-grid');
+    const canvas = document.getElementById('canvas');
+    const useGrid = !canvas.classList.contains('no-grid');
     if (!useGrid) return value;
     return Math.round(value / GRID_SIZE) * GRID_SIZE;
 }
@@ -44,16 +47,24 @@ function initDraggable(element) {
             const dx = e.clientX - startX;
             const dy = e.clientY - startY;
 
-            element.style.left = snapToGrid(startLeft + dx) + 'px';
-            element.style.top = snapToGrid(startTop + dy) + 'px';
+            const newLeft = startLeft + dx;
+            const newTop = startTop + dy;
+
+            element.style.left = snapToGrid(newLeft) + 'px';
+            element.style.top = snapToGrid(newTop) + 'px';
             element.style.position = 'absolute';
             
-            if (window.saveState) window.saveState();
+            // Draw alignment guides
+            const canvas = document.getElementById('canvas');
+            const guides = checkAlignment(element, canvas);
+            drawGuides(guides);
         }
 
         function onMouseUp() {
+            removeGuides();
             document.removeEventListener('mousemove', onMouseMove);
             document.removeEventListener('mouseup', onMouseUp);
+            if (window.saveState) window.saveState();
         }
 
         document.addEventListener('mousemove', onMouseMove);
@@ -81,6 +92,7 @@ function startResize(e, element, type) {
     function onMouseMove(e) {
         const dx = e.clientX - startX;
         const dy = e.clientY - startY;
+        const canvas = document.getElementById('canvas');
 
         if (type.includes('e')) {
             element.style.width = snapToGrid(startWidth + dx) + 'px';
@@ -98,13 +110,16 @@ function startResize(e, element, type) {
             element.style.height = newHeight + 'px';
             element.style.top = snapToGrid(startTop + (startHeight - newHeight)) + 'px';
         }
-        
-        if (window.saveState) window.saveState();
+
+        const guides = checkAlignment(element, canvas);
+        drawGuides(guides);
     }
 
     function onMouseUp() {
+        removeGuides();
         document.removeEventListener('mousemove', onMouseMove);
         document.removeEventListener('mouseup', onMouseUp);
+        if (window.saveState) window.saveState();
     }
 
     document.addEventListener('mousemove', onMouseMove);

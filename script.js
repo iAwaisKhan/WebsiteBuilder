@@ -3,7 +3,6 @@ let selectedElement = null;
 let undoStack = [];
 let redoStack = [];
 let currentDevice = 'desktop';
-let isDarkMode = true;
 
 // User Profile State
 let currentUser = null;
@@ -16,63 +15,128 @@ let userStats = {
 
 // Template filtering
 function filterTemplates(category) {
-    // Update active tab
-    document.querySelectorAll('.template-tab').forEach(tab => {
-        tab.classList.toggle('active', tab.dataset.category === category);
+    // Update active pill
+    document.querySelectorAll('.filter-pills .pill').forEach(pill => {
+        pill.classList.toggle('active', pill.dataset.category === category);
     });
     
-    // Filter template items
-    document.querySelectorAll('.template-item').forEach(item => {
-        if (category === 'all' || item.dataset.category === category) {
-            item.classList.remove('hidden');
-            item.style.animation = 'fadeSlideIn 0.3s ease forwards';
+    // Filter template cards
+    document.querySelectorAll('.template-card').forEach(card => {
+        if (category === 'all' || card.dataset.category === category) {
+            card.classList.remove('hidden');
+            card.style.animation = 'fadeIn 0.3s ease forwards';
         } else {
-            item.classList.add('hidden');
+            card.classList.add('hidden');
         }
     });
 }
 
-// Theme Management
-function initTheme() {
-    // Check for saved theme preference or default to dark mode
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'light') {
-        document.body.classList.add('light-mode');
-        isDarkMode = false;
-        updateThemeIcon();
+function handleGlobalShortcuts(event) {
+    if (!event.key) return;
+    const target = event.target;
+    if (['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName) || target.isContentEditable) return;
+
+    const key = event.key.toLowerCase();
+
+    if (event.ctrlKey && key === 's') {
+        event.preventDefault();
+        saveProject();
+        return;
+    }
+
+    if (event.ctrlKey && key === 'z') {
+        event.preventDefault();
+        if (event.shiftKey) {
+            redoAction();
+        } else {
+            undoAction();
+        }
+        return;
+    }
+
+    if (event.ctrlKey && key === 'f') {
+        event.preventDefault();
+        showElementFinder();
+        return;
+    }
+
+    if (event.ctrlKey && key === 'h') {
+        event.preventDefault();
+        showHistoryTimeline();
+        return;
+    }
+
+    if (event.ctrlKey && key === '1') {
+        event.preventDefault();
+        setDevice('desktop');
+        return;
+    }
+
+    if (event.ctrlKey && key === '2') {
+        event.preventDefault();
+        setDevice('tablet');
+        return;
+    }
+
+    if (event.ctrlKey && key === '3') {
+        event.preventDefault();
+        setDevice('mobile');
+        return;
+    }
+
+    if (key === 'g') {
+        event.preventDefault();
+        toggleGridLines();
+        return;
+    }
+
+    if (key === 'f') {
+        event.preventDefault();
+        toggleFullscreen();
+        return;
+    }
+
+    if (event.key === '?' || (event.key === '/' && event.shiftKey)) {
+        event.preventDefault();
+        showKeyboardShortcuts();
+        return;
+    }
+
+    if (event.key === 'Delete' || event.key === 'Backspace') {
+        event.preventDefault();
+        deleteSelectedElement();
+        return;
+    }
+
+    if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        moveElementUp();
+        return;
+    }
+
+    if (event.key === 'ArrowDown') {
+        event.preventDefault();
+        moveElementDown();
     }
 }
 
-function toggleTheme() {
-    isDarkMode = !isDarkMode;
-    document.body.classList.toggle('light-mode');
-    
-    // Save preference
-    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-    
-    // Update icon
-    updateThemeIcon();
-}
-
-function updateThemeIcon() {
-    const icon = document.querySelector('#themeToggle .theme-icon');
-    if (icon) {
-        icon.textContent = isDarkMode ? '◐' : '◑';
-    }
+function initAccessibilityShortcuts() {
+    document.addEventListener('keydown', handleGlobalShortcuts);
 }
 
 // Initialize theme on page load
-window.addEventListener('DOMContentLoaded', initTheme);
+window.addEventListener('DOMContentLoaded', () => {
+    initAccessibilityShortcuts();
+});
 
-// Helper function to get current theme colors
+// Helper function to get current theme colors (Light Mode)
 function getThemeColors() {
-    const isLight = document.body.classList.contains('light-mode');
     return {
-        text: isLight ? '#1e293b' : '#f1f5f9',
-        textSecondary: isLight ? '#64748b' : '#94a3b8',
-        background: isLight ? '#ffffff' : '#334155',
-        border: isLight ? '#e2e8f0' : '#475569',
-        surface: isLight ? '#f8fafc' : '#1e293b'
+        text: '#1a1b1e',
+        textSecondary: '#4a4d55',
+        background: '#fdfdfd',
+        border: '#e9ecef',
+        surface: '#ffffff'
     };
 }
 
@@ -220,41 +284,44 @@ function applyProperties() {
         return;
     }
 
-    const text = document.getElementById('elementText').value;
-    const fontSize = document.getElementById('fontSize').value;
+    const text = document.getElementById('elementText')?.value;
+    const fontSize = document.getElementById('fontSize')?.value;
     const fontWeight = document.getElementById('fontWeight')?.value || '400';
-    const textColor = document.getElementById('textColor').value;
-    const bgColor = document.getElementById('bgColor').value;
-    const borderRadius = document.getElementById('borderRadius').value;
+    const textColor = document.getElementById('textColor')?.value;
+    const bgColor = document.getElementById('bgColor')?.value;
+    const borderRadius = document.getElementById('borderRadius')?.value;
     const opacity = document.getElementById('opacity')?.value || 100;
     
     // Get individual padding values
-    const paddingTop = document.getElementById('paddingTop')?.value || 16;
-    const paddingRight = document.getElementById('paddingRight')?.value || 16;
-    const paddingBottom = document.getElementById('paddingBottom')?.value || 16;
-    const paddingLeft = document.getElementById('paddingLeft')?.value || 16;
+    const paddingTop = document.getElementById('paddingTop')?.value || 0;
+    const paddingRight = document.getElementById('paddingRight')?.value || 0;
+    const paddingBottom = document.getElementById('paddingBottom')?.value || 0;
+    const paddingLeft = document.getElementById('paddingLeft')?.value || 0;
     
     // Get individual margin values
     const marginTop = document.getElementById('marginTop')?.value || 0;
+    const marginRight = document.getElementById('marginRight')?.value || 0;
     const marginBottom = document.getElementById('marginBottom')?.value || 0;
+    const marginLeft = document.getElementById('marginLeft')?.value || 0;
 
-    if (text) {
+    if (text !== undefined) {
         const textElement = selectedElement.querySelector('h1, h2, h3, p, button, a, span');
         if (textElement) textElement.textContent = text;
     }
 
-    selectedElement.style.fontSize = fontSize + 'px';
-    selectedElement.style.fontWeight = fontWeight;
-    selectedElement.style.color = textColor;
-    selectedElement.style.backgroundColor = bgColor;
+    if (fontSize) selectedElement.style.fontSize = fontSize + 'px';
+    if (fontWeight) selectedElement.style.fontWeight = fontWeight;
+    if (textColor) selectedElement.style.color = textColor;
+    if (bgColor) selectedElement.style.backgroundColor = bgColor;
+    
     selectedElement.style.padding = `${paddingTop}px ${paddingRight}px ${paddingBottom}px ${paddingLeft}px`;
-    selectedElement.style.marginTop = marginTop + 'px';
-    selectedElement.style.marginBottom = marginBottom + 'px';
-    selectedElement.style.borderRadius = borderRadius + 'px';
-    selectedElement.style.opacity = opacity / 100;
+    selectedElement.style.margin = `${marginTop}px ${marginRight}px ${marginBottom}px ${marginLeft}px`;
+    
+    if (borderRadius) selectedElement.style.borderRadius = borderRadius + 'px';
+    if (opacity) selectedElement.style.opacity = opacity / 100;
 
     saveState();
-    showToast('Looking good! ✨');
+    updateBadge(); // Keep the badge in sync if text changed
 }
 
 // ===== OPTIMIZED PROPERTIES PANEL FUNCTIONS =====
@@ -329,7 +396,7 @@ function syncSliderFromInput(id) {
 // Set text alignment
 function setTextAlign(align) {
     // Update toggle buttons
-    document.querySelectorAll('.btn-toggle').forEach(btn => {
+    document.querySelectorAll('.seg-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.value === align);
     });
     
@@ -457,15 +524,20 @@ function loadElementProperties(element) {
     
     const computed = window.getComputedStyle(element);
     
+    // Update badge
+    updateBadge();
+    
     // Text content
     const textEl = element.querySelector('h1, h2, h3, p, button, a, span');
-    if (textEl) {
+    if (textEl && document.getElementById('elementText')) {
         document.getElementById('elementText').value = textEl.textContent;
     }
     
     // Font size
     const fontSize = parseInt(computed.fontSize);
-    document.getElementById('fontSize').value = fontSize;
+    if (document.getElementById('fontSize')) {
+        document.getElementById('fontSize').value = fontSize;
+    }
     
     // Font weight
     const fontWeight = document.getElementById('fontWeight');
@@ -473,18 +545,24 @@ function loadElementProperties(element) {
     
     // Colors
     const textColor = rgbToHex(computed.color);
-    document.getElementById('textColor').value = textColor;
-    document.getElementById('textColorHex').value = textColor.toUpperCase();
+    if (document.getElementById('textColor')) {
+        document.getElementById('textColor').value = textColor;
+        document.getElementById('textColorHex').value = textColor.toUpperCase();
+    }
     
     const bgColor = computed.backgroundColor === 'transparent' || computed.backgroundColor === 'rgba(0, 0, 0, 0)' 
         ? '#ffffff' 
         : rgbToHex(computed.backgroundColor);
-    document.getElementById('bgColor').value = bgColor;
-    document.getElementById('bgColorHex').value = bgColor.toUpperCase();
+    if (document.getElementById('bgColor')) {
+        document.getElementById('bgColor').value = bgColor;
+        document.getElementById('bgColorHex').value = bgColor.toUpperCase();
+    }
     
     // Border radius
     const borderRadius = parseInt(computed.borderRadius) || 0;
-    document.getElementById('borderRadius').value = borderRadius;
+    if (document.getElementById('borderRadius')) {
+        document.getElementById('borderRadius').value = borderRadius;
+    }
     if (document.getElementById('borderRadiusSlider')) {
         document.getElementById('borderRadiusSlider').value = borderRadius;
     }
@@ -513,21 +591,42 @@ function loadElementProperties(element) {
     
     // Margin
     const marginTop = parseInt(computed.marginTop) || 0;
+    const marginRight = parseInt(computed.marginRight) || 0;
     const marginBottom = parseInt(computed.marginBottom) || 0;
+    const marginLeft = parseInt(computed.marginLeft) || 0;
     
     if (document.getElementById('marginTop')) {
         document.getElementById('marginTop').value = marginTop;
+        document.getElementById('marginRight').value = marginRight;
         document.getElementById('marginBottom').value = marginBottom;
+        document.getElementById('marginLeft').value = marginLeft;
     }
     
     // Text align buttons
     const textAlign = computed.textAlign;
-    document.querySelectorAll('.btn-toggle').forEach(btn => {
+    document.querySelectorAll('.seg-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.value === textAlign);
     });
     
     // Update hint
     updatePropertiesHint();
+}
+
+function updateBadge() {
+    const badge = document.getElementById('selectedElementBadge');
+    if (!badge || !selectedElement) return;
+    
+    const textEl = selectedElement.querySelector('h1, h2, h3, p, button, a, span');
+    let typeName = selectedElement.dataset.type || 'Element';
+    
+    if (selectedElement.querySelector('h1, h2, h3')) typeName = 'Heading';
+    else if (selectedElement.querySelector('p')) typeName = 'Paragraph';
+    else if (selectedElement.querySelector('button')) typeName = 'Button';
+    else if (selectedElement.querySelector('img')) typeName = 'Image';
+    else if (selectedElement.querySelector('nav')) typeName = 'Navbar';
+    else if (selectedElement.querySelector('form')) typeName = 'Form';
+    
+    badge.textContent = typeName;
 }
 
 // RGB to Hex converter
@@ -756,6 +855,7 @@ function exportCode() {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Website</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%236366f1%22/><text y=%22.9em%22 x=%2250%%22 font-size=%2270%22 text-anchor=%22middle%22 fill=%22white%22 font-family=%22Inter, sans-serif%22 font-weight=%22bold%22>W</text></svg>">
     <style>
         * {
             margin: 0;
@@ -1202,6 +1302,7 @@ function exportAsHTML() {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Website</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%236366f1%22/><text y=%22.9em%22 x=%2250%%22 font-size=%2270%22 text-anchor=%22middle%22 fill=%22white%22 font-family=%22Inter, sans-serif%22 font-weight=%22bold%22>W</text></svg>">
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
