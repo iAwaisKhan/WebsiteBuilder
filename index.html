@@ -46,6 +46,7 @@
         
         <div class="header-right">
             <button class="btn-soft" onclick="saveProject()">Save</button>
+            <button class="btn-ghost" onclick="exportProjectJSON()">JSON</button>
             <button class="btn-warm" onclick="exportProductionHTML()">Export</button>
         </div>
     </header>
@@ -663,6 +664,9 @@
         <span>✓</span>
         <span id="toastMessage">Action completed successfully!</span>
     </div>
+
+    <!-- Exit Preview Button -->
+    <button class="exit-preview" id="exitPreview" onclick="togglePreviewMode()">Exit Preview</button>
 </body>
 </html>
 

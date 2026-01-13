@@ -1,5 +1,6 @@
 export const state = {
     selectedElement: null,
+    copiedElement: null,
     undoStack: [],
     redoStack: []
 };

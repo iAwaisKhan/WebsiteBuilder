@@ -26,7 +26,6 @@ export function addResizeHandles(element) {
 }
 
 function initDraggable(element) {
-    // Use a flag to avoid multiple listeners
     if (element.dataset.draggableInit) return;
     element.dataset.draggableInit = 'true';
 
@@ -42,25 +41,29 @@ function initDraggable(element) {
         const startY = e.clientY;
         const startTop = element.offsetTop;
         const startLeft = element.offsetLeft;
+        
+        let rafId = null;
 
-        function onMouseMove(e) {
-            const dx = e.clientX - startX;
-            const dy = e.clientY - startY;
+        function updatePosition(mouseX, mouseY) {
+            const dx = mouseX - startX;
+            const dy = mouseY - startY;
 
-            const newLeft = startLeft + dx;
-            const newTop = startTop + dy;
-
-            element.style.left = snapToGrid(newLeft) + 'px';
-            element.style.top = snapToGrid(newTop) + 'px';
+            element.style.left = snapToGrid(startLeft + dx) + 'px';
+            element.style.top = snapToGrid(startTop + dy) + 'px';
             element.style.position = 'absolute';
             
-            // Draw alignment guides
             const canvas = document.getElementById('canvas');
             const guides = checkAlignment(element, canvas);
             drawGuides(guides);
         }
 
+        function onMouseMove(e) {
+            if (rafId) cancelAnimationFrame(rafId);
+            rafId = requestAnimationFrame(() => updatePosition(e.clientX, e.clientY));
+        }
+
         function onMouseUp() {
+            if (rafId) cancelAnimationFrame(rafId);
             removeGuides();
             document.removeEventListener('mousemove', onMouseMove);
             document.removeEventListener('mouseup', onMouseUp);
@@ -71,6 +74,7 @@ function initDraggable(element) {
         document.addEventListener('mouseup', onMouseUp);
     });
 }
+
 
 export function removeResizeHandles(element) {
     if (!element) return;
@@ -88,10 +92,12 @@ function startResize(e, element, type) {
     const startHeight = element.offsetHeight;
     const startTop = element.offsetTop;
     const startLeft = element.offsetLeft;
+    
+    let rafId = null;
 
-    function onMouseMove(e) {
-        const dx = e.clientX - startX;
-        const dy = e.clientY - startY;
+    function doResize(mouseX, mouseY) {
+        const dx = mouseX - startX;
+        const dy = mouseY - startY;
         const canvas = document.getElementById('canvas');
 
         if (type.includes('e')) {
@@ -115,7 +121,13 @@ function startResize(e, element, type) {
         drawGuides(guides);
     }
 
+    function onMouseMove(e) {
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(() => doResize(e.clientX, e.clientY));
+    }
+
     function onMouseUp() {
+        if (rafId) cancelAnimationFrame(rafId);
         removeGuides();
         document.removeEventListener('mousemove', onMouseMove);
         document.removeEventListener('mouseup', onMouseUp);

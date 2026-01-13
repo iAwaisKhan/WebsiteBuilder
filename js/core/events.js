@@ -1,6 +1,12 @@
 import { state } from '../state.js';
 import { showToast } from '../utils/helpers.js';
-import { copyElement, pasteElement, deleteSelectedElement } from './actions.js';
+import { 
+    copyElement, 
+    pasteElement, 
+    deleteSelectedElement, 
+    undoAction, 
+    redoAction 
+} from './actions.js';
 
 export function initKeyboardShortcuts() {
     window.addEventListener('keydown', (e) => {
@@ -13,8 +19,10 @@ export function initKeyboardShortcuts() {
             return;
         }
 
+        const key = e.key.toLowerCase();
+
         if (e.ctrlKey || e.metaKey) {
-            switch (e.key.toLowerCase()) {
+            switch (key) {
                 case 's':
                     e.preventDefault();
                     if (window.saveProject) window.saveProject();
@@ -22,14 +30,14 @@ export function initKeyboardShortcuts() {
                 case 'z':
                     e.preventDefault();
                     if (e.shiftKey) {
-                        if (window.redoAction) window.redoAction();
+                        redoAction();
                     } else {
-                        if (window.undoAction) window.undoAction();
+                        undoAction();
                     }
                     break;
                 case 'y':
                     e.preventDefault();
-                    if (window.redoAction) window.redoAction();
+                    redoAction();
                     break;
                 case 'c':
                     e.preventDefault();
@@ -43,10 +51,14 @@ export function initKeyboardShortcuts() {
                     e.preventDefault();
                     copyElement();
                     pasteElement();
-                    showToast('Element duplicated! 👥');
                     break;
             }
         } else {
+            if (e.key === 'Escape') {
+                if (document.body.classList.contains('preview-mode')) {
+                    if (window.togglePreviewMode) window.togglePreviewMode();
+                }
+            }
             if (e.key === 'Delete' || e.key === 'Backspace') {
                 deleteSelectedElement();
             } else if (e.key === 'Enter' || e.key === ' ') {

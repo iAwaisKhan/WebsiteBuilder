@@ -1,7 +1,7 @@
-// Global State
-let selectedElement = null;
-let undoStack = [];
-let redoStack = [];
+// Optimized WebBuilder Legacy System
+// Many functions are now overridden by the modular system in js/app.js
+
+// Global State (Synced with modular state)
 let currentDevice = 'desktop';
 
 // User Profile State
@@ -30,103 +30,16 @@ function filterTemplates(category) {
         }
     });
 }
+// Legacy shortcuts removed in favor of js/core/events.js
 
-function handleGlobalShortcuts(event) {
-    if (!event.key) return;
-    const target = event.target;
-    if (['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName) || target.isContentEditable) return;
-
-    const key = event.key.toLowerCase();
-
-    if (event.ctrlKey && key === 's') {
-        event.preventDefault();
-        saveProject();
-        return;
-    }
-
-    if (event.ctrlKey && key === 'z') {
-        event.preventDefault();
-        if (event.shiftKey) {
-            redoAction();
-        } else {
-            undoAction();
-        }
-        return;
-    }
-
-    if (event.ctrlKey && key === 'f') {
-        event.preventDefault();
-        showElementFinder();
-        return;
-    }
-
-    if (event.ctrlKey && key === 'h') {
-        event.preventDefault();
-        showHistoryTimeline();
-        return;
-    }
-
-    if (event.ctrlKey && key === '1') {
-        event.preventDefault();
-        setDevice('desktop');
-        return;
-    }
-
-    if (event.ctrlKey && key === '2') {
-        event.preventDefault();
-        setDevice('tablet');
-        return;
-    }
-
-    if (event.ctrlKey && key === '3') {
-        event.preventDefault();
-        setDevice('mobile');
-        return;
-    }
-
-    if (key === 'g') {
-        event.preventDefault();
-        toggleGridLines();
-        return;
-    }
-
-    if (key === 'f') {
-        event.preventDefault();
-        toggleFullscreen();
-        return;
-    }
-
-    if (event.key === '?' || (event.key === '/' && event.shiftKey)) {
-        event.preventDefault();
-        showKeyboardShortcuts();
-        return;
-    }
-
-    if (event.key === 'Delete' || event.key === 'Backspace') {
-        event.preventDefault();
-        deleteSelectedElement();
-        return;
-    }
-
-    if (event.key === 'ArrowUp') {
-        event.preventDefault();
-        moveElementUp();
-        return;
-    }
-
-    if (event.key === 'ArrowDown') {
-        event.preventDefault();
-        moveElementDown();
-    }
-}
 
 function initAccessibilityShortcuts() {
-    document.addEventListener('keydown', handleGlobalShortcuts);
+    // Legacy keyboard handler removed
 }
 
 // Initialize theme on page load
 window.addEventListener('DOMContentLoaded', () => {
-    initAccessibilityShortcuts();
+    // Initialization handled by js/app.js
 });
 
 // Helper function to get current theme colors (Light Mode)
@@ -474,22 +387,8 @@ function moveElementDown() {
     }
 }
 
-// Delete selected element
-function deleteSelectedElement() {
-    if (!selectedElement) {
-        showToast('Select something first 👆');
-        return;
-    }
-    
-    selectedElement.style.animation = 'fadeOut 0.2s ease forwards';
-    setTimeout(() => {
-        selectedElement.remove();
-        selectedElement = null;
-        updatePropertiesHint();
-        saveState();
-        showToast('Gone! 👋');
-    }, 200);
-}
+// Moved to actions.js
+
 
 // Update properties panel hint
 function updatePropertiesHint() {
@@ -694,24 +593,8 @@ window.loadTemplate = (type) => {
     }
 };
 
-function addControlsToElements() {
-    const elements = document.querySelectorAll('.canvas-element');
-    elements.forEach(element => {
-        if (!element.querySelector('.element-controls')) {
-            const controls = document.createElement('div');
-            controls.className = 'element-controls';
-            controls.innerHTML = `
-                <button class="control-btn" onclick="editElement(this)" title="Edit">E</button>
-                <button class="control-btn delete" onclick="deleteElement(this)" title="Delete">×</button>
-            `;
-            element.appendChild(controls);
-            element.onclick = (e) => {
-                e.stopPropagation();
-                selectElement(element);
-            };
-        }
-    });
-}
+// Moved to actions.js
+
 
 // AI Generation
 function generateWithAI() {
@@ -909,23 +792,18 @@ function downloadCode() {
 
 // Preview
 function previewWebsite() {
-    const canvas = document.getElementById('canvas');
-    const html = canvas.innerHTML;
-    const previewWindow = window.open('', '_blank');
-    previewWindow.document.write(`
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title>Preview</title>
-            <style>
-                body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin: 0; padding: 20px; }
-            </style>
-        </head>
-        <body>${html}</body>
-        </html>
-    `);
-    previewWindow.document.close();
-    showToast('👀 Preview opened in new tab');
+    togglePreviewMode();
+}
+
+function togglePreviewMode() {
+    const isPreview = document.body.classList.toggle('preview-mode');
+    
+    // Deselect element when entering preview
+    if (isPreview && typeof deselectElement === 'function') {
+        deselectElement();
+    }
+    
+    showToast(isPreview ? 'Live Preview Active' : 'Returned to Editor');
 }
 
 // Save/Load Project
@@ -946,34 +824,8 @@ function saveProject() {
     showToast('💾 Project saved! Nice work');
 }
 
-// Undo/Redo
-function saveState() {
-    const canvas = document.getElementById('canvas');
-    undoStack.push(canvas.innerHTML);
-    redoStack = [];
-    if (undoStack.length > 50) undoStack.shift();
-}
+// Undo/Redo/State Management moved to js/core/actions.js
 
-function undoAction() {
-    if (undoStack.length > 1) {
-        redoStack.push(undoStack.pop());
-        const canvas = document.getElementById('canvas');
-        canvas.innerHTML = undoStack[undoStack.length - 1];
-        addControlsToElements();
-        showToast('↩️ Undone!');
-    }
-}
-
-function redoAction() {
-    if (redoStack.length > 0) {
-        const state = redoStack.pop();
-        undoStack.push(state);
-        const canvas = document.getElementById('canvas');
-        canvas.innerHTML = state;
-        addControlsToElements();
-        showToast('↪️ Redone!');
-    }
-}
 
 // Toast Notification
 function showToast(message) {
@@ -1070,49 +922,8 @@ document.addEventListener('keydown', (e) => {
 // Copy/Paste/Duplicate Functionality
 let copiedElement = null;
 
-function copyElement() {
-    if (selectedElement) {
-        copiedElement = selectedElement.cloneNode(true);
-        showToast('📋 Copied! Ctrl+V to paste');
-    }
-}
+// Copy/Paste/Duplicate moved to actions.js
 
-function pasteElement() {
-    if (copiedElement) {
-        const canvas = document.getElementById('canvas');
-        const newElement = copiedElement.cloneNode(true);
-        
-        // Add controls to the pasted element
-        if (!newElement.querySelector('.element-controls')) {
-            const controls = document.createElement('div');
-            controls.className = 'element-controls';
-            controls.innerHTML = `
-                <button class="control-btn" onclick="editElement(this)" title="Edit">E</button>
-                <button class="control-btn delete" onclick="deleteElement(this)" title="Delete">×</button>
-            `;
-            newElement.appendChild(controls);
-        }
-        
-        // Add click handler
-        newElement.onclick = (e) => {
-            e.stopPropagation();
-            selectElement(newElement);
-        };
-        
-        canvas.appendChild(newElement);
-        saveState();
-        showToast('📋 Pasted!');
-        selectElement(newElement);
-    }
-}
-
-function duplicateElement() {
-    if (selectedElement) {
-        copiedElement = selectedElement;
-        pasteElement();
-        showToast('✨ Cloned!');
-    }
-}
 
 // Move element with arrow keys
 function moveElementWithKeys(key) {

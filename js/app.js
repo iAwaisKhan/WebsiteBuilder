@@ -2,7 +2,7 @@ import { state } from './state.js';
 import { initKeyboardShortcuts } from './core/events.js';
 import { showToast } from './utils/helpers.js';
 import { createComponent } from './core/components.js';
-import { saveProject, exportProjectAsJSON, importProjectFromJSON } from './core/storage.js';
+import { saveProject, importProjectFromJSON } from './core/storage.js';
 import { refreshLayers } from './ui/layers.js';
 import { addResizeHandles, removeResizeHandles } from './core/resize.js';
 import { loadTemplate as loadTemplateModule } from './core/templates.js';
@@ -13,6 +13,8 @@ import { Animations, applyAnimation } from './utils/animations.js';
 import { AssetCategories, useAsset, searchAssets } from './ui/assets.js';
 import { applyAIContent } from './utils/ai.js';
 import { runSEOCheck, runAccessibilityCheck } from './utils/analysis.js';
+import { exportProductionHTML, exportProjectAsJSON } from './core/export.js';
+import * as Actions from './core/actions.js';
 
 // Initialize the application
 function init() {
@@ -36,14 +38,30 @@ function init() {
     }
     
     // Bind essential functions to window for HTML onclick compatibility
+    window.state = state;
     window.saveProject = () => saveProject(document.getElementById('canvas'));
     window.exportProjectJSON = () => exportProjectAsJSON(document.getElementById('canvas'));
+    window.exportProductionHTML = exportProductionHTML;
     window.importProjectJSON = (event) => importProjectFromJSON(document.getElementById('canvas'), event.target.files[0]);
     window.refreshLayers = refreshLayers;
     window.loadTemplate = loadTemplateModule;
     window.applyAI = (type) => applyAIContent(state.selectedElement, type);
     window.onAnimationChange = (val) => applyAnimation(state.selectedElement, val);
     
+    // Bind actions
+    window.saveState = Actions.saveState;
+    window.undoAction = Actions.undoAction;
+    window.redoAction = Actions.redoAction;
+    window.copyElement = Actions.copyElement;
+    window.pasteElement = Actions.pasteElement;
+    window.deleteSelectedElement = Actions.deleteSelectedElement;
+    window.moveElementUp = Actions.moveElementUp;
+    window.moveElementDown = Actions.moveElementDown;
+    window.duplicateElement = () => {
+        Actions.copyElement();
+        Actions.pasteElement();
+    };
+
     // Override selectElement to integrate Layers and Resizing
     const originalSelectElement = window.selectElement;
     window.selectElement = (element) => {
@@ -77,29 +95,21 @@ function init() {
         const element = createComponent(type);
         if (element) {
             canvas.appendChild(element);
-            if (window.saveState) window.saveState();
+            Actions.saveState();
             showToast(`Added ${type}! ✨`);
             refreshLayers();
         }
     };
 
-    // Sync layers on state changes (Delete, Undo, Redo)
-    const originalDelete = window.deleteElement;
+    // Simplify delete
     window.deleteElement = (button) => {
-        if (typeof originalDelete === 'function') originalDelete(button);
-        refreshLayers();
-    };
-
-    const originalUndo = window.undoAction;
-    window.undoAction = () => {
-        if (typeof originalUndo === 'function') originalUndo();
-        refreshLayers();
-    };
-
-    const originalRedo = window.redoAction;
-    window.redoAction = () => {
-        if (typeof originalRedo === 'function') originalRedo();
-        refreshLayers();
+        const element = button.closest('.canvas-element');
+        if (element) {
+            element.remove();
+            Actions.saveState();
+            refreshLayers();
+            showToast('Element removed 👋');
+        }
     };
 
     // Initial layers refresh
