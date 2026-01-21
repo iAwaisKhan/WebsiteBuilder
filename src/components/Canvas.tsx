@@ -22,9 +22,9 @@ const Canvas: React.FC<CanvasProps> = ({ isPreview }) => {
           selectElement(el.id);
         }}
         className={cn(
-          "canvas-element relative transition-all group cursor-default",
-          !isPreview && isSelected && "ring-2 ring-indigo-500 rounded-sm z-10",
-          !isPreview && !isSelected && "hover:ring-1 hover:ring-slate-300 dark:hover:ring-slate-600"
+          "canvas-element relative transition-all duration-300 group cursor-default",
+          !isPreview && isSelected && " ring-4 ring-indigo-500/20 rounded-xl z-10",
+          !isPreview && !isSelected && "hover:ring-2 hover:ring-slate-200 dark:hover:ring-slate-700/50 rounded-lg"
         )}
         style={{
           ...el.style,
@@ -35,13 +35,16 @@ const Canvas: React.FC<CanvasProps> = ({ isPreview }) => {
         {el.innerHTML ? (
           <div dangerouslySetInnerHTML={{ __html: el.innerHTML }} />
         ) : (
-          <Tag className="w-full">{el.content}</Tag>
+          <Tag className="w-full focus:outline-none">{el.content}</Tag>
         )}
         
         {!isPreview && isSelected && (
-          <div className="absolute -top-3 -right-3 w-6 h-6 bg-indigo-500 text-white rounded-full flex items-center justify-center text-[10px] shadow-lg animate-in zoom-in-50 duration-200 z-50">
-            <span className="font-bold">✓</span>
-          </div>
+          <>
+            <div className="absolute -top-3 -right-3 w-8 h-8 bg-indigo-600 text-white rounded-2xl flex items-center justify-center shadow-xl shadow-indigo-500/20 animate-in zoom-in-75 duration-300 z-50 border-2 border-white dark:border-slate-900">
+              <span className="font-bold text-xs">✓</span>
+            </div>
+            <div className="absolute inset-0 border-2 border-indigo-500 rounded-xl pointer-events-none animate-in fade-in duration-500"></div>
+          </>
         )}
       </div>
     );
@@ -51,21 +54,26 @@ const Canvas: React.FC<CanvasProps> = ({ isPreview }) => {
     <div 
       id="canvas"
       className={cn(
-        "w-full max-w-5xl bg-white dark:bg-slate-900 shadow-2xl min-h-[calc(100vh-120px)] transition-all duration-300 rounded-2xl p-0 overflow-hidden relative",
-        !isPreview && "ring-1 ring-slate-200 dark:ring-slate-800 border-8 border-slate-100 dark:border-slate-800/50",
+        "w-full max-w-5xl bg-white dark:bg-slate-900 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] min-h-[calc(100vh-120px)] transition-all duration-500 rounded-[2rem] p-0 overflow-hidden relative border",
+        !isPreview && "border-slate-200/50 dark:border-slate-800/50 ring-1 ring-slate-100 dark:ring-slate-900",
         isPreview && "max-w-none border-0 rounded-none shadow-none mt-[-32px]"
       )}
       onClick={() => !isPreview && selectElement(null)}
     >
       {elements.length === 0 ? (
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-slate-300 dark:text-slate-700 gap-4">
-          <div className="w-16 h-16 rounded-full border-2 border-dashed border-slate-200 dark:border-slate-800 flex items-center justify-center">
-            <span className="text-2xl">+</span>
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-slate-300 dark:text-slate-700 gap-6 p-8">
+          <div className="w-24 h-24 rounded-[2rem] bg-slate-50 dark:bg-slate-800/50 flex items-center justify-center animate-float border border-slate-100 dark:border-slate-800">
+            <div className="w-10 h-10 rounded-xl border-2 border-dashed border-indigo-400 dark:border-indigo-600 flex items-center justify-center">
+              <span className="text-2xl text-indigo-500">+</span>
+            </div>
           </div>
-          <p className="text-sm font-medium">Drag or click elements to start building</p>
+          <div className="text-center space-y-2">
+            <h3 className="text-slate-900 dark:text-white font-bold text-lg">Canvas is empty</h3>
+            <p className="text-slate-400 dark:text-slate-500 text-sm max-w-xs leading-relaxed">Select components from the sidebar to start designing your masterpiece.</p>
+          </div>
         </div>
       ) : (
-        <div className="flex flex-col">
+        <div className="flex flex-col p-px">
           {elements.map(renderElement)}
         </div>
       )}

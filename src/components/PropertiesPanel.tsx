@@ -10,9 +10,11 @@ const PropertiesPanel: React.FC = () => {
 
   if (!element) {
     return (
-      <aside className="w-80 bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 flex flex-col items-center justify-center p-8 text-center text-slate-400 dark:text-slate-600 gap-4 transition-colors">
-        <Settings size={40} opacity={0.1} />
-        <p className="text-sm font-medium">Select an element to edit its properties</p>
+      <aside className="w-80 bg-white dark:bg-slate-900 border-l border-slate-200/50 dark:border-slate-800 flex flex-col items-center justify-center p-8 text-center text-slate-400 dark:text-slate-600 gap-6 transition-colors">
+        <div className="w-20 h-20 rounded-[2rem] bg-slate-50 dark:bg-slate-800/50 flex items-center justify-center border border-slate-100 dark:border-slate-800">
+          <Settings size={32} strokeWidth={1} />
+        </div>
+        <p className="text-[13px] font-medium leading-relaxed max-w-[160px]">Select an element on the canvas to edit its properties</p>
       </aside>
     );
   }
@@ -33,21 +35,26 @@ const PropertiesPanel: React.FC = () => {
   };
 
   return (
-    <aside className="w-80 bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 flex flex-col z-20 overflow-hidden shadow-xl transition-colors">
-      <div className="p-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-800/30">
-        <h2 className="text-sm font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2 capitalize">
-          {element.tag} Settings
-        </h2>
+    <aside className="w-80 bg-white dark:bg-slate-900 border-l border-slate-200/50 dark:border-slate-800 flex flex-col z-20 overflow-hidden transition-colors">
+      <div className="px-6 py-5 border-b border-slate-100 dark:border-slate-800/80 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-xl bg-indigo-50 dark:bg-indigo-900/40 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+            <Settings size={18} />
+          </div>
+          <h2 className="text-sm font-bold text-slate-800 dark:text-slate-100 capitalize">
+            {element.tag}
+          </h2>
+        </div>
         <button 
           onClick={() => deleteElement(element.id)}
-          className="p-2 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-lg transition-colors"
+          className="p-2 text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/20 rounded-xl transition-all active:scale-90"
           title="Delete element"
         >
-          <Trash2 size={16} />
+          <Trash2 size={18} />
         </button>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-6 space-y-8 content-scrollbar">
+      <div className="flex-1 overflow-y-auto p-6 space-y-8 content-scrollbar bg-slate-50/20 dark:bg-slate-900/20">
         {/* Text Content */}
         {element.tag !== 'img' && !element.innerHTML && (
           <div className="space-y-3">
