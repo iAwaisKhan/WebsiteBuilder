@@ -92,8 +92,47 @@ export const SectionTemplates = {
                     © 2024 WebBuilder AI. All rights reserved.
                 </div>
             </div>
-        `
-    }
+        `    },
+    profile: {
+        name: 'Profile Demo',
+        icon: '👤',
+        render: (colors) => `
+            <div class="canvas-element" style="padding: 48px; background: ${colors.surface}; border: 1px solid ${colors.border}; border-radius: 20px;">
+                <div style="display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 48px;">
+                    <!-- Simple Avatar -->
+                    <div class="avatar">
+                        <img src="https://github.com/shadcn.png" alt="@shadcn" class="avatar-image grayscale">
+                    </div>
+                    
+                    <!-- Avatar with Badge -->
+                    <div class="avatar">
+                        <img src="https://github.com/evilrabbit.png" alt="@evilrabbit" class="avatar-image">
+                        <div class="avatar-badge" style="background: #16a34a;"></div>
+                    </div>
+                    
+                    <!-- Avatar Group -->
+                    <div style="display: flex; align-items: center;">
+                        <div class="avatar-group grayscale">
+                            <div class="avatar">
+                                <img src="https://github.com/shadcn.png" alt="@shadcn" class="avatar-image">
+                            </div>
+                            <div class="avatar">
+                                <img src="https://github.com/maxleiter.png" alt="@maxleiter" class="avatar-image">
+                            </div>
+                            <div class="avatar">
+                                <img src="https://github.com/evilrabbit.png" alt="@evilrabbit" class="avatar-image">
+                            </div>
+                        </div>
+                        <span class="avatar-group-count">+3</span>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 32px;">
+                    <h3 style="color: ${colors.text}; margin-bottom: 8px;">Collaborators</h3>
+                    <p style="color: ${colors.textSecondary}; font-size: 14px;">Manage your team members and their activity status.</p>
+                </div>
+            </div>
+        `    }
 };
 
 export function addSection(sectionId) {

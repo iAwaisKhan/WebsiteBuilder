@@ -103,6 +103,32 @@ export const ComponentRegistry = {
             attributes: { src: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80', alt: 'Showcase' }
         })
     },
+    avatar: {
+        category: 'content',
+        name: 'Avatar',
+        create: (colors) => ({
+            tag: 'div',
+            classes: ['avatar'],
+            innerHTML: `
+                <img src="https://github.com/shadcn.png" alt="Avatar" class="avatar-image">
+                <div class="avatar-badge" style="background: #10b981;"></div>
+            `
+        })
+    },
+    'avatar-group': {
+        category: 'content',
+        name: 'Avatar Group',
+        create: (colors) => ({
+            tag: 'div',
+            classes: ['avatar-group'],
+            innerHTML: `
+                <div class="avatar"><img src="https://github.com/shadcn.png" class="avatar-image"></div>
+                <div class="avatar"><img src="https://github.com/evilrabbit.png" class="avatar-image"></div>
+                <div class="avatar"><img src="https://github.com/maxleiter.png" class="avatar-image"></div>
+                <span class="avatar-group-count">+3</span>
+            `
+        })
+    },
     // Interactive Elements
     card: {
         category: 'interactive',

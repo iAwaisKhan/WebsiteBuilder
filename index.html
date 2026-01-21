@@ -7,49 +7,13 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%236366f1%22/><text y=%22.9em%22 x=%2250%%22 font-size=%2270%22 text-anchor=%22middle%22 fill=%22white%22 font-family=%22Inter, sans-serif%22 font-weight=%22bold%22>W</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-    <script src="script.js" defer></script>
-    <script type="module" src="js/app.js" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Preloader -->
-    <div id="preloader" class="preloader">
-        <div class="preloader-content">
-            <div class="preloader-logo">
-                <svg viewBox="0 0 100 100" class="preloader-svg">
-                    <rect width="100" height="100" rx="20" fill="#6366f1"/>
-                    <text y=".9em" x="50%" font-size="70" text-anchor="middle" fill="white" font-family="Inter, sans-serif" font-weight="bold">W</text>
-                </svg>
-            </div>
-            <div class="preloader-bar">
-                <div class="preloader-progress"></div>
-            </div>
-            <p class="preloader-text">Loading WebBuilder...</p>
-        </div>
-    </div>
-
-    <!-- Header - Clean & Simple -->
-    <header class="header" role="banner" aria-label="Primary toolbar">
-        <div class="header-left">
-            <div class="logo">
-                <span class="logo-text">WebBuilder</span>
-            </div>
-        </div>
-        
-        <div class="header-center">
-            <button class="action-btn" onclick="undoAction()">↩</button>
-            <button class="action-btn" onclick="redoAction()">↪</button>
-            <button class="action-btn" id="toggleGrid">▦</button>
-            <button class="action-btn" onclick="previewWebsite()">👁</button>
-        </div>
-        
-        <div class="header-right">
-            <button class="btn-soft" onclick="saveProject()">Save</button>
-            <button class="btn-ghost" onclick="exportProjectJSON()">JSON</button>
-            <button class="btn-warm" onclick="exportProductionHTML()">Export</button>
-        </div>
-    </header>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+</body>
+</html>
 
     <!-- Main Container -->
     <div class="main-container">
