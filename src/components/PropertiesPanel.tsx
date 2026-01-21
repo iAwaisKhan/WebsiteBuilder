@@ -1,6 +1,7 @@
 import React from 'react';
-import { useStore, CanvasElement } from '../store/useStore';
-import { Settings, Trash2, AlignLeft, AlignCenter, AlignRight, MoveUp, MoveDown } from 'lucide-react';
+import { useStore } from '../store/useStore';
+import { Settings, Trash2, AlignLeft, AlignCenter, AlignRight } from 'lucide-react';
+import { cn } from '../utils/cn';
 
 const PropertiesPanel: React.FC = () => {
   const { elements, selectedElementId, updateElement, deleteElement, saveState } = useStore();
@@ -9,9 +10,9 @@ const PropertiesPanel: React.FC = () => {
 
   if (!element) {
     return (
-      <aside className="w-80 bg-white border-l border-slate-200 flex flex-col items-center justify-center p-8 text-center text-slate-400 gap-4">
+      <aside className="w-80 bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 flex flex-col items-center justify-center p-8 text-center text-slate-400 dark:text-slate-600 gap-4 transition-colors">
         <Settings size={40} opacity={0.1} />
-        <p className="text-sm">Select an element to edit its properties</p>
+        <p className="text-sm font-medium">Select an element to edit its properties</p>
       </aside>
     );
   }
@@ -32,14 +33,14 @@ const PropertiesPanel: React.FC = () => {
   };
 
   return (
-    <aside className="w-80 bg-white border-l border-slate-200 flex flex-col z-20 overflow-hidden shadow-xl">
-      <div className="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
-        <h2 className="text-sm font-bold text-slate-800 flex items-center gap-2 capitalize">
+    <aside className="w-80 bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 flex flex-col z-20 overflow-hidden shadow-xl transition-colors">
+      <div className="p-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-800/30">
+        <h2 className="text-sm font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2 capitalize">
           {element.tag} Settings
         </h2>
         <button 
           onClick={() => deleteElement(element.id)}
-          className="p-2 text-rose-500 hover:bg-rose-50 rounded-lg transition-colors"
+          className="p-2 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-lg transition-colors"
           title="Delete element"
         >
           <Trash2 size={16} />
@@ -50,11 +51,11 @@ const PropertiesPanel: React.FC = () => {
         {/* Text Content */}
         {element.tag !== 'img' && !element.innerHTML && (
           <div className="space-y-3">
-            <label className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Content</label>
+            <label className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Content</label>
             <textarea
               value={element.content}
               onChange={(e) => handleContentChange(e.target.value)}
-              className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all outline-none resize-none"
+              className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 silver:border-transparent transition-all outline-none resize-none dark:text-slate-200"
               rows={3}
             />
           </div>
@@ -62,34 +63,34 @@ const PropertiesPanel: React.FC = () => {
 
         {/* Font Properties */}
         <div className="space-y-4">
-          <label className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Typography</label>
+          <label className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Typography</label>
           <div className="grid grid-cols-1 gap-4">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-slate-600">Size</span>
+              <span className="text-sm text-slate-600 dark:text-slate-400 font-medium">Size</span>
               <input 
                 type="number" 
                 value={parseInt(element.style.fontSize || '16')} 
                 onChange={(e) => handleStyleChange('fontSize', e.target.value + 'px')}
-                className="w-20 px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none"
+                className="w-20 px-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm outline-none dark:text-slate-200"
               />
             </div>
             
             <div className="flex items-center justify-between">
-              <span className="text-sm text-slate-600">Weight</span>
+              <span className="text-sm text-slate-600 dark:text-slate-400 font-medium">Weight</span>
               <select 
                 value={element.style.fontWeight || 'normal'}
                 onChange={(e) => handleStyleChange('fontWeight', e.target.value)}
-                className="w-32 px-2 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none"
+                className="w-32 px-2 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm outline-none dark:text-slate-200"
               >
-                <option value="light">Light</option>
-                <option value="normal">Normal</option>
-                <option value="medium">Medium</option>
-                <option value="bold">Bold</option>
-                <option value="black">Black</option>
+                <option value="300">Light</option>
+                <option value="400">Normal</option>
+                <option value="500">Medium</option>
+                <option value="700">Bold</option>
+                <option value="900">Black</option>
               </select>
             </div>
 
-            <div className="flex gap-1 bg-slate-50 p-1 rounded-lg border border-slate-100">
+            <div className="flex gap-1 bg-slate-50 dark:bg-slate-800 p-1 rounded-lg border border-slate-100 dark:border-slate-700">
                {[
                  { id: 'left', icon: <AlignLeft size={16} /> },
                  { id: 'center', icon: <AlignCenter size={16} /> },
@@ -98,7 +99,10 @@ const PropertiesPanel: React.FC = () => {
                  <button
                     key={align.id}
                     onClick={() => handleStyleChange('textAlign', align.id)}
-                    className={`flex-1 flex justify-center py-1.5 rounded transition-all ${element.style.textAlign === align.id ? 'bg-white shadow-sm text-indigo-600' : 'text-slate-400 hover:text-slate-600'}`}
+                    className={cn(
+                      "flex-1 flex justify-center py-1.5 rounded transition-all",
+                      element.style.textAlign === align.id ? "bg-white dark:bg-slate-600 shadow-sm text-indigo-600 dark:text-white" : "text-slate-400 dark:text-slate-500 hover:text-slate-600"
+                    )}
                  >
                    {align.icon}
                  </button>
@@ -109,44 +113,44 @@ const PropertiesPanel: React.FC = () => {
 
         {/* Colors */}
         <div className="space-y-4">
-          <label className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Visuals</label>
+          <label className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Visuals</label>
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-slate-600">Text Color</span>
+              <span className="text-sm text-slate-600 dark:text-slate-400 font-medium">Text Color</span>
               <div className="flex items-center gap-2">
-                <span className="text-xs text-slate-400 font-mono">{(element.style.color || '#000000').toUpperCase()}</span>
+                <span className="text-[10px] text-slate-400 font-mono">{(element.style.color || '#000000').toUpperCase()}</span>
                 <input 
                   type="color" 
                   value={element.style.color || '#000000'} 
                   onChange={(e) => handleStyleChange('color', e.target.value)}
-                  className="w-8 h-8 rounded-lg overflow-hidden border-0 p-0 cursor-pointer"
+                  className="w-8 h-8 rounded-lg overflow-hidden border-2 border-slate-200 dark:border-slate-700 p-0 cursor-pointer"
                 />
               </div>
             </div>
 
             <div className="flex items-center justify-between">
-              <span className="text-sm text-slate-600">Background</span>
+              <span className="text-sm text-slate-600 dark:text-slate-400 font-medium">Background</span>
               <div className="flex items-center gap-2">
-                <span className="text-xs text-slate-400 font-mono">{(element.style.backgroundColor || '#ffffff').toUpperCase()}</span>
+                <span className="text-[10px] text-slate-400 font-mono">{(element.style.backgroundColor || '#ffffff').toUpperCase()}</span>
                 <input 
                   type="color" 
                   value={element.style.backgroundColor || '#ffffff'} 
                   onChange={(e) => handleStyleChange('backgroundColor', e.target.value)}
-                  className="w-8 h-8 rounded-lg overflow-hidden border-0 p-0 cursor-pointer"
+                  className="w-8 h-8 rounded-lg overflow-hidden border-2 border-slate-200 dark:border-slate-700 p-0 cursor-pointer"
                 />
               </div>
             </div>
 
             <div className="space-y-2">
               <div className="flex justify-between">
-                <span className="text-sm text-slate-600">Border Radius</span>
-                <span className="text-xs font-bold text-indigo-600">{element.style.borderRadius || '0px'}</span>
+                <span className="text-sm text-slate-600 dark:text-slate-400 font-medium">Border Radius</span>
+                <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400">{element.style.borderRadius || '0px'}</span>
               </div>
               <input 
                 type="range" min="0" max="100" 
                 value={parseInt(element.style.borderRadius || '0')}
                 onChange={(e) => handleStyleChange('borderRadius', e.target.value + 'px')}
-                className="w-full accent-indigo-600"
+                className="w-full accent-indigo-600 dark:accent-indigo-500"
               />
             </div>
           </div>
