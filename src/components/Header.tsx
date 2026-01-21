@@ -4,6 +4,7 @@ import { Undo2, Redo2, Eye, Save, Download, FileJson, Moon, Sun } from 'lucide-r
 import { exportToHTML } from '../utils/export';
 import { cn } from '../utils/cn';
 import CopilotButton from './CopilotButton';
+import ProfileSection from './ProfileSection';
 
 interface HeaderProps {
   onPreview: () => void;
@@ -88,6 +89,10 @@ const Header: React.FC<HeaderProps> = ({ onPreview }) => {
         </button>
 
         <CopilotButton />
+
+        <div className="w-px h-6 bg-slate-200 dark:bg-slate-700 mx-1"></div>
+
+        <ProfileSection />
 
         <button 
           onClick={handleExport}
