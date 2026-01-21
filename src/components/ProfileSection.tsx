@@ -1,7 +1,20 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { User, LogIn, Mail, Lock, Chrome, Settings, LogOut, X, UserCircle2 } from 'lucide-react';
+import { User, LogIn, Mail, Lock, Chrome, Settings, LogOut, X, BadgeCheck, CreditCard, Bell } from 'lucide-react';
 import { cn } from '../utils/cn';
 import { useMediaQuery } from '../hooks/use-media-query';
+
+// Avatar Component
+const Avatar: React.FC<{ src?: string; initials: string; className?: string }> = ({ src, initials, className }) => (
+  <div className={cn("relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full border border-slate-200 dark:border-slate-700 shadow-sm", className)}>
+    {src ? (
+      <img className="aspect-square h-full w-full object-cover" src={src} alt="Avatar" />
+    ) : (
+      <div className="flex h-full w-full items-center justify-center rounded-full bg-indigo-600 text-white text-xs font-bold uppercase tracking-wider">
+        {initials}
+      </div>
+    )}
+  </div>
+);
 
 interface ProfileFormProps {
   className?: string;
@@ -85,16 +98,14 @@ export const ProfileSection: React.FC = () => {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all border border-slate-200 dark:border-slate-700 shadow-sm"
+        className="transition-transform active:scale-95 duration-100"
         aria-label="User profile"
       >
-        {isLoggedIn ? (
-          <div className="w-full h-full rounded-full bg-indigo-600 flex items-center justify-center text-white text-xs font-bold">
-            {userData.username.substring(1, 3).toUpperCase()}
-          </div>
-        ) : (
-          <User size={20} />
-        )}
+        <Avatar 
+          src={isLoggedIn ? "https://github.com/shadcn.png" : undefined}
+          initials={userData.username.substring(1, 3).toUpperCase()}
+          className={cn(!isLoggedIn && "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300")}
+        />
       </button>
 
       {isOpen && (
@@ -181,34 +192,47 @@ export const ProfileSection: React.FC = () => {
             </>
           ) : (
             /* Logged In View */
-            <div className="p-1">
-              <div className="p-4 flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-indigo-600 flex items-center justify-center text-white text-lg font-bold">
-                  {userData.username.substring(1, 3).toUpperCase()}
-                </div>
-                <div>
-                  <h4 className="font-bold text-slate-900 dark:text-white">{userData.username}</h4>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">{userData.email}</p>
+            <div className="p-1.5">
+              <div className="p-3 flex items-center gap-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl mb-2">
+                <Avatar 
+                  src="https://github.com/shadcn.png"
+                  initials={userData.username.substring(1, 3).toUpperCase()}
+                  className="h-12 w-12"
+                />
+                <div className="flex flex-col">
+                  <h4 className="font-bold text-slate-900 dark:text-white leading-none">{userData.username}</h4>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{userData.email}</p>
                 </div>
               </div>
               
-              <div className="mt-1 pb-2">
+              <div className="space-y-0.5">
                 <button 
                   onClick={() => {
                     setShowEditModal(true);
                     setIsOpen(false);
                   }}
-                  className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                  className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
                 >
-                  <Settings size={16} />
-                  <span>Edit Profile</span>
+                  <BadgeCheck size={18} className="text-indigo-600 dark:text-indigo-400" />
+                  <span>Account</span>
                 </button>
+                <button className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
+                  <CreditCard size={18} className="text-slate-400" />
+                  <span>Billing</span>
+                </button>
+                <button className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
+                  <Bell size={18} className="text-slate-400" />
+                  <span>Notifications</span>
+                </button>
+                
+                <div className="h-px bg-slate-100 dark:bg-slate-800 my-1 mx-2"></div>
+                
                 <button 
                   onClick={() => setIsLoggedIn(false)}
-                  className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                  className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
                 >
-                  <LogOut size={16} />
-                  <span>Log Out</span>
+                  <LogOut size={18} />
+                  <span>Sign Out</span>
                 </button>
               </div>
             </div>
