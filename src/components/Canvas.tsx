@@ -7,7 +7,13 @@ interface CanvasProps {
 }
 
 const Canvas: React.FC<CanvasProps> = ({ isPreview }) => {
-  const { elements, selectedElementId, selectElement } = useStore();
+  const { elements, selectedElementId, selectElement, viewport } = useStore();
+
+  const viewportWidths = {
+    mobile: 'max-w-[375px]',
+    tablet: 'max-w-[768px]',
+    desktop: 'max-w-5xl'
+  };
 
   const renderElement = (el: CanvasElement) => {
     const Tag = el.tag as any;
@@ -54,8 +60,9 @@ const Canvas: React.FC<CanvasProps> = ({ isPreview }) => {
     <div 
       id="canvas"
       className={cn(
-        "w-full max-w-5xl bg-white dark:bg-slate-900 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] min-h-[calc(100vh-120px)] transition-all duration-500 rounded-[2rem] p-0 overflow-hidden relative border",
+        "w-full bg-white dark:bg-slate-900 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] min-h-[calc(100vh-120px)] transition-all duration-500 rounded-[2rem] p-0 overflow-hidden relative border mx-auto",
         !isPreview && "border-slate-200/50 dark:border-slate-800/50 ring-1 ring-slate-100 dark:ring-slate-900",
+        !isPreview && viewportWidths[viewport],
         isPreview && "max-w-none border-0 rounded-none shadow-none mt-[-32px]"
       )}
       onClick={() => !isPreview && selectElement(null)}

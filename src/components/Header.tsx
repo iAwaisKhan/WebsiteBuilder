@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useStore } from '../store/useStore';
-import { Undo2, Redo2, Eye, Save, Download, FileJson, Moon, Sun } from 'lucide-react';
+import { Undo2, Redo2, Eye, Save, Download, FileJson, Moon, Sun, Monitor, Tablet, Smartphone } from 'lucide-react';
 import { exportToHTML } from '../utils/export';
 import { cn } from '../utils/cn';
 import CopilotButton from './CopilotButton';
@@ -11,7 +11,7 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ onPreview }) => {
-  const { undo, redo, undoStack, redoStack, elements } = useStore();
+  const { undo, redo, undoStack, redoStack, elements, viewport, setViewport } = useStore();
   const [isDark, setIsDark] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -46,31 +46,68 @@ const Header: React.FC<HeaderProps> = ({ onPreview }) => {
         </span>
       </div>
 
-      <div className="flex items-center gap-1 bg-slate-50 dark:bg-slate-800/50 p-1 rounded-2xl border border-slate-200/50 dark:border-slate-700/50">
-        <button 
-          onClick={undo}
-          disabled={undoStack.length === 0}
-          className="p-2 hover:bg-white dark:hover:bg-slate-700 hover:shadow-md rounded-xl transition-all disabled:opacity-30 disabled:scale-100 dark:text-slate-300 active:scale-90"
-          title="Undo (Ctrl+Z)"
-        >
-          <Undo2 size={18} />
-        </button>
-        <button 
-          onClick={redo}
-          disabled={redoStack.length === 0}
-          className="p-2 hover:bg-white dark:hover:bg-slate-700 hover:shadow-md rounded-xl transition-all disabled:opacity-30 disabled:scale-100 dark:text-slate-300 active:scale-90"
-          title="Redo (Ctrl+Y)"
-        >
-          <Redo2 size={18} />
-        </button>
-        <div className="w-px h-4 bg-slate-200 dark:bg-slate-700 mx-1"></div>
-        <button 
-          onClick={onPreview}
-          className="p-2 hover:bg-white dark:hover:bg-slate-700 hover:shadow-md rounded-xl transition-all dark:text-slate-300 active:scale-90"
-          title="Preview (Eye)"
-        >
-          <Eye size={18} />
-        </button>
+      <div className="flex items-center gap-4">
+        <div className="flex items-center gap-1 bg-slate-50 dark:bg-slate-800/50 p-1 rounded-2xl border border-slate-200/50 dark:border-slate-700/50">
+          <button 
+            onClick={undo}
+            disabled={undoStack.length === 0}
+            className="p-2 hover:bg-white dark:hover:bg-slate-700 hover:shadow-md rounded-xl transition-all disabled:opacity-30 disabled:scale-100 dark:text-slate-300 active:scale-90"
+            title="Undo (Ctrl+Z)"
+          >
+            <Undo2 size={18} />
+          </button>
+          <button 
+            onClick={redo}
+            disabled={redoStack.length === 0}
+            className="p-2 hover:bg-white dark:hover:bg-slate-700 hover:shadow-md rounded-xl transition-all disabled:opacity-30 disabled:scale-100 dark:text-slate-300 active:scale-90"
+            title="Redo (Ctrl+Y)"
+          >
+            <Redo2 size={18} />
+          </button>
+        </div>
+
+        <div className="hidden lg:flex items-center gap-1 bg-slate-50 dark:bg-slate-800/50 p-1 rounded-2xl border border-slate-200/50 dark:border-slate-700/50">
+          <button 
+            onClick={() => setViewport('desktop')}
+            className={cn(
+              "p-2 rounded-xl transition-all active:scale-90",
+              viewport === 'desktop' ? "bg-white dark:bg-slate-700 text-indigo-600 shadow-sm" : "text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+            )}
+            title="Desktop View"
+          >
+            <Monitor size={18} />
+          </button>
+          <button 
+            onClick={() => setViewport('tablet')}
+            className={cn(
+              "p-2 rounded-xl transition-all active:scale-90",
+              viewport === 'tablet' ? "bg-white dark:bg-slate-700 text-indigo-600 shadow-sm" : "text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+            )}
+            title="Tablet View"
+          >
+            <Tablet size={18} />
+          </button>
+          <button 
+            onClick={() => setViewport('mobile')}
+            className={cn(
+              "p-2 rounded-xl transition-all active:scale-90",
+              viewport === 'mobile' ? "bg-white dark:bg-slate-700 text-indigo-600 shadow-sm" : "text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+            )}
+            title="Mobile View"
+          >
+            <Smartphone size={18} />
+          </button>
+        </div>
+
+        <div className="flex items-center p-1 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200/50 dark:border-slate-700/50">
+          <button 
+            onClick={onPreview}
+            className="p-2 hover:bg-white dark:hover:bg-slate-700 hover:shadow-md rounded-xl transition-all dark:text-slate-300 active:scale-90"
+            title="Preview (Eye)"
+          >
+            <Eye size={18} />
+          </button>
+        </div>
       </div>
 
       <div className="flex items-center gap-3">

@@ -20,7 +20,7 @@ function App() {
         {!isPreview && <Sidebar />}
         
         <main className={cn(
-          "flex-1 relative overflow-auto flex justify-center transition-all",
+          "flex-1 relative overflow-auto flex justify-center transition-all grid-background",
           isPreview ? "p-0" : "p-8 scrollbar-hide"
         )}>
           <Canvas isPreview={isPreview} />

@@ -25,14 +25,18 @@ export interface CanvasElement {
   animation?: string;
 }
 
+export type ViewportType = 'mobile' | 'tablet' | 'desktop';
+
 interface WebBuilderState {
   elements: CanvasElement[];
   selectedElementId: string | null;
   undoStack: CanvasElement[][];
   redoStack: CanvasElement[][];
+  viewport: ViewportType;
   
   // Actions
   setElements: (elements: CanvasElement[]) => void;
+  setViewport: (viewport: ViewportType) => void;
   addElement: (element: CanvasElement) => void;
   updateElement: (id: string, updates: Partial<CanvasElement>) => void;
   deleteElement: (id: string) => void;
@@ -49,8 +53,10 @@ export const useStore = create<WebBuilderState>((set) => ({
   selectedElementId: null,
   undoStack: [],
   redoStack: [],
+  viewport: 'desktop',
 
   setElements: (elements) => set({ elements }),
+  setViewport: (viewport) => set({ viewport }),
   
   addElement: (element) => 
     set((state) => ({ 
