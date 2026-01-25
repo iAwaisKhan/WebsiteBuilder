@@ -5,7 +5,7 @@ import { cn } from '../utils/cn';
 
 const PropertiesPanel: React.FC = () => {
   const { elements, selectedElementId, updateElement, deleteElement, saveState } = useStore();
-  
+
   const element = elements.find(el => el.id === selectedElementId);
 
   if (!element) {
@@ -35,7 +35,7 @@ const PropertiesPanel: React.FC = () => {
   };
 
   return (
-    <aside className="w-80 bg-white dark:bg-slate-900 border-l border-slate-200/50 dark:border-slate-800 flex flex-col z-20 overflow-hidden transition-colors">
+    <aside className="w-80 bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl border-l border-slate-200/50 dark:border-slate-800/50 flex flex-col z-20 overflow-hidden transition-colors shadow-[-4px_0_24px_-12px_rgba(0,0,0,0.1)]">
       <div className="px-6 py-5 border-b border-slate-100 dark:border-slate-800/80 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-xl bg-indigo-50 dark:bg-indigo-900/40 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
@@ -45,7 +45,7 @@ const PropertiesPanel: React.FC = () => {
             {element.tag}
           </h2>
         </div>
-        <button 
+        <button
           onClick={() => deleteElement(element.id)}
           className="p-2 text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/20 rounded-xl transition-all active:scale-90"
           title="Delete element"
@@ -74,17 +74,17 @@ const PropertiesPanel: React.FC = () => {
           <div className="grid grid-cols-1 gap-4">
             <div className="flex items-center justify-between">
               <span className="text-sm text-slate-600 dark:text-slate-400 font-medium">Size</span>
-              <input 
-                type="number" 
-                value={parseInt(element.style.fontSize || '16')} 
+              <input
+                type="number"
+                value={parseInt(element.style.fontSize || '16')}
                 onChange={(e) => handleStyleChange('fontSize', e.target.value + 'px')}
                 className="w-20 px-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm outline-none dark:text-slate-200"
               />
             </div>
-            
+
             <div className="flex items-center justify-between">
               <span className="text-sm text-slate-600 dark:text-slate-400 font-medium">Weight</span>
-              <select 
+              <select
                 value={element.style.fontWeight || 'normal'}
                 onChange={(e) => handleStyleChange('fontWeight', e.target.value)}
                 className="w-32 px-2 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm outline-none dark:text-slate-200"
@@ -98,22 +98,22 @@ const PropertiesPanel: React.FC = () => {
             </div>
 
             <div className="flex gap-1 bg-slate-50 dark:bg-slate-800 p-1 rounded-lg border border-slate-100 dark:border-slate-700">
-               {[
-                 { id: 'left', icon: <AlignLeft size={16} /> },
-                 { id: 'center', icon: <AlignCenter size={16} /> },
-                 { id: 'right', icon: <AlignRight size={16} /> }
-               ].map((align) => (
-                 <button
-                    key={align.id}
-                    onClick={() => handleStyleChange('textAlign', align.id)}
-                    className={cn(
-                      "flex-1 flex justify-center py-1.5 rounded transition-all",
-                      element.style.textAlign === align.id ? "bg-white dark:bg-slate-600 shadow-sm text-indigo-600 dark:text-white" : "text-slate-400 dark:text-slate-500 hover:text-slate-600"
-                    )}
-                 >
-                   {align.icon}
-                 </button>
-               ))}
+              {[
+                { id: 'left', icon: <AlignLeft size={16} /> },
+                { id: 'center', icon: <AlignCenter size={16} /> },
+                { id: 'right', icon: <AlignRight size={16} /> }
+              ].map((align) => (
+                <button
+                  key={align.id}
+                  onClick={() => handleStyleChange('textAlign', align.id)}
+                  className={cn(
+                    "flex-1 flex justify-center py-1.5 rounded transition-all",
+                    element.style.textAlign === align.id ? "bg-white dark:bg-slate-600 shadow-sm text-indigo-600 dark:text-white" : "text-slate-400 dark:text-slate-500 hover:text-slate-600"
+                  )}
+                >
+                  {align.icon}
+                </button>
+              ))}
             </div>
           </div>
         </div>
@@ -126,9 +126,9 @@ const PropertiesPanel: React.FC = () => {
               <span className="text-sm text-slate-600 dark:text-slate-400 font-medium">Text Color</span>
               <div className="flex items-center gap-2">
                 <span className="text-[10px] text-slate-400 font-mono">{(element.style.color || '#000000').toUpperCase()}</span>
-                <input 
-                  type="color" 
-                  value={element.style.color || '#000000'} 
+                <input
+                  type="color"
+                  value={element.style.color || '#000000'}
                   onChange={(e) => handleStyleChange('color', e.target.value)}
                   className="w-8 h-8 rounded-lg overflow-hidden border-2 border-slate-200 dark:border-slate-700 p-0 cursor-pointer"
                 />
@@ -139,9 +139,9 @@ const PropertiesPanel: React.FC = () => {
               <span className="text-sm text-slate-600 dark:text-slate-400 font-medium">Background</span>
               <div className="flex items-center gap-2">
                 <span className="text-[10px] text-slate-400 font-mono">{(element.style.backgroundColor || '#ffffff').toUpperCase()}</span>
-                <input 
-                  type="color" 
-                  value={element.style.backgroundColor || '#ffffff'} 
+                <input
+                  type="color"
+                  value={element.style.backgroundColor || '#ffffff'}
                   onChange={(e) => handleStyleChange('backgroundColor', e.target.value)}
                   className="w-8 h-8 rounded-lg overflow-hidden border-2 border-slate-200 dark:border-slate-700 p-0 cursor-pointer"
                 />
@@ -153,8 +153,8 @@ const PropertiesPanel: React.FC = () => {
                 <span className="text-sm text-slate-600 dark:text-slate-400 font-medium">Border Radius</span>
                 <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400">{element.style.borderRadius || '0px'}</span>
               </div>
-              <input 
-                type="range" min="0" max="100" 
+              <input
+                type="range" min="0" max="100"
                 value={parseInt(element.style.borderRadius || '0')}
                 onChange={(e) => handleStyleChange('borderRadius', e.target.value + 'px')}
                 className="w-full accent-indigo-600 dark:accent-indigo-500"

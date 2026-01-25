@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useStore, CanvasElement } from '../store/useStore';
-import { 
-  Layout, 
-  Type, 
-  Image as ImageIcon, 
-  MousePointer2, 
-  Layers, 
-  Box, 
+import {
+  Layout,
+  Type,
+  Image as ImageIcon,
+  MousePointer2,
+  Layers,
+  Box,
   User
 } from 'lucide-react';
 import { cn } from '../utils/cn';
@@ -34,25 +34,25 @@ const Sidebar: React.FC = () => {
   };
 
   return (
-    <aside className="w-72 bg-white dark:bg-slate-900 border-r border-slate-200/50 dark:border-slate-800 flex flex-col z-20 overflow-hidden transition-colors">
+    <aside className="w-72 bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl border-r border-slate-200/50 dark:border-slate-800/50 flex flex-col z-20 overflow-hidden transition-colors shadow-[4px_0_24px_-12px_rgba(0,0,0,0.1)]">
       <div className="flex border-b border-slate-200/50 dark:border-slate-800 p-1 bg-slate-50/50 dark:bg-slate-900/50 mx-4 mt-4 rounded-xl">
-        <button 
+        <button
           onClick={() => setActiveTab('elements')}
           className={cn(
             "flex-1 py-2 text-[10px] font-bold uppercase tracking-widest transition-all rounded-lg",
-            activeTab === 'elements' 
-              ? "bg-white dark:bg-slate-800 text-indigo-600 shadow-sm" 
+            activeTab === 'elements'
+              ? "bg-white dark:bg-slate-800 text-indigo-600 shadow-sm"
               : "text-slate-400 dark:text-slate-500 hover:text-slate-900 dark:hover:text-slate-300"
           )}
         >
           Elements
         </button>
-        <button 
+        <button
           onClick={() => setActiveTab('layers')}
           className={cn(
             "flex-1 py-2 text-[10px] font-bold uppercase tracking-widest transition-all rounded-lg",
-            activeTab === 'layers' 
-              ? "bg-white dark:bg-slate-800 text-indigo-600 shadow-sm" 
+            activeTab === 'layers'
+              ? "bg-white dark:bg-slate-800 text-indigo-600 shadow-sm"
               : "text-slate-400 dark:text-slate-500 hover:text-slate-900 dark:hover:text-slate-300"
           )}
         >
