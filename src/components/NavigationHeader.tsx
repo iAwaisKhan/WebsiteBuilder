@@ -1,81 +1,64 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Layout, Code, Palette, Zap, Moon, Sun, Home } from 'lucide-react';
+import { Layout, Code, Palette, Zap, Moon, Sun, Home, Sparkles, Library, Settings, User } from 'lucide-react';
 import { cn } from '../utils/cn';
+import { useTheme } from '../hooks/useTheme';
+import { ProfileSection } from './ProfileSection';
 
 const NavigationHeader: React.FC = () => {
-    const [isDark, setIsDark] = useState(false);
-    const [scrolled, setScrolled] = useState(false);
+    const { theme, toggleTheme } = useTheme();
     const location = useLocation();
 
-    useEffect(() => {
-        const handleScroll = () => setScrolled(window.scrollY > 0);
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
-
-    useEffect(() => {
-        if (isDark) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
-    }, [isDark]);
-
     const navItems = [
-        { icon: Home, label: 'Dashboard', path: '/' },
-        { icon: Layout, label: 'Builder', path: '/builder' },
+        { icon: Home, label: 'Home', path: '/' },
         { icon: Code, label: 'Projects', path: '/projects' },
-        { icon: Palette, label: 'Templates', path: '/templates' },
-        { icon: Zap, label: 'Analytics', path: '/analytics' },
+        { icon: Palette, label: 'Library', path: '/templates' },
+        { icon: Settings, label: 'Settings', path: '/settings' },
     ];
 
     return (
-        <header className={cn(
-            "h-16 px-6 flex items-center justify-between z-30 transition-all duration-300 border-b",
-            scrolled
-                ? "bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border-slate-200/50 dark:border-slate-800/50 shadow-sm"
-                : "bg-white/40 dark:bg-slate-900/40 backdrop-blur-md border-transparent"
-        )}>
-            {/* Logo */}
-            <Link to="/" className="flex items-center">
-                <span className="font-display font-semibold text-xl text-slate-900 dark:text-white tracking-tighter hover:scale-105 transition-transform cursor-pointer">
-                    web<span className="text-indigo-600 dark:text-indigo-400">builder</span>
+        <header className="fixed top-6 left-0 right-0 px-8 flex items-center justify-between z-50 pointer-events-none">
+            <Link to="/" className="flex items-center pointer-events-auto">
+                <span className="font-medium text-3xl text-slate-900 dark:text-white tracking-[0.2em] hover:opacity-70 transition-opacity cursor-pointer" style={{ fontFamily: "'Outfit', sans-serif" }}>
+                    CLOWN
                 </span>
             </Link>
 
-            {/* Navigation */}
-            <nav className="flex items-center gap-2">
+            {/* Navigation Pill */}
+            <nav className="flex items-center gap-1 p-1.5 bg-white/40 dark:bg-slate-900/40 backdrop-blur-2xl border border-white/40 dark:border-slate-800/40 rounded-full shadow-2xl shadow-indigo-500/5 pointer-events-auto">
                 {navItems.map((item) => {
                     const isActive = location.pathname === item.path;
+
+
+
                     return (
                         <Link
                             key={item.path}
                             to={item.path}
                             className={cn(
-                                "flex items-center gap-2 px-4 py-2 rounded-xl transition-all text-sm font-medium",
+                                "flex items-center gap-2 px-4 py-2 rounded-full transition-all text-sm font-medium",
                                 isActive
-                                    ? "bg-indigo-600 text-white shadow-lg shadow-indigo-500/30"
-                                    : "text-slate-600 dark:text-slate-300 hover:bg-white/50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white"
+                                    ? "bg-white/80 dark:bg-slate-800/80 text-indigo-600 dark:text-indigo-400 shadow-sm"
+                                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                             )}
                         >
                             <item.icon size={16} />
-                            <span className="hidden md:inline">{item.label}</span>
+                            <span className="hidden lg:inline">{item.label}</span>
                         </Link>
                     );
                 })}
             </nav>
 
-            {/* Theme Toggle */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 pointer-events-auto">
                 <button
-                    onClick={() => setIsDark(!isDark)}
-                    className="p-2.5 text-slate-500 hover:text-indigo-600 dark:hover:text-amber-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all active:rotate-12"
+                    onClick={toggleTheme}
+                    className="p-2 text-slate-500 hover:text-slate-900 dark:hover:text-white bg-white/40 dark:bg-slate-900/40 backdrop-blur-md rounded-full border border-white/40 dark:border-slate-800/40 transition-all"
                 >
-                    {isDark ? <Sun size={20} /> : <Moon size={20} />}
+                    {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
                 </button>
+                <ProfileSection />
             </div>
-        </header>
+        </header >
     );
 };
 

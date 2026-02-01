@@ -8,6 +8,9 @@ export default function Scene() {
     useEffect(() => {
         if (!mountRef.current) return;
 
+        // Performance detection
+        const isLowPerformance = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
         // Scene setup
         const scene = new THREE.Scene();
         scene.fog = new THREE.FogExp2(0x0f172a, 0.02);
@@ -16,10 +19,14 @@ export default function Scene() {
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         camera.position.z = 10;
 
-        // Renderer setup
-        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        // Renderer setup with performance optimizations
+        const renderer = new THREE.WebGLRenderer({ 
+            alpha: true, 
+            antialias: !isLowPerformance,
+            powerPreference: 'high-performance'
+        });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setPixelRatio(isLowPerformance ? 1 : Math.min(window.devicePixelRatio, 1.5));
         mountRef.current.appendChild(renderer.domElement);
 
         // Lights
@@ -30,9 +37,9 @@ export default function Scene() {
         pointLight.position.set(2, 3, 4);
         scene.add(pointLight);
 
-        // Stars
+        // Stars - reduced count for better performance
         const starGeometry = new THREE.BufferGeometry();
-        const starCount = 2000;
+        const starCount = isLowPerformance ? 500 : 1200;
         const posArray = new Float32Array(starCount * 3);
 
         for (let i = 0; i < starCount * 3; i++) {
@@ -49,54 +56,28 @@ export default function Scene() {
         const stars = new THREE.Points(starGeometry, starMaterial);
         scene.add(stars);
 
-        // Floating Shapes
-        const geometry1 = new THREE.IcosahedronGeometry(1.5, 0);
-        const material1 = new THREE.MeshStandardMaterial({
-            color: 0x6366f1,
-            roughness: 0.3,
-            metalness: 0.2
-        });
-        const shape1 = new THREE.Mesh(geometry1, material1);
-        shape1.position.set(-3, 2, -5);
-        scene.add(shape1);
-
-        const geometry2 = new THREE.TorusGeometry(1, 0.3, 16, 100);
-        const material2 = new THREE.MeshStandardMaterial({
-            color: 0xa855f7,
-            roughness: 0.2,
-            metalness: 0.5
-        });
-        const shape2 = new THREE.Mesh(geometry2, material2);
-        shape2.position.set(3, -1, -4);
-        shape2.rotation.x = 1;
-        scene.add(shape2);
-
-        // Mouse movement effect
+        // Mouse movement effect with throttling
         let mouseX = 0;
         let mouseY = 0;
+        let mouseUpdateTimeout: number | null = null;
 
         const handleMouseMove = (event: MouseEvent) => {
-            mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-            mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+            if (mouseUpdateTimeout !== null) return;
+            
+            mouseUpdateTimeout = window.setTimeout(() => {
+                mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+                mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+                mouseUpdateTimeout = null;
+            }, 16); // ~60fps
         };
 
-        window.addEventListener('mousemove', handleMouseMove);
+        window.addEventListener('mousemove', handleMouseMove, { passive: true });
 
         // Animation Loop
         let animationFrameId: number;
 
         const animate = () => {
             animationFrameId = requestAnimationFrame(animate);
-
-            const time = Date.now() * 0.001;
-
-            // Animate shapes
-            shape1.rotation.x += 0.005;
-            shape1.rotation.y += 0.005;
-            shape1.position.y = 2 + Math.sin(time) * 0.5;
-
-            shape2.rotation.x += 0.01;
-            shape2.rotation.y += 0.005;
 
             // Animate stars
             stars.rotation.y += 0.0002;
@@ -124,25 +105,23 @@ export default function Scene() {
         return () => {
             window.removeEventListener('resize', handleResize);
             window.removeEventListener('mousemove', handleMouseMove);
+            if (mouseUpdateTimeout !== null) {
+                clearTimeout(mouseUpdateTimeout);
+            }
             cancelAnimationFrame(animationFrameId);
-            if (mountRef.current) {
+            if (mountRef.current && renderer.domElement.parentNode === mountRef.current) {
                 mountRef.current.removeChild(renderer.domElement);
             }
-            geometry1.dispose();
-            material1.dispose();
-            geometry2.dispose();
-            material2.dispose();
             starGeometry.dispose();
             starMaterial.dispose();
+            renderer.dispose();
             renderer.dispose();
         };
     }, []);
 
     return (
-        <div className="fixed inset-0 z-0 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900">
+        <div className="fixed inset-0 z-0 pointer-events-none opacity-50 dark:opacity-30">
             <div ref={mountRef} className="absolute inset-0" />
-            {/* Overlay gradient for readability */}
-            <div className="absolute inset-0 bg-slate-950/20 backdrop-blur-[1px] pointer-events-none" />
         </div>
     );
 }

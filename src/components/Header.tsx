@@ -3,7 +3,6 @@ import { useStore } from '../store/useStore';
 import { Undo2, Redo2, Eye, Save, Download, FileJson, Moon, Sun, Monitor, Tablet, Smartphone } from 'lucide-react';
 import { exportToHTML } from '../utils/export';
 import { cn } from '../utils/cn';
-import CopilotButton from './CopilotButton';
 import ProfileSection from './ProfileSection';
 
 interface HeaderProps {
@@ -139,8 +138,6 @@ const Header: React.FC<HeaderProps> = ({ onPreview }) => {
             JSON
           </button>
         </div>
-
-        <CopilotButton />
 
         <div className="w-px h-6 bg-slate-200 dark:bg-slate-700 mx-1"></div>
 

@@ -1,8 +1,18 @@
 {
-  "name": "website-builder-react",
+  "name": "clown-ai-website-builder",
+  "description": "AI-powered website builder with drag-and-drop interface and autonomous design generation",
+  "version": "1.0.0",
   "private": true,
-  "version": "0.0.0",
   "type": "module",
+  "keywords": [
+    "website-builder",
+    "ai",
+    "react",
+    "typescript",
+    "tailwind-css"
+  ],
+  "author": "CLOWN AI Team",
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "server": "vite",
@@ -35,6 +45,7 @@
     "eslint-plugin-react-refresh": "^0.4.3",
     "postcss": "^8.4.31",
     "tailwindcss": "^3.3.3",
+    "terser": "^5.46.0",
     "typescript": "^5.0.2",
     "vite": "^4.4.5"
   }

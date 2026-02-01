@@ -1,297 +1,167 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { User, LogIn, Mail, Lock, Chrome, Settings, LogOut, X, BadgeCheck, CreditCard, Bell } from 'lucide-react';
+import { User, LogIn, Mail, Lock, Settings, LogOut, X, CreditCard, Bell, ChevronDown, Check } from 'lucide-react';
 import { cn } from '../utils/cn';
-import { useMediaQuery } from '../hooks/use-media-query';
+import { AnimatePresence, motion } from 'framer-motion';
 
-// Avatar Component
-const Avatar: React.FC<{ src?: string; initials: string; className?: string }> = ({ src, initials, className }) => (
-  <div className={cn("relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full border border-slate-200 dark:border-slate-700 shadow-sm", className)}>
-    {src ? (
-      <img className="aspect-square h-full w-full object-cover" src={src} alt="Avatar" />
-    ) : (
-      <div className="flex h-full w-full items-center justify-center rounded-full bg-indigo-600 text-white text-xs font-bold uppercase tracking-wider">
-        {initials}
-      </div>
-    )}
-  </div>
-);
-
-interface ProfileFormProps {
-  className?: string;
-  email?: string;
-  username?: string;
-  onSave: (data: { email: string; username: string }) => void;
+// --- Types ---
+interface UserData {
+  email: string;
+  username: string;
+  avatar?: string;
 }
 
-const ProfileForm: React.FC<ProfileFormProps> = ({ className, email: initialEmail, username: initialUsername, onSave }) => {
-  const [email, setEmail] = useState(initialEmail || 'shadcn@example.com');
-  const [username, setUsername] = useState(initialUsername || '@shadcn');
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSave({ email, username });
-  };
-
-  return (
-    <form className={cn("grid items-start gap-6", className)} onSubmit={handleSubmit}>
-      <div className="grid gap-3">
-        <label htmlFor="edit-email" className="text-sm font-medium text-slate-700 dark:text-slate-300">Email</label>
-        <input 
-          type="email" 
-          id="edit-email" 
-          value={email} 
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all dark:text-white"
-        />
-      </div>
-      <div className="grid gap-3">
-        <label htmlFor="username" className="text-sm font-medium text-slate-700 dark:text-slate-300">Username</label>
-        <input 
-          id="username" 
-          value={username} 
-          onChange={(e) => setUsername(e.target.value)}
-          className="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all dark:text-white"
-        />
-      </div>
-      <button 
-        type="submit" 
-        className="w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl transition-all shadow-md active:scale-[0.98]"
-      >
-        Save changes
-      </button>
-    </form>
-  );
-};
+// --- Icons ---
+// Minimal geometric logo for logged out state or fallback
+const GeometricUserIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" className={cn("text-current", className)}>
+    <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="1.5" />
+    <path d="M4 20c0-4.418 3.582-8 8-8s8 3.582 8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+  </svg>
+);
 
 export const ProfileSection: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Simulated auth state
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [userData, setUserData] = useState({ email: 'shadcn@example.com', username: '@shadcn' });
-  
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const isDesktop = useMediaQuery("(min-width: 768px)");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userData, setUserData] = useState<UserData>({
+    email: 'dev@clown.so',
+    username: 'Vercel User'
+  });
 
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close on outside click
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
     };
-    if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
+    if (isOpen) document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen]);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoggedIn(true);
-  };
-
-  const handleSaveProfile = (data: { email: string; username: string }) => {
-    setUserData(data);
-    setShowEditModal(false);
+    setIsOpen(false);
   };
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="relative font-sans text-sm" ref={dropdownRef}>
+      {/* Trigger Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="transition-transform active:scale-95 duration-100"
-        aria-label="User profile"
+        className={cn(
+          "flex items-center gap-2 pl-1 pr-1 py-1 rounded-full transition-all duration-200 outline-none border",
+          isOpen
+            ? "bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700"
+            : "bg-transparent border-transparent hover:bg-slate-50 dark:hover:bg-slate-800/50"
+        )}
       >
-        <Avatar 
-          src={isLoggedIn ? "https://github.com/shadcn.png" : undefined}
-          initials={userData.username.substring(1, 3).toUpperCase()}
-          className={cn(!isLoggedIn && "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300")}
-        />
-      </button>
-
-      {isOpen && (
-        <div className="absolute right-0 mt-3 w-[350px] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
-          {!isLoggedIn ? (
-            /* Login View */
-            <>
-              <div className="p-6 pb-4">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Login</h3>
-                  <button className="text-xs font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/40 px-3 py-1.5 rounded-full hover:bg-indigo-100 dark:hover:bg-indigo-900/60 transition-all shadow-sm border border-indigo-100 dark:border-indigo-800/50">
-                    Sign Up
-                  </button>
-                </div>
-                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1.5 leading-relaxed">
-                  Enter your email below to login to your account and start building.
-                </p>
-              </div>
-
-              <div className="px-6 py-4">
-                <form onSubmit={handleLogin} className="space-y-5">
-                  <div className="space-y-2">
-                    <label htmlFor="email" className="text-sm font-medium text-slate-700 dark:text-slate-300 ml-1">
-                      Email
-                    </label>
-                    <div className="relative">
-                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
-                      <input
-                        id="email"
-                        type="email"
-                        placeholder="m@example.com"
-                        className="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all dark:text-white text-sm"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between ml-1">
-                      <label htmlFor="password" className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                        Password
-                      </label>
-                      <a href="#" className="text-sm text-indigo-600 dark:text-indigo-400 hover:underline underline-offset-4">
-                        Forgot your password?
-                      </a>
-                    </div>
-                    <div className="relative">
-                      <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
-                      <input
-                        id="password"
-                        type="password"
-                        placeholder="••••••••"
-                        className="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all dark:text-white text-sm"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <button
-                    type="submit"
-                    className="w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl transition-all shadow-md shadow-indigo-100 dark:shadow-none flex items-center justify-center gap-2"
-                  >
-                    <LogIn size={18} />
-                    Login
-                  </button>
-                </form>
-              </div>
-
-              <div className="px-6 pb-6 pt-2 space-y-3">
-                <div className="relative">
-                  <div className="absolute inset-0 flex items-center">
-                    <span className="w-full border-t border-slate-200 dark:border-slate-800"></span>
-                  </div>
-                  <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-white dark:bg-slate-900 px-2 text-slate-500 dark:text-slate-400">Or continue with</span>
-                  </div>
-                </div>
-
-                <button className="w-full py-2.5 px-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-medium rounded-xl transition-all flex items-center justify-center gap-2">
-                  <Chrome size={18} />
-                  Login with Google
-                </button>
-              </div>
-            </>
+        {/* Avatar / Icon */}
+        <div className={cn(
+          "w-8 h-8 rounded-full flex items-center justify-center overflow-hidden border transition-colors",
+          isLoggedIn
+            ? "bg-indigo-500 border-indigo-500 text-white"
+            : "bg-slate-100 dark:bg-slate-900 border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400"
+        )}>
+          {isLoggedIn ? (
+            <span className="font-bold text-xs">{userData.username.charAt(0)}</span>
           ) : (
-            /* Logged In View */
-            <div className="p-1.5">
-              <div className="p-3 flex items-center gap-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl mb-2">
-                <Avatar 
-                  src="https://github.com/shadcn.png"
-                  initials={userData.username.substring(1, 3).toUpperCase()}
-                  className="h-12 w-12"
-                />
-                <div className="flex flex-col">
-                  <h4 className="font-bold text-slate-900 dark:text-white leading-none">{userData.username}</h4>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{userData.email}</p>
-                </div>
-              </div>
-              
-              <div className="space-y-0.5">
-                <button 
-                  onClick={() => {
-                    setShowEditModal(true);
-                    setIsOpen(false);
-                  }}
-                  className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
-                >
-                  <BadgeCheck size={18} className="text-indigo-600 dark:text-indigo-400" />
-                  <span>Account</span>
-                </button>
-                <button className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
-                  <CreditCard size={18} className="text-slate-400" />
-                  <span>Billing</span>
-                </button>
-                <button className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
-                  <Bell size={18} className="text-slate-400" />
-                  <span>Notifications</span>
-                </button>
-                
-                <div className="h-px bg-slate-100 dark:bg-slate-800 my-1 mx-2"></div>
-                
-                <button 
-                  onClick={() => setIsLoggedIn(false)}
-                  className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
-                >
-                  <LogOut size={18} />
-                  <span>Sign Out</span>
-                </button>
-              </div>
-            </div>
+            <GeometricUserIcon className="w-4 h-4" />
           )}
         </div>
-      )}
+      </button>
 
-      {/* Edit Profile Logic (Modal / Drawer) */}
-      {showEditModal && (
-        <div className="fixed inset-0 z-[100] flex items-end md:items-center justify-center p-0 md:p-4">
-          {/* Overlay */}
-          <div 
-            className="absolute inset-0 bg-slate-900/50 backdrop-blur-sm animate-in fade-in duration-300"
-            onClick={() => setShowEditModal(false)}
-          />
-          
-          {/* Modal/Drawer Container */}
-          <div className={cn(
-            "relative w-full bg-white dark:bg-slate-900 shadow-2xl z-[101] overflow-hidden",
-            isDesktop 
-              ? "max-w-[425px] rounded-2xl animate-in zoom-in-95 fade-in duration-200" 
-              : "rounded-t-2xl animate-in slide-in-from-bottom duration-300"
-          )}>
-            <div className="p-6">
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="text-xl font-bold dark:text-white">Edit profile</h3>
-                {isDesktop && (
-                  <button onClick={() => setShowEditModal(false)} className="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 dark:text-slate-400 text-slate-500">
-                    <X size={20} />
-                  </button>
-                )}
-              </div>
-              <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">
-                Make changes to your profile here. Click save when you&apos;re done.
-              </p>
-              
-              <ProfileForm 
-                email={userData.email} 
-                username={userData.username} 
-                onSave={handleSaveProfile} 
-                className={!isDesktop ? "pb-4" : ""}
-              />
+      {/* Dropdown Menu */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 8, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 8, scale: 0.98 }}
+            transition={{ duration: 0.15, ease: "easeOut" }}
+            className="absolute right-0 top-full mt-2 w-64 origin-top-right bg-white dark:bg-[#0A0A0A] border border-slate-100 dark:border-slate-800 rounded-xl shadow-xl shadow-slate-200/20 dark:shadow-none bg-clip-padding z-50 overflow-hidden"
+          >
+            {/* Content */}
+            {!isLoggedIn ? (
+              <div className="p-4">
+                <div className="text-center mb-4">
+                  <div className="w-10 h-10 bg-slate-50 dark:bg-slate-900 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <Lock size={16} className="text-slate-400" />
+                  </div>
+                  <h3 className="text-slate-900 dark:text-white font-medium mb-1">Access Account</h3>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">Sign in to sync your projects.</p>
+                </div>
 
-              {!isDesktop && (
-                <div className="mt-4 pt-2 border-t border-slate-100 dark:border-slate-800">
-                  <button 
-                    onClick={() => setShowEditModal(false)}
-                    className="w-full py-2.5 px-4 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"
+                <form onSubmit={handleLogin} className="space-y-3">
+                  <input
+                    type="email"
+                    placeholder="Email address"
+                    className="w-full h-9 px-3 rounded-md bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs focus:ring-1 focus:ring-black dark:focus:ring-white outline-none transition-all"
+                  />
+                  <button
+                    type="submit"
+                    className="w-full h-9 rounded-md bg-slate-900 dark:bg-white text-white dark:text-black text-xs font-medium hover:opacity-90 transition-opacity"
                   >
-                    Cancel
+                    Continue
+                  </button>
+                </form>
+                <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-center">
+                  <span className="text-[10px] text-slate-400">Protected by 256-bit encryption</span>
+                </div>
+              </div>
+            ) : (
+              <div>
+                {/* Header */}
+                <div className="px-4 py-3 border-b border-slate-100 dark:border-slate-800">
+                  <p className="font-medium text-slate-900 dark:text-white truncate">{userData.username}</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 truncate">{userData.email}</p>
+                </div>
+
+                {/* Menu Items */}
+                <div className="p-1">
+                  {[
+                    { icon: Settings, label: 'Settings', shortcut: '⌘S' },
+                    { icon: CreditCard, label: 'Billing' },
+                    { icon: Bell, label: 'Notifications', badge: 2 },
+                  ].map((item) => (
+                    <button
+                      key={item.label}
+                      className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors group"
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <item.icon size={14} className="text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white transition-colors" />
+                        <span className="text-xs font-medium">{item.label}</span>
+                      </div>
+                      {item.badge && (
+                        <span className="flex items-center justify-center w-4 h-4 rounded-full bg-indigo-500 text-[9px] font-bold text-white">
+                          {item.badge}
+                        </span>
+                      )}
+                      {item.shortcut && (
+                        <span className="text-[10px] text-slate-400 font-mono tracking-tighter opacity-0 group-hover:opacity-100 transition-opacity">
+                          {item.shortcut}
+                        </span>
+                      )}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="p-1 border-t border-slate-100 dark:border-slate-800 mt-1">
+                  <button
+                    onClick={() => setIsLoggedIn(false)}
+                    className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors text-xs font-medium"
+                  >
+                    <LogOut size={14} />
+                    Log Out
                   </button>
                 </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
+              </div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
-
-export default ProfileSection;
