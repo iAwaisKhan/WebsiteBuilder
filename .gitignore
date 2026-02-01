@@ -64,6 +64,13 @@ venv.bak/
 .env
 .env.local
 .env.*.local
+backend/.env
+
+# Backend Python
+backend/venv/
+backend/__pycache__/
+*.log
+
 
 # Build & Dist
 .turbo/

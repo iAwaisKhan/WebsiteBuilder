@@ -12,12 +12,10 @@ interface Message {
 }
 
 export default function AIAssistant() {
-    const defaultKey = 'AIzaSyA5v6qi1ioMO7a5VJbSa4viVKukYhKzYrk';
     const [isOpen, setIsOpen] = useState(false);
     const [input, setInput] = useState('');
     const [apiKey, setApiKey] = useState(() => {
-        const stored = localStorage.getItem('clown_ai_key');
-        return stored && stored.trim() !== '' ? stored : defaultKey;
+        return localStorage.getItem('clown_ai_key') || '';
     });
     const [showKeyInput, setShowKeyInput] = useState(false);
     const [messages, setMessages] = useState<Message[]>([
@@ -50,7 +48,7 @@ export default function AIAssistant() {
 
     const saveApiKey = (key: string) => {
         if (!key.trim()) {
-            setApiKey(defaultKey);
+            setApiKey('');
             localStorage.removeItem('clown_ai_key');
         } else {
             setApiKey(key);
@@ -77,7 +75,7 @@ export default function AIAssistant() {
 
         try {
             const response = await processAIRequest(userMessage, apiKey, elements, 'bytez');
-            
+
             if (response.text) {
                 setMessages(prev => [...prev, { role: 'assistant', content: response.text }]);
             } else if (response.actions && response.actions.length > 0) {
@@ -107,7 +105,7 @@ export default function AIAssistant() {
             }
         } catch (error) {
             const errorMsg = (error as Error).message;
-            
+
             if (errorMsg.includes("API key")) {
                 setMessages(prev => [...prev, { role: 'assistant', content: "🚨 API KEY ERROR: Your configuration seems to be incorrect. Please check the project setup." }]);
             } else {
@@ -172,8 +170,8 @@ export default function AIAssistant() {
                                 >
                                     <div className={cn(
                                         "px-4 py-3 rounded-2xl text-sm leading-relaxed",
-                                        msg.role === 'user' 
-                                            ? "bg-indigo-600 text-white shadow-lg shadow-indigo-500/20" 
+                                        msg.role === 'user'
+                                            ? "bg-indigo-600 text-white shadow-lg shadow-indigo-500/20"
                                             : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-100 dark:border-slate-700 shadow-sm"
                                     )}>
                                         {msg.content}
@@ -196,7 +194,7 @@ export default function AIAssistant() {
                         {/* Quick Actions */}
                         <div className="px-6 py-3 flex gap-2 overflow-x-auto scrollbar-hide border-t border-slate-100 dark:border-slate-800/50">
                             {suggestions.map((s, i) => (
-                                <button 
+                                <button
                                     key={i}
                                     onClick={() => handleSendMessage(s)}
                                     className="whitespace-nowrap px-3 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-full text-[10px] font-bold text-slate-600 dark:text-slate-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-600 transition-all uppercase tracking-wider"
