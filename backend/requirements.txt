@@ -1,7 +1,0 @@
-fastapi
-uvicorn
-python-dotenv
-pydantic
-fastapi-cors
-bytez
-google-generativeai
