@@ -41,6 +41,7 @@ interface WebBuilderState {
   updateElement: (id: string, updates: Partial<CanvasElement>) => void;
   deleteElement: (id: string) => void;
   selectElement: (id: string | null) => void;
+  clearCanvas: () => void;
   
   // History
   saveState: () => void;
@@ -57,6 +58,12 @@ export const useStore = create<WebBuilderState>((set) => ({
 
   setElements: (elements) => set({ elements }),
   setViewport: (viewport) => set({ viewport }),
+
+  clearCanvas: () => set((state) => ({ 
+    undoStack: [...state.undoStack, state.elements],
+    elements: [], 
+    selectedElementId: null 
+  })),
   
   addElement: (element) => 
     set((state) => ({ 

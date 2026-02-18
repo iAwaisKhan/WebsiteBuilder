@@ -1,56 +1,67 @@
 @echo off
+setlocal
 echo =====================================
-echo   CLOWN AI Website Builder - Startup
+echo   CLOWN AI Website Builder - Setup
 echo =====================================
 echo.
 
-REM Check if backend directory exists
-if not exist "backend" (
-    echo ERROR: Backend directory not found!
-    pause
-    exit /b 1
+REM --- Step 1: Initialize Environment ---
+echo Initializing environment files...
+if not exist ".env" (
+    copy ".env.example" ".env"
+    echo Created .env from .env.example
 )
-
-REM Check if node_modules exists
-if not exist "node_modules" (
-    echo Installing frontend dependencies...
-    call npm install
-    echo.
+if not exist "backend\.env" (
+    copy "backend\.env.example" "backend\.env"
+    echo Created backend\.env from backend\.env.example
 )
+echo.
 
-REM Check if backend dependencies are installed
+REM --- Step 2: Backend Dependencies ---
 if not exist "backend\venv" (
     echo Setting up Python virtual environment...
     cd backend
     python -m venv venv
     call venv\Scripts\activate
+    python -m pip install --upgrade pip
     pip install -r requirements.txt
     cd ..
-    echo.
+    echo Python environment ready!
+) else (
+    echo Python environment already exists.
 )
+echo.
 
-echo Starting Backend Server...
-start "CLOWN AI Backend" cmd /k "cd backend && python main.py"
+REM --- Step 3: Frontend Dependencies ---
+if not exist "node_modules" (
+    echo Installing frontend dependencies...
+    call npm install
+    echo Frontend dependencies ready!
+) else (
+    echo Frontend dependencies already exist.
+)
+echo.
 
+REM --- Step 4: Launch ---
+echo.
+echo =====================================
+echo   Environment Setup Complete!
+echo =====================================
+echo.
+echo NOTE: Ensure you have added your GEMINI_API_KEY in backend\.env
+echo.
+set /p choice="Start servers now? (y/n): "
+if /i "%choice%" neq "y" goto :exit
+
+echo Starting processes...
+start "CLOWN AI Backend" cmd /k "cd backend && venv\Scripts\activate && python main.py"
 timeout /t 3 /nobreak >nul
-
-echo Starting Frontend Development Server...
 start "CLOWN AI Frontend" cmd /k "npm run dev"
 
-echo.
-echo =====================================
-echo   Servers Started Successfully!
-echo =====================================
-echo.
-echo Backend:  http://localhost:8000
-echo Frontend: http://localhost:5173
-echo.
-echo Press any key to open the application in browser...
-pause >nul
-
 start http://localhost:5173
+echo Application launched!
 
-echo.
-echo Application opened! Close this window to keep servers running.
-echo To stop servers, close the server terminal windows.
+:exit
+echo Setup finished.
 pause
+

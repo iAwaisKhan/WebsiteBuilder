@@ -23,13 +23,13 @@ export default function AIAssistant() {
     ]);
     const [isLoading, setIsLoading] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
-    const { addElement, setElements, elements, updateElement } = useStore();
+    const { addElement, setElements, elements, updateElement, clearCanvas } = useStore();
 
     const suggestions = useMemo(() => [
         "Build a minimalist portfolio",
         "Create a SaaS landing page",
         "Design a crypto dashboard",
-        "Make a dark mode coffee shop site"
+        "Clear canvas and start fresh"
     ], []);
 
     const generateId = useCallback(() => {
@@ -100,6 +100,8 @@ export default function AIAssistant() {
                         })));
                     } else if (action.type === 'UPDATE_ELEMENT') {
                         updateElement(action.payload.id, action.payload.updates);
+                    } else if (action.type === 'CLEAR_CANVAS') {
+                        clearCanvas();
                     }
                 });
             }

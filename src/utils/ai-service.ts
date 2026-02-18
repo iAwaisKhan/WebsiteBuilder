@@ -5,12 +5,10 @@ export const processAIRequest = async (
     elements: any[],
     model: string
 ) => {
-    // If we have a backend, we should use it.
-    // The README says the backend runs on port 8000.
-    // However, for the purpose of this "fix", we want to ensure it works.
+    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
     try {
-        const response = await fetch('http://localhost:8000/process', {
+        const response = await fetch(`${API_URL}/process`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -19,15 +17,21 @@ export const processAIRequest = async (
                 userMessage,
                 currentElements: elements,
                 preferredModel: model,
-                apiKey // Pass the key if client provided it overrides backend? 
-                // Or if the backend needs it. 
-                // Ideally backend uses its own .env key.
-                // But AIAssistant.tsx passes 'apiKey'.
-                // If the user inputs a key in UI, we should probably send it.
+                apiKey
             }),
         });
 
         if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.detail || `Server error: ${response.status}`);
+        }
+
+        return await response.json();
+    } catch (error: any) {
+        console.error('AI Service Error:', error);
+        throw error;
+    }
+};
             throw new Error(`Backend error: ${response.statusText}`);
         }
 

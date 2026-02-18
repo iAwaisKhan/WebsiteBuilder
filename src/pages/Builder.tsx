@@ -7,13 +7,13 @@ import PropertiesPanel from '../components/PropertiesPanel';
 import { useStore } from '../store/useStore';
 import { useProjectStore } from '../store/useProjectStore';
 import { cn } from '../utils/cn';
-import { Save, AlertCircle } from 'lucide-react';
+import { Save, AlertCircle, Trash2, RotateCcw, RotateCw } from 'lucide-react';
 
 export default function Builder() {
     const navigate = useNavigate();
     const [isPreview, setIsPreview] = useState(false);
     const [lastSaved, setLastSaved] = useState<Date | null>(null);
-    const { elements, setElements } = useStore();
+    const { elements, setElements, clearCanvas, undo, redo, undoStack, redoStack } = useStore();
     const { currentProjectId, getCurrentProject, saveProjectElements, projects } = useProjectStore();
 
     // Load project on mount
@@ -68,6 +68,37 @@ export default function Builder() {
                             <Save size={14} />
                             {lastSaved ? `Saved ${lastSaved.toLocaleTimeString()}` : 'Save'}
                         </button>
+                        <span className="text-xs text-slate-600 px-2">|</span>
+                        <div className="flex items-center gap-4">
+                            <button
+                                onClick={undo}
+                                disabled={undoStack.length === 0}
+                                className="text-slate-400 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                                title="Undo"
+                            >
+                                <RotateCcw size={14} />
+                            </button>
+                            <button
+                                onClick={redo}
+                                disabled={redoStack.length === 0}
+                                className="text-slate-400 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                                title="Redo"
+                            >
+                                <RotateCw size={14} />
+                            </button>
+                            <button
+                                onClick={() => {
+                                    if (window.confirm('Are you sure you want to clear the entire canvas? This action is undoable.')) {
+                                        clearCanvas();
+                                    }
+                                }}
+                                className="flex items-center gap-2 text-xs text-rose-400/80 hover:text-rose-400 transition-colors"
+                                title="Clear Canvas"
+                            >
+                                <Trash2 size={14} />
+                                Clear
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}
