@@ -20,7 +20,7 @@ const NavigationHeader: React.FC = () => {
         <header className="fixed top-6 left-0 right-0 px-8 flex items-center justify-between z-50 pointer-events-none">
             <Link to="/" className="flex items-center pointer-events-auto">
                 <span className="font-medium text-3xl text-slate-900 dark:text-white tracking-[0.2em] hover:opacity-70 transition-opacity cursor-pointer" style={{ fontFamily: "'Outfit', sans-serif" }}>
-                    CLOWN
+                    WEB BUILDER
                 </span>
             </Link>
 

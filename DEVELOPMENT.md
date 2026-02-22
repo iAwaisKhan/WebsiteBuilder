@@ -1,6 +1,6 @@
 # Developer Setup Guide
 
-This guide will help you set up the **CLOWN AI Website Builder** for local development.
+This guide will help you set up the **Web Builder** for local development.
 
 ## 📋 Prerequisites
 

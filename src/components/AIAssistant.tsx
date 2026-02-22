@@ -15,11 +15,11 @@ export default function AIAssistant() {
     const [isOpen, setIsOpen] = useState(false);
     const [input, setInput] = useState('');
     const [apiKey, setApiKey] = useState(() => {
-        return localStorage.getItem('clown_ai_key') || '';
+        return localStorage.getItem('web_builder_key') || '';
     });
     const [showKeyInput, setShowKeyInput] = useState(false);
     const [messages, setMessages] = useState<Message[]>([
-        { role: 'assistant', content: 'Hello! I am your CLOWN AI Assistant. GPT-5.2-Codex is now ENABLED for all clients. How can I help you build today?', type: 'text' }
+        { role: 'assistant', content: 'Hello! I am your AI Assistant. How can I help you build today?', type: 'text' }
     ]);
     const [isLoading, setIsLoading] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -49,10 +49,10 @@ export default function AIAssistant() {
     const saveApiKey = (key: string) => {
         if (!key.trim()) {
             setApiKey('');
-            localStorage.removeItem('clown_ai_key');
+            localStorage.removeItem('web_builder_key');
         } else {
             setApiKey(key);
-            localStorage.setItem('clown_ai_key', key);
+            localStorage.setItem('web_builder_key', key);
         }
         setShowKeyInput(false);
         setMessages(prev => [...prev, { role: 'assistant', content: "API Settings updated! How can I help you build today?" }]);
@@ -144,7 +144,7 @@ export default function AIAssistant() {
                                     <Bot size={20} />
                                 </div>
                                 <div>
-                                    <h3 className="font-bold text-slate-900 dark:text-white uppercase tracking-tighter">CLOWN AI Builder</h3>
+                                    <h3 className="font-bold text-slate-900 dark:text-white uppercase tracking-tighter">Web Builder AI</h3>
                                     <div className="flex items-center gap-1.5">
                                         <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
                                         <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Active</span>
@@ -179,7 +179,7 @@ export default function AIAssistant() {
                                         {msg.content}
                                     </div>
                                     <span className="mt-1 text-[10px] font-bold text-slate-400 uppercase tracking-tighter">
-                                        {msg.role === 'assistant' ? 'CLOWN AI' : 'You'}
+                                        {msg.role === 'assistant' ? 'AI Assistant' : 'You'}
                                     </span>
                                 </motion.div>
                             ))}

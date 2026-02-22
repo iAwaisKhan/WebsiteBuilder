@@ -23,7 +23,7 @@ export const ProfileSection: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userData, setUserData] = useState<UserData>({
-    email: 'dev@clown.so',
+    email: 'dev@web-builder.so',
     username: 'Vercel User'
   });
 

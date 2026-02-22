@@ -26,7 +26,7 @@ export const templates: Template[] = [
         focus: 'Typography, Personal Brand',
         image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&auto=format&fit=crop',
         description: 'Clean, typography-focused showcase for creatives.',
-        designer: 'Clown Studio',
+        designer: 'Web Builder Studio',
         gridClass: 'md:col-span-2 md:row-span-2',
         elements: [
             { id: 'h1', type: 'hero', tag: 'section', innerHTML: '<div class="container mx-auto px-6 py-24 text-center"><h1 class="text-7xl font-serif mb-6">Create Without Limits</h1><p class="text-xl text-slate-600 max-w-2xl mx-auto">Explore the intersection of design and technology with our minimalist portfolio template.</p></div>', style: { backgroundColor: '#ffffff' } },
@@ -101,7 +101,7 @@ export const templates: Template[] = [
         focus: 'Art Direction, Bold',
         image: 'https://images.unsplash.com/photo-1522542550221-31fd19575a2d?w=800&auto=format&fit=crop',
         description: 'Vibrant and energetic layouts for designers.',
-        designer: 'Clown Studio',
+        designer: 'Web Builder Studio',
         gridClass: 'md:col-span-3 md:row-span-1',
         elements: [
             { id: 'h1', type: 'hero', tag: 'section', innerHTML: '<div class="container mx-auto px-6 py-32"><div class="w-20 h-20 bg-yellow-400 rounded-[2rem] mb-12 rotate-12 transition-transform hover:rotate-0"></div><h1 class="text-[120px] font-black uppercase tracking-tighter leading-none mb-12">Creative<br/><span class="text-indigo-600">Pulse.</span></h1><p class="text-2xl font-medium max-w-lg mb-12">Visual Designer & Art Director based in Berlin. Obsessed with high-contrast typography.</p><div class="flex gap-4"><button class="px-8 py-3 bg-slate-900 text-white rounded-lg font-bold hover:scale-105 transition-transform">View Work</button><button class="px-8 py-3 border-2 border-slate-900 rounded-lg font-bold hover:bg-slate-50 transition-colors">Get in Touch</button></div></div>', style: { backgroundColor: '#ffffff' } },

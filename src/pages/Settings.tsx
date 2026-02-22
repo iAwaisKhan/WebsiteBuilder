@@ -69,7 +69,7 @@ export default function Settings() {
 
                                 <div className="space-y-2">
                                     <label className="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Email Address</label>
-                                    <input type="email" className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all dark:text-white" defaultValue="alex@clown-builder.com" />
+                                    <input type="email" className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all dark:text-white" defaultValue="alex@web-builder.com" />
                                 </div>
 
                                 <div className="pt-6">

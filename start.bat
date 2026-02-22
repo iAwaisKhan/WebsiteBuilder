@@ -1,7 +1,7 @@
 @echo off
 setlocal
 echo =====================================
-echo   CLOWN AI Website Builder - Setup
+echo   Web Builder AI - Setup
 echo =====================================
 echo.
 
@@ -54,9 +54,9 @@ set /p choice="Start servers now? (y/n): "
 if /i "%choice%" neq "y" goto :exit
 
 echo Starting processes...
-start "CLOWN AI Backend" cmd /k "cd backend && venv\Scripts\activate && python main.py"
+start "Web Builder Backend" cmd /k "cd backend && venv\\Scripts\\activate && python main.py"
 timeout /t 3 /nobreak >nul
-start "CLOWN AI Frontend" cmd /k "npm run dev"
+start "Web Builder Frontend" cmd /k "npm run dev"
 
 start http://localhost:5173
 echo Application launched!

@@ -1,5 +1,5 @@
 {
-  "name": "clown-ai-website-builder",
+  "name": "web-builder-ai",
   "description": "AI-powered website builder with drag-and-drop interface and autonomous design generation",
   "version": "1.0.0",
   "private": true,
@@ -11,7 +11,7 @@
     "typescript",
     "tailwind-css"
   ],
-  "author": "CLOWN AI Team",
+  "author": "Web Builder AI Team",
   "license": "MIT",
   "scripts": {
     "dev": "vite",

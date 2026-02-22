@@ -1,6 +1,6 @@
 {
-  "name": "CLOWN AI - Website Builder",
-  "short_name": "CLOWN Builder",
+  "name": "Web Builder - AI Website Builder",
+  "short_name": "Web Builder",
   "description": "Fully Autonomous Website Builder powered by AI",
   "start_url": "/",
   "scope": "/",

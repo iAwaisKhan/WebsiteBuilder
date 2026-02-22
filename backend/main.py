@@ -14,7 +14,7 @@ load_dotenv()
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-app = FastAPI(title="CLOWN Website Builder Backend")
+app = FastAPI(title="Web Builder Backend")
 
 # Configure CORS
 app.add_middleware(
@@ -42,7 +42,7 @@ class AIRequest(BaseModel):
 async def root():
     return {
         "status": "online", 
-        "engine": "CLOWN Website Builder",
+        "engine": "Web Builder",
         "version": "1.0.0"
     }
 
@@ -74,7 +74,7 @@ async def process_request(request: AIRequest):
         genai.configure(api_key=api_key)
         
         system_instruction = """
-        You are 'CLOWN AI', an elite web design agent.
+        You are 'Web Builder AI', an elite web design agent.
         Your goal is to transform user requests into high-quality, modern, and responsive website structures.
         
         DESIGN PRINCIPLES:

@@ -8,7 +8,7 @@
   <!-- Modern Rounded Square Background -->
   <rect width="100" height="100" rx="24" fill="url(#grad)"/>
   
-  <!-- "C" for CLOWN / Connection -->
+  <!-- "W/B" branding for Web Builder -->
   <path d="M 70 30 C 60 20, 40 20, 30 30 C 20 40, 20 60, 30 70 C 40 80, 60 80, 70 70" 
         fill="none" 
         stroke="white" 
