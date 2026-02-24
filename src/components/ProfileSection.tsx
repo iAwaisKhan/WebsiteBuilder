@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { User, LogIn, Mail, Lock, Settings, LogOut, X, CreditCard, Bell, ChevronDown, Check } from 'lucide-react';
+import { User, LogIn, Mail, Lock, Settings, Box, LogOut, X, CreditCard, Bell, ChevronDown, Check } from 'lucide-react';
 import { cn } from '../utils/cn';
 import { AnimatePresence, motion } from 'framer-motion';
 
@@ -122,7 +122,7 @@ export const ProfileSection: React.FC = () => {
                 {/* Menu Items */}
                 <div className="p-1">
                   {[
-                    { icon: Settings, label: 'Settings', shortcut: '⌘S' },
+                    { icon: Box, label: 'Components', shortcut: '⌘K' },
                     { icon: CreditCard, label: 'Billing' },
                     { icon: Bell, label: 'Notifications', badge: 2 },
                   ].map((item) => (

@@ -62,15 +62,16 @@ export default function Projects() {
             <div className="flex-1 p-8 pt-40">
                 <div className="max-w-7xl mx-auto">
                     {/* Header */}
-                    <div className="flex items-center justify-between mb-8">
+                    <div className="flex items-center justify-between mb-12">
                         <div>
-                            <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-2">My Projects</h1>
+                            <h1 className="text-5xl font-black text-slate-900 dark:text-white uppercase tracking-tighter mb-3">Your Space</h1>
+                            <p className="text-slate-500 dark:text-slate-400 font-medium">Manage and refine your digital creations</p>
                         </div>
                         <button
                             onClick={() => setIsCreating(true)}
-                            className="flex items-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl shadow-lg shadow-indigo-500/30 transition-all active:scale-95"
+                            className="flex items-center gap-2 px-6 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-2xl shadow-xl shadow-indigo-500/20 hover:scale-105 active:scale-95 transition-all uppercase tracking-widest text-[11px]"
                         >
-                            <Plus size={20} />
+                            <Plus size={18} strokeWidth={3} />
                             New Project
                         </button>
                     </div>

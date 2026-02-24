@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import NavigationHeader from '../components/NavigationHeader';
 import { TemplateCard } from '../components/TemplateCard';
 import { useStore } from '../store/useStore';
+import { useProjectStore } from '../store/useProjectStore';
 import { cn } from '../utils/cn';
 import { templates as allTemplates, Template } from '../data/templates';
 
@@ -16,25 +17,40 @@ export default function Templates() {
     const [loadingTemplateId, setLoadingTemplateId] = useState<string | null>(null);
     const navigate = useNavigate();
     const { setElements } = useStore();
+    const { createProject, saveProjectElements } = useProjectStore();
 
     const applyTemplate = async (template: Template) => {
         setLoadingTemplateId(template.id);
 
         try {
             // Simulate slight delay for better UX feedback & image loading
-            await new Promise(resolve => setTimeout(resolve, 600));
+            await new Promise(resolve => setTimeout(resolve, 800));
 
+            // 1. Create a new project for this template
+            const projectId = createProject(
+                `${template.title} Copy`, 
+                `Template-based project starting from ${template.title}`
+            );
+
+            // 2. Prepare elements with proper IDs and names
             const processedElements = template.elements.map((el) => ({
-                ...el,
-                id: el.id || crypto.randomUUID(),
-                style: el.style || {}
+                id: crypto.randomUUID(), 
+                type: el.type,
+                name: el.type.charAt(0).toUpperCase() + el.type.slice(1), // Capitalize type for display name
+                tag: el.tag,
+                innerHTML: el.innerHTML,
+                style: el.style || {},
+                content: (el as any).content || ""
             }));
 
-            setElements(processedElements);
+            // 3. Save elements to the new project in project store
+            saveProjectElements(projectId, processedElements as any);
 
-            setTimeout(() => {
-                navigate('/builder');
-            }, 300);
+            // 4. Update the active editor store immediately
+            setElements(processedElements as any);
+
+            // 5. Success navigation
+            navigate('/builder');
         } catch (error) {
             console.error('Error applying template:', error);
             setLoadingTemplateId(null);

@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { ArrowUpRight, Loader, Terminal } from 'lucide-react';
+import { ArrowUpRight, Loader, Terminal, Box } from 'lucide-react';
 import NavigationHeader from '../components/NavigationHeader';
 import { useStore } from '../store/useStore';
+import { useProjectStore } from '../store/useProjectStore';
 import { templates } from '../data/templates';
 import { cn } from '../utils/cn';
 
@@ -11,19 +12,38 @@ export default function Dashboard() {
     const [loadingTemplateId, setLoadingTemplateId] = useState<string | null>(null);
     const navigate = useNavigate();
     const { setElements } = useStore();
+    const { createProject, saveProjectElements } = useProjectStore();
 
     const applyTemplate = async (template: any) => {
         setLoadingTemplateId(template.id);
         try {
-            await new Promise(resolve => setTimeout(resolve, 600));
+            // Premium internal feel
+            await new Promise(resolve => setTimeout(resolve, 800));
+
+            // Create project structure
+            const projectId = createProject(
+                `${template.title} Draft`, 
+                `New project initialized from ${template.title}`
+            );
+
             const processedElements = template.elements.map((el: any) => ({
-                ...el,
-                id: el.id || crypto.randomUUID(),
-                style: el.style || {}
+                id: crypto.randomUUID(),
+                type: el.type,
+                name: el.type.charAt(0).toUpperCase() + el.type.slice(1),
+                tag: el.tag,
+                innerHTML: el.innerHTML,
+                style: el.style || {},
+                content: (el as any).content || ""
             }));
-            setElements(processedElements);
+
+            // Sync stores
+            saveProjectElements(projectId, processedElements as any);
+            setElements(processedElements as any);
+
+            // Smooth transition
             setTimeout(() => navigate('/builder'), 200);
         } catch (error) {
+            console.error('Template application failed:', error);
             setLoadingTemplateId(null);
         }
     };

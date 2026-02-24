@@ -1,6 +1,6 @@
 import React from 'react';
 import { useStore } from '../store/useStore';
-import { Settings, Trash2, AlignLeft, AlignCenter, AlignRight } from 'lucide-react';
+import { Box, Trash2, AlignLeft, AlignCenter, AlignRight } from 'lucide-react';
 import { cn } from '../utils/cn';
 
 const PropertiesPanel: React.FC = () => {
@@ -12,7 +12,7 @@ const PropertiesPanel: React.FC = () => {
     return (
       <aside className="w-80 bg-white dark:bg-slate-900 border-l border-slate-200/50 dark:border-slate-800 flex flex-col items-center justify-center p-8 text-center text-slate-400 dark:text-slate-600 gap-6 transition-colors">
         <div className="w-20 h-20 rounded-[2rem] bg-slate-50 dark:bg-slate-800/50 flex items-center justify-center border border-slate-100 dark:border-slate-800">
-          <Settings size={32} strokeWidth={1} />
+          <Box size={32} strokeWidth={1} />
         </div>
         <p className="text-[13px] font-medium leading-relaxed max-w-[160px]">Select an element on the canvas to edit its properties</p>
       </aside>
@@ -34,70 +34,122 @@ const PropertiesPanel: React.FC = () => {
     updateElement(element.id, { content });
   };
 
+  const handleAttributeChange = (key: string, value: string) => {
+    saveState();
+    updateElement(element.id, {
+      attributes: {
+        ...element.attributes,
+        [key]: value
+      }
+    });
+  };
+
+  const handleInnerHTMLChange = (html: string) => {
+    saveState();
+    updateElement(element.id, { innerHTML: html });
+  };
+
   return (
-    <aside className="w-80 bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl border-l border-slate-200/50 dark:border-slate-800/50 flex flex-col z-20 overflow-hidden transition-colors shadow-[-4px_0_24px_-12px_rgba(0,0,0,0.1)]">
-      <div className="px-6 py-5 border-b border-slate-100 dark:border-slate-800/80 flex items-center justify-between">
+    <aside className="w-80 bg-slate-50 dark:bg-slate-900 border-l border-slate-200/60 dark:border-slate-800 flex flex-col z-20 overflow-hidden transition-colors">
+      {/* Panel Header */}
+      <div className="px-6 py-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-white dark:bg-slate-900">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-xl bg-indigo-50 dark:bg-indigo-900/40 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
-            <Settings size={18} />
+          <div className="w-9 h-9 rounded-xl bg-indigo-50 dark:bg-indigo-900/40 flex items-center justify-center text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-800/50">
+            <Box size={18} />
           </div>
-          <h2 className="text-sm font-bold text-slate-800 dark:text-slate-100 capitalize">
-            {element.tag}
+          <h2 className="text-sm font-bold text-slate-700 dark:text-slate-100 uppercase tracking-[0.1em]">
+            {element.name || element.tag}
           </h2>
         </div>
         <button
           onClick={() => deleteElement(element.id)}
-          className="p-2 text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/20 rounded-xl transition-all active:scale-90"
+          className="p-2 text-slate-300 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/20 rounded-xl transition-all active:scale-95"
           title="Delete element"
         >
           <Trash2 size={18} />
         </button>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-6 space-y-8 content-scrollbar bg-slate-50/20 dark:bg-slate-900/20">
-        {/* Text Content */}
-        {element.tag !== 'img' && !element.innerHTML && (
-          <div className="space-y-3">
-            <label className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Content</label>
+      <div className="flex-1 overflow-y-auto p-6 space-y-10 content-scrollbar">
+        {/* Type Specific Content */}
+        <div className="space-y-4">
+          <label className="text-[10px] font-black text-slate-400 dark:text-slate-600 uppercase tracking-[0.2em] block">Content</label>
+          
+          {/* Support for normal text content */}
+          {element.tag !== 'img' && !element.innerHTML && (
             <textarea
               value={element.content}
               onChange={(e) => handleContentChange(e.target.value)}
-              className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 silver:border-transparent transition-all outline-none resize-none dark:text-slate-200"
-              rows={3}
+              className="w-full px-4 py-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-[13px] font-medium leading-relaxed focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all outline-none resize-none dark:text-slate-200 shadow-sm"
+              rows={4}
             />
-          </div>
-        )}
+          )}
+
+          {/* Support for Image Sources */}
+          {element.tag === 'img' && (
+            <div className="space-y-4">
+               <div>
+                <span className="text-[11px] text-slate-400 mb-2 block font-medium">Image Source URL</span>
+                <input
+                  type="text"
+                  value={element.attributes?.src || ''}
+                  onChange={(e) => handleAttributeChange('src', e.target.value)}
+                  className="w-full px-4 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-[13px] focus:border-indigo-500 outline-none transition-all dark:text-slate-200 shadow-sm"
+                  placeholder="https://..."
+                />
+               </div>
+            </div>
+          )}
+
+          {/* Support for Elements with innerHTML (like Avatars) */}
+          {element.innerHTML && (
+             <div className="space-y-2">
+                <span className="text-[11px] text-slate-400 mb-2 block font-medium">Element HTML Code</span>
+                <textarea
+                  value={element.innerHTML}
+                  onChange={(e) => handleInnerHTMLChange(e.target.value)}
+                  className="w-full px-4 py-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-[12px] font-mono leading-relaxed focus:border-indigo-500 transition-all outline-none resize-none dark:text-slate-200 shadow-sm"
+                  rows={6}
+                />
+             </div>
+          )}
+        </div>
 
         {/* Font Properties */}
-        <div className="space-y-4">
-          <label className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Typography</label>
-          <div className="grid grid-cols-1 gap-4">
+        <div className="space-y-6">
+          <label className="text-[10px] font-black text-slate-400 dark:text-slate-600 uppercase tracking-[0.2em] block">Typography</label>
+          <div className="space-y-5">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-slate-600 dark:text-slate-400 font-medium">Size</span>
+              <span className="text-sm text-slate-500 dark:text-slate-400 font-medium tracking-tight">Size</span>
               <input
                 type="number"
                 value={parseInt(element.style.fontSize || '16')}
                 onChange={(e) => handleStyleChange('fontSize', e.target.value + 'px')}
-                className="w-20 px-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm outline-none dark:text-slate-200"
+                className="w-20 px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-bold text-center outline-none dark:text-slate-200 shadow-sm focus:border-indigo-500 transition-colors"
               />
             </div>
 
             <div className="flex items-center justify-between">
-              <span className="text-sm text-slate-600 dark:text-slate-400 font-medium">Weight</span>
-              <select
-                value={element.style.fontWeight || 'normal'}
-                onChange={(e) => handleStyleChange('fontWeight', e.target.value)}
-                className="w-32 px-2 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm outline-none dark:text-slate-200"
-              >
-                <option value="300">Light</option>
-                <option value="400">Normal</option>
-                <option value="500">Medium</option>
-                <option value="700">Bold</option>
-                <option value="900">Black</option>
-              </select>
+              <span className="text-sm text-slate-500 dark:text-slate-400 font-medium tracking-tight">Weight</span>
+              <div className="relative">
+                <select
+                  value={element.style.fontWeight || 'normal'}
+                  onChange={(e) => handleStyleChange('fontWeight', e.target.value)}
+                  className="w-40 appearance-none px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-medium outline-none dark:text-slate-200 shadow-sm cursor-pointer hover:border-indigo-500 transition-colors"
+                >
+                  <option value="300">Light</option>
+                  <option value="400">Normal</option>
+                  <option value="500">Medium</option>
+                  <option value="700">Bold</option>
+                  <option value="900">Black</option>
+                </select>
+                <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 4.5L6 8L9.5 4.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </div>
+              </div>
             </div>
 
-            <div className="flex gap-1 bg-slate-50 dark:bg-slate-800 p-1 rounded-lg border border-slate-100 dark:border-slate-700">
+            <div className="flex p-1 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
               {[
                 { id: 'left', icon: <AlignLeft size={16} /> },
                 { id: 'center', icon: <AlignCenter size={16} /> },
@@ -107,8 +159,10 @@ const PropertiesPanel: React.FC = () => {
                   key={align.id}
                   onClick={() => handleStyleChange('textAlign', align.id)}
                   className={cn(
-                    "flex-1 flex justify-center py-1.5 rounded transition-all",
-                    element.style.textAlign === align.id ? "bg-white dark:bg-slate-600 shadow-sm text-indigo-600 dark:text-white" : "text-slate-400 dark:text-slate-500 hover:text-slate-600"
+                    "flex-1 flex justify-center py-2 rounded-lg transition-all",
+                    element.style.textAlign === align.id 
+                      ? "bg-indigo-50 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 shadow-inner" 
+                      : "text-slate-300 dark:text-slate-600 hover:text-slate-500 hover:bg-slate-50"
                   )}
                 >
                   {align.icon}
@@ -118,46 +172,50 @@ const PropertiesPanel: React.FC = () => {
           </div>
         </div>
 
-        {/* Colors */}
-        <div className="space-y-4">
-          <label className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Visuals</label>
-          <div className="space-y-4">
+        {/* Colors & Effects */}
+        <div className="space-y-6">
+          <label className="text-[10px] font-black text-slate-400 dark:text-slate-600 uppercase tracking-[0.2em] block">Visuals</label>
+          <div className="space-y-6">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-slate-600 dark:text-slate-400 font-medium">Text Color</span>
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] text-slate-400 font-mono">{(element.style.color || '#000000').toUpperCase()}</span>
-                <input
-                  type="color"
-                  value={element.style.color || '#000000'}
-                  onChange={(e) => handleStyleChange('color', e.target.value)}
-                  className="w-8 h-8 rounded-lg overflow-hidden border-2 border-slate-200 dark:border-slate-700 p-0 cursor-pointer"
-                />
+              <span className="text-sm text-slate-500 dark:text-slate-400 font-medium tracking-tight">Text Color</span>
+              <div className="flex items-center gap-3">
+                <span className="text-[10px] text-slate-300 dark:text-slate-600 font-mono tracking-wider">{(element.style.color || '#000000').toUpperCase()}</span>
+                <div className="relative w-9 h-9 rounded-xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-700 group">
+                    <input
+                      type="color"
+                      value={element.style.color || '#000000'}
+                      onChange={(e) => handleStyleChange('color', e.target.value)}
+                      className="absolute inset-0 w-[150%] h-[150%] -translate-x-[15%] -translate-y-[15%] cursor-pointer"
+                    />
+                </div>
               </div>
             </div>
 
             <div className="flex items-center justify-between">
-              <span className="text-sm text-slate-600 dark:text-slate-400 font-medium">Background</span>
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] text-slate-400 font-mono">{(element.style.backgroundColor || '#ffffff').toUpperCase()}</span>
-                <input
-                  type="color"
-                  value={element.style.backgroundColor || '#ffffff'}
-                  onChange={(e) => handleStyleChange('backgroundColor', e.target.value)}
-                  className="w-8 h-8 rounded-lg overflow-hidden border-2 border-slate-200 dark:border-slate-700 p-0 cursor-pointer"
-                />
+              <span className="text-sm text-slate-500 dark:text-slate-400 font-medium tracking-tight">Background</span>
+              <div className="flex items-center gap-3">
+                <span className="text-[10px] text-slate-300 dark:text-slate-600 font-mono tracking-wider">{(element.style.backgroundColor || '#FFFFFF').toUpperCase()}</span>
+                <div className="relative w-9 h-9 rounded-xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-700 group">
+                    <input
+                      type="color"
+                      value={element.style.backgroundColor || '#ffffff'}
+                      onChange={(e) => handleStyleChange('backgroundColor', e.target.value)}
+                      className="absolute inset-0 w-[150%] h-[150%] -translate-x-[15%] -translate-y-[15%] cursor-pointer"
+                    />
+                </div>
               </div>
             </div>
 
-            <div className="space-y-2">
-              <div className="flex justify-between">
-                <span className="text-sm text-slate-600 dark:text-slate-400 font-medium">Border Radius</span>
-                <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400">{element.style.borderRadius || '0px'}</span>
+            <div className="space-y-3 pt-2">
+              <div className="flex justify-between items-end">
+                <span className="text-sm text-slate-500 dark:text-slate-400 font-medium tracking-tight">Border Radius</span>
+                <span className="text-sm font-bold text-indigo-500 tracking-tighter">{element.style.borderRadius || '0px'}</span>
               </div>
               <input
                 type="range" min="0" max="100"
                 value={parseInt(element.style.borderRadius || '0')}
                 onChange={(e) => handleStyleChange('borderRadius', e.target.value + 'px')}
-                className="w-full accent-indigo-600 dark:accent-indigo-500"
+                className="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500"
               />
             </div>
           </div>

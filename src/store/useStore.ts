@@ -16,6 +16,7 @@ export interface ElementStyles {
 export interface CanvasElement {
   id: string;
   type: string;
+  name?: string;
   tag: string;
   content?: string;
   innerHTML?: string;
@@ -68,6 +69,7 @@ export const useStore = create<WebBuilderState>((set) => ({
   addElement: (element) => 
     set((state) => ({ 
       elements: [...state.elements, element],
+      selectedElementId: element.id
     })),
 
   updateElement: (id, updates) =>

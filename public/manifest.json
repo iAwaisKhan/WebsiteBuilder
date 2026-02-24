@@ -1,7 +1,7 @@
 {
-  "name": "Web Builder - AI Website Builder",
-  "short_name": "Web Builder",
-  "description": "Fully Autonomous Website Builder powered by AI",
+  "name": "Studio - Website Builder",
+  "short_name": "Studio",
+  "description": "Minimalistic manual website builder with drag-and-drop interface",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

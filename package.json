@@ -1,21 +1,19 @@
 {
-  "name": "web-builder-ai",
-  "description": "AI-powered website builder with drag-and-drop interface and autonomous design generation",
+  "name": "website-builder",
+  "description": "Minimalistic manual website builder with drag-and-drop interface",
   "version": "1.0.0",
   "private": true,
   "type": "module",
   "keywords": [
     "website-builder",
-    "ai",
     "react",
     "typescript",
     "tailwind-css"
   ],
-  "author": "Web Builder AI Team",
+  "author": "Website Builder Team",
   "license": "MIT",
   "scripts": {
     "dev": "vite",
-    "backend": "python backend/main.py",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
