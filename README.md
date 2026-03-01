@@ -2,7 +2,7 @@
 
 A minimalistic, manual website builder for rapid web design and prototyping.
 
-## 🚀 Getting Started
+## Getting Started
 
 ### 1. Prerequisites
 - **Node.js 18+**
@@ -29,7 +29,7 @@ npm run dev
 - **Framer Motion** (Animations)
 - **Lucide React** (Icons)
 
-## 📦 Deployment
+## Deployment
 Build for production:
 ```bash
 npm run build
